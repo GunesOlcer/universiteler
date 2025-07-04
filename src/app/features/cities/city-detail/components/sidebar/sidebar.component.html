@@ -3,38 +3,25 @@
     <h3 class="sidebar-title">{{ city?.name }} Rehberi</h3>
   </div>
   
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" *ngIf="cityMenus.length > 0">
     <ul class="nav-menu">
       <li class="nav-item" 
-          *ngFor="let item of menuItems"
-          [class.active]="isItemActive(item)"
-          [class.expanded]="isMenuExpanded(item.id)">
-        
-        <a class="nav-link" 
-           [class.has-children]="item.children"
-           (click)="item.children ? toggleMenu(item.id) : selectSection(item.id)">
+          *ngFor="let menu of cityMenus"
+          [class.active]="isMenuActive(menu.id)">
+        <a class="nav-link" (click)="selectMenu(menu.id)">
           <div class="link-content">
-            <i class="fas" [ngClass]="item.icon"></i>
-            <span>{{ item.label }}</span>
+            <i class="fas fa-file-alt"></i>
+            <span>{{ menu.title }}</span>
           </div>
-          <i class="fas fa-chevron-down expand-icon" 
-             *ngIf="item.children"
-             [class.rotated]="isMenuExpanded(item.id)"></i>
         </a>
-        
-        <ul class="sub-menu" 
-            *ngIf="item.children && isMenuExpanded(item.id)"
-            [@slideDown]>
-          <li class="sub-item" 
-              *ngFor="let child of item.children"
-              [class.active]="child.id === activeSection">
-            <a class="sub-link" (click)="selectSection(child.id)">
-              <i class="fas" [ngClass]="child.icon"></i>
-              <span>{{ child.label }}</span>
-            </a>
-          </li>
-        </ul>
       </li>
     </ul>
   </nav>
+
+  <div class="empty-sidebar" *ngIf="cityMenus.length === 0">
+    <div class="empty-icon">
+      <i class="fas fa-list"></i>
+    </div>
+    <p class="empty-text">Bu şehir için menü bulunmuyor</p>
+  </div>
 </div>

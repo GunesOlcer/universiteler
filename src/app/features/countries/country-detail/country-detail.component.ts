@@ -4,19 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Country } from '../../../core/models/country.model';
 import { CountryService } from '../../../core/services/country.service';
-import { MenuService } from '../../../core/services/menu.service';
+import { getStatusName } from '../../../core/models/base.model';
 
-// Country menu tipini import et (menu.model.ts'den)
-interface CountryMenu {
-  id: number;
-  countryId: number;
-  title: string;
-  content: string;
-  order: number;
-  isVisible: boolean;
-  status: number;
-  createdDate: Date;
-  updatedDate?: Date;
+interface BreadcrumbItem {
+  label: string;
+  url?: string;
+  active: boolean;
 }
 
 @Component({
@@ -27,17 +20,15 @@ interface CountryMenu {
 export class CountryDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   
-  country: Country | undefined;
-  countryMenus: CountryMenu[] = [];
+  country: Country | null = null;
   isLoading = false;
-  activeSection = 'general-info';
   error: string | null = null;
+  breadcrumbPath: BreadcrumbItem[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private countryService: CountryService,
-    private menuService: MenuService
+    private countryService: CountryService
   ) {}
 
   ngOnInit(): void {
@@ -76,46 +67,30 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
       next: (country) => {
         console.log('✅ [CountryDetailComponent] Country loaded:', country);
         this.country = country;
+        this.setupBreadcrumb();
         this.updatePageMetadata();
-        this.loadCountryMenus(id);
         this.isLoading = false;
       },
       error: (error) => {
         console.error('❌ [CountryDetailComponent] Error loading country:', error);
-        this.error = error.message || 'Ülke yüklenirken bir hata oluştu';
+        this.error = 'Ülke bulunamadı veya yüklenirken bir hata oluştu';
         this.isLoading = false;
         
-        // If country not found, redirect to countries list
-        if (error.status === 404) {
-          setTimeout(() => {
-            this.router.navigate(['/ulkeler']);
-          }, 2000);
-        }
+        // Redirect to countries list after error
+        setTimeout(() => {
+          this.router.navigate(['/ulkeler']);
+        }, 3000);
       }
     });
   }
 
-  private loadCountryMenus(countryId: number): void {
-    console.log('📋 [CountryDetailComponent] Loading country menus for ID:', countryId);
-    
-    // Not: MenuService'te getCountryMenus metodu olmayabilir, o zaman geçici olarak boş array kullan
-    if (this.menuService.getCountryMenus) {
-      this.menuService.getCountryMenus(countryId).pipe(
-        takeUntil(this.destroy$)
-      ).subscribe({
-        next: (menus) => {
-          console.log('✅ [CountryDetailComponent] Country menus loaded:', menus.length);
-          this.countryMenus = menus;
-        },
-        error: (error) => {
-          console.error('❌ [CountryDetailComponent] Error loading country menus:', error);
-          // Don't show error for menus, just log it
-          this.countryMenus = [];
-        }
-      });
-    } else {
-      console.warn('⚠️ [CountryDetailComponent] getCountryMenus method not available');
-      this.countryMenus = [];
+  private setupBreadcrumb(): void {
+    if (this.country) {
+      this.breadcrumbPath = [
+        { label: 'Ana Sayfa', url: '/', active: false },
+        { label: 'Ülkeler', url: '/ulkeler', active: false },
+        { label: this.country.name, active: true }
+      ];
     }
   }
 
@@ -127,40 +102,29 @@ export class CountryDetailComponent implements OnInit, OnDestroy {
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute('content', 
-          `${this.country.name} hakkında detaylı bilgi. ${this.country.description || ''}`
+          `${this.country.name} (${this.country.code}) hakkında detaylı bilgi.`
         );
       }
     }
   }
 
-  onSectionChange(sectionId: string): void {
-    console.log('📄 [CountryDetailComponent] Section changed to:', sectionId);
-    this.activeSection = sectionId;
-    
-    // Smooth scroll to top of content
-    const contentElement = document.querySelector('.main-content');
-    if (contentElement) {
-      contentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  getStatusName(status: number): string {
+    return getStatusName(status);
   }
 
-  getMenuContentForSection(sectionId: string): CountryMenu | undefined {
-    return this.countryMenus.find(menu => 
-      menu.title.toLowerCase().includes(sectionId.replace('-', ' ')) ||
-      menu.title.toLowerCase().includes(this.getSectionTitle(sectionId).toLowerCase())
-    );
+  navigateBack(): void {
+    this.router.navigate(['/ulkeler']);
   }
 
-  private getSectionTitle(sectionId: string): string {
-    const sectionTitles: { [key: string]: string } = {
-      'general-info': 'genel bilgi',
-      'cities': 'şehir',
-      'universities': 'üniversite',
-      'education-system': 'eğitim sistem',
-      'culture': 'kültür',
-      'travel-info': 'seyahat'
-    };
-    
-    return sectionTitles[sectionId] || sectionId;
+  navigateToCities(): void {
+    this.router.navigate(['/sehirler'], { 
+      queryParams: { countryName: this.country?.name } 
+    });
+  }
+
+  navigateToUniversities(): void {
+    this.router.navigate(['/universiteler'], { 
+      queryParams: { countryName: this.country?.name } 
+    });
   }
 }

@@ -102,7 +102,7 @@
   border-bottom: 1px solid #e2e8f0;
   
   .container {
-    max-width: 1200px;
+    max-width: 1400px; // ✅ 1200px'den 1400px'e çıkarıldı
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -149,7 +149,7 @@
   overflow: hidden;
   
   .container {
-    max-width: 1200px;
+    max-width: 1400px; // ✅ 1200px'den 1400px'e çıkarıldı
     margin: 0 auto;
     padding: 0 20px;
     position: relative;
@@ -303,15 +303,15 @@
   padding: 40px 0;
   
   .container {
-    max-width: 1200px;
+    max-width: 1400px; // ✅ 1200px'den 1400px'e çıkarıldı
     margin: 0 auto;
     padding: 0 20px;
   }
   
   .content-wrapper {
     display: grid;
-    grid-template-columns: 280px 1fr 280px;
-    gap: 40px;
+    grid-template-columns: 240px 1fr 240px; // ✅ 280px'den 240px'e düşürüldü (sidebar'lar daraltıldı)
+    gap: 30px; // ✅ 40px'den 30px'e düşürüldü (daha az boşluk)
     align-items: start;
     
     .sidebar-container {
@@ -327,6 +327,7 @@
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2rem; // ✅ İçerik içinde padding eklendi
       }
     }
     
@@ -343,10 +344,26 @@
 }
 
 // Mobile styles
+@media (max-width: 1440px) { // ✅ Yeni breakpoint eklendi
+  .city-content .container,
+  .city-header-container .container,
+  .breadcrumb-container .container {
+    max-width: 95%;
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 1200px) { // ✅ Mevcut breakpoint güncellendi
+  .city-content .content-wrapper {
+    grid-template-columns: 220px 1fr 220px; // ✅ Daha da daraltıldı
+    gap: 25px;
+  }
+}
+
 @media (max-width: 1024px) {
   .city-content .content-wrapper {
-    grid-template-columns: 250px 1fr;
-    gap: 30px;
+    grid-template-columns: 200px 1fr; // ✅ 250px'den 200px'e düşürüldü
+    gap: 25px; // ✅ 30px'den 25px'e düşürüldü
     
     .nearby-container {
       grid-column: 1 / -1;
@@ -393,6 +410,10 @@
       .nearby-container {
         position: static;
       }
+      
+      .main-content-container .main-content {
+        padding: 1.5rem; // ✅ Mobilde padding azaltıldı
+      }
     }
   }
 }
@@ -426,5 +447,9 @@
         font-size: 20px;
       }
     }
+  }
+  
+  .city-content .content-wrapper .main-content-container .main-content {
+    padding: 1rem; // ✅ Çok küçük ekranlarda daha az padding
   }
 }

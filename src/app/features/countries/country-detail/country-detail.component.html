@@ -2,8 +2,10 @@
 <section class="country-detail-page">
   <!-- Loading Overlay -->
   <div class="loading-overlay" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>Yükleniyor...</p>
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Ülke bilgileri yükleniyor...</p>
+    </div>
   </div>
 
   <!-- Error State -->
@@ -13,25 +15,10 @@
         <i class="fas fa-exclamation-triangle"></i>
         <h2>Bir Hata Oluştu</h2>
         <p>{{ error }}</p>
-        <a routerLink="/ulkeler" class="back-button">
+        <button class="back-button" (click)="navigateBack()">
           <i class="fas fa-arrow-left"></i>
           Ülkeler Sayfasına Dön
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Country Not Found -->
-  <div class="country-not-found" *ngIf="!country && !isLoading && !error">
-    <div class="container">
-      <div class="not-found-content">
-        <i class="fas fa-globe"></i>
-        <h2>Ülke Bulunamadı</h2>
-        <p>Aradığınız ülke sistemde bulunamadı veya kaldırılmış olabilir.</p>
-        <a routerLink="/ulkeler" class="back-button">
-          <i class="fas fa-arrow-left"></i>
-          Ülkeler Sayfasına Dön
-        </a>
+        </button>
       </div>
     </div>
   </div>
@@ -41,61 +28,54 @@
     <!-- Breadcrumb Navigation -->
     <div class="breadcrumb-container">
       <div class="container">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a routerLink="/">Ana Sayfa</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a routerLink="/ulkeler">Ülkeler</a>
-          </li>
-          <li class="breadcrumb-item active">{{ country.name }}</li>
-        </ol>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li *ngFor="let item of breadcrumbPath" 
+                class="breadcrumb-item" 
+                [class.active]="item.active">
+              <a *ngIf="!item.active" [routerLink]="item.url">{{ item.label }}</a>
+              <span *ngIf="item.active">{{ item.label }}</span>
+            </li>
+          </ol>
+        </nav>
       </div>
     </div>
 
     <!-- Country Header -->
-    <div class="country-header-container">
+    <div class="country-header">
       <div class="container">
-        <div class="country-header">
-          <div class="country-flag-section">
-            <div class="country-flag">
-              <i class="fas fa-flag"></i>
-            </div>
+        <button class="back-button mobile-only" (click)="navigateBack()">
+          <i class="fas fa-arrow-left"></i>
+          Geri
+        </button>
+        
+        <div class="country-info">
+          <div class="country-flag">
+            <i class="fas fa-flag"></i>
           </div>
           
-          <div class="country-info">
+          <div class="country-details">
             <div class="country-badges">
-              <div class="country-code-badge">
+              <span class="country-code-badge">
                 <i class="fas fa-code"></i>
                 {{ country.code }}
-              </div>
+              </span>
+              <span class="status-badge" [class]="'status-' + country.status">
+                <i class="fas fa-circle"></i>
+                {{ getStatusName(country.status) }}
+              </span>
             </div>
             
             <h1 class="country-name">{{ country.name }}</h1>
             
-            <div class="country-description" *ngIf="country.description">
-              <p>{{ country.description }}</p>
-            </div>
-            
-            <div class="country-stats">
-              <div class="stat-item" *ngIf="country.cityCount">
-                <div class="stat-icon">
-                  <i class="fas fa-city"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-value">{{ country.cityCount }}</span>
-                  <span class="stat-label">Şehir</span>
-                </div>
+            <div class="country-meta">
+              <div class="meta-item">
+                <i class="fas fa-calendar"></i>
+                <span>Eklendi: {{ country.createdDate | date:'dd.MM.yyyy' }}</span>
               </div>
-              
-              <div class="stat-item" *ngIf="country.universityCount">
-                <div class="stat-icon">
-                  <i class="fas fa-university"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-value">{{ country.universityCount }}</span>
-                  <span class="stat-label">Üniversite</span>
-                </div>
+              <div class="meta-item" *ngIf="country.updatedDate">
+                <i class="fas fa-edit"></i>
+                <span>Güncellendi: {{ country.updatedDate | date:'dd.MM.yyyy' }}</span>
               </div>
             </div>
           </div>
@@ -103,56 +83,75 @@
       </div>
     </div>
 
-    <!-- Content Section -->
+    <!-- Country Content -->
     <div class="country-content">
       <div class="container">
-        <div class="content-wrapper">
-          <!-- Sidebar Component -->
-          <div class="sidebar-container">
-            <app-country-sidebar 
-              [country]="country" 
-              [activeSection]="activeSection"
-              (sectionChange)="onSectionChange($event)">
-            </app-country-sidebar>
-          </div>
-
-          <!-- Main Content -->
-          <div class="main-content-container">
-            <div class="main-content">
-              <!-- Dynamic Components -->
-              <div [ngSwitch]="activeSection">
-                <app-country-general-info 
-                  *ngSwitchCase="'general-info'" 
-                  [country]="country">
-                </app-country-general-info>
-                
-                <app-country-cities 
-                  *ngSwitchCase="'cities'" 
-                  [country]="country">
-                </app-country-cities>
-                
-                <app-country-universities 
-                  *ngSwitchCase="'universities'" 
-                  [country]="country">
-                </app-country-universities>
-                
-                <app-country-education-system 
-                  *ngSwitchCase="'education-system'" 
-                  [country]="country">
-                </app-country-education-system>
-                
-                <app-country-culture 
-                  *ngSwitchCase="'culture'" 
-                  [country]="country">
-                </app-country-culture>
-                
-                <app-country-travel-info 
-                  *ngSwitchCase="'travel-info'" 
-                  [country]="country">
-                </app-country-travel-info>
-              </div>
+        <!-- Country Stats -->
+        <div class="stats-grid">
+          <div class="stat-card" *ngIf="country.cityCount">
+            <div class="stat-icon">
+              <i class="fas fa-city"></i>
             </div>
+            <div class="stat-content">
+              <h3 class="stat-value">{{ country.cityCount }}</h3>
+              <span class="stat-label">Şehir</span>
+            </div>
+            <button class="stat-action" (click)="navigateToCities()">
+              <i class="fas fa-arrow-right"></i>
+            </button>
           </div>
+          
+          <div class="stat-card" *ngIf="country.universityCount">
+            <div class="stat-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-value">{{ country.universityCount }}</h3>
+              <span class="stat-label">Üniversite</span>
+            </div>
+            <button class="stat-action" (click)="navigateToUniversities()">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Country Description -->
+        <div class="content-section" *ngIf="country.description">
+          <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Hakkında
+          </h2>
+          <div class="section-content">
+            <p class="description-text">{{ country.description }}</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+          <h2 class="section-title">
+            <i class="fas fa-external-link-alt"></i>
+            İlgili Sayfalar
+          </h2>
+          <div class="action-buttons">
+            <button class="action-btn" (click)="navigateToCities()">
+              <i class="fas fa-city"></i>
+              <span>{{ country.name }} Şehirleri</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="action-btn" (click)="navigateToUniversities()">
+              <i class="fas fa-university"></i>
+              <span>{{ country.name }} Üniversiteleri</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Back to List -->
+        <div class="navigation-section">
+          <button class="back-to-list-btn" (click)="navigateBack()">
+            <i class="fas fa-arrow-left"></i>
+            Tüm Ülkelere Dön
+          </button>
         </div>
       </div>
     </div>

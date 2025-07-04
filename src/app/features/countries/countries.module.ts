@@ -7,13 +7,9 @@ import { FormsModule } from '@angular/forms';
 // Components
 import { CountriesListComponent } from './countries-list.component';
 import { CountryDetailComponent } from './country-detail/country-detail.component';
-import { CountrySidebarComponent } from './country-detail/components/sidebar/sidebar.component';
-import { CountryGeneralInfoComponent } from './country-detail/components/general-info/general-info.component';
-import { CountryCitiesComponent } from './country-detail/components/cities/cities.component';
-import { CountryUniversitiesComponent } from './country-detail/components/universities/universities.component';
-import { CountryEducationSystemComponent } from './country-detail/components/education-system/education-system.component';
-import { CountryCultureComponent } from './country-detail/components/culture/culture.component';
-import { CountryTravelInfoComponent } from './country-detail/components/travel-info/travel-info.component';
+
+// Shared Components
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -29,18 +25,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CountriesListComponent,
-    CountryDetailComponent,
-    CountrySidebarComponent,
-    CountryGeneralInfoComponent,
-    CountryCitiesComponent,
-    CountryUniversitiesComponent,
-    CountryEducationSystemComponent,
-    CountryCultureComponent,
-    CountryTravelInfoComponent
+    CountryDetailComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ]
 })

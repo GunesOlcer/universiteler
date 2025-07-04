@@ -1,4 +1,3 @@
-// src/app/features/cities/city-detail/city-detail.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,8 +16,9 @@ export class CityDetailComponent implements OnInit, OnDestroy {
   
   city: City | undefined;
   cityMenus: CityMenu[] = [];
+  activeMenu: CityMenu | undefined;
+  activeMenuId: number | null = null;
   isLoading = false;
-  activeSection = 'general-info';
   error: string | null = null;
 
   constructor(
@@ -91,7 +91,15 @@ export class CityDetailComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (menus) => {
         console.log('✅ [CityDetailComponent] City menus loaded:', menus.length);
-        this.cityMenus = menus;
+        // Filter visible menus and sort by order
+        this.cityMenus = menus
+          .filter(menu => menu.isVisible)
+          .sort((a, b) => a.order - b.order);
+        
+        // Select first menu by default
+        if (this.cityMenus.length > 0) {
+          this.selectMenu(this.cityMenus[0].id);
+        }
       },
       error: (error) => {
         console.error('❌ [CityDetailComponent] Error loading city menus:', error);
@@ -115,9 +123,14 @@ export class CityDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSectionChange(sectionId: string): void {
-    console.log('📄 [CityDetailComponent] Section changed to:', sectionId);
-    this.activeSection = sectionId;
+  onMenuSelect(menuId: number): void {
+    console.log('📄 [CityDetailComponent] Menu selected:', menuId);
+    this.selectMenu(menuId);
+  }
+
+  private selectMenu(menuId: number): void {
+    this.activeMenuId = menuId;
+    this.activeMenu = this.cityMenus.find(menu => menu.id === menuId);
     
     // Smooth scroll to top of content
     const contentElement = document.querySelector('.main-content');
@@ -126,33 +139,7 @@ export class CityDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMenuContentForSection(sectionId: string): CityMenu | undefined {
-    return this.cityMenus.find(menu => 
-      menu.title.toLowerCase().includes(sectionId.replace('-', ' ')) ||
-      menu.title.toLowerCase().includes(this.getSectionTitle(sectionId).toLowerCase())
-    );
-  }
-
-  private getSectionTitle(sectionId: string): string {
-    const sectionTitles: { [key: string]: string } = {
-      'general-info': 'genel bilgi',
-      'climate': 'iklim',
-      'demographics': 'demografik',
-      'universities': 'üniversite',
-      'dormitories': 'yurt',
-      'lifestyle': 'yaşantı',
-      'culture-art': 'kültür',
-      'important-places': 'önemli yer',
-      'food-drink': 'yeme içme',
-      'economy-work': 'ekonomi',
-      'health-sports': 'sağlık spor',
-      'transportation': 'ulaşım'
-    };
-    
-    return sectionTitles[sectionId] || sectionId;
-  }
-
-  // ✅ Missing getRegionName method eklendi
+  // ✅ Missing getRegionName method
   getRegionName(region: RegionType): string {
     return getRegionName(region);
   }

@@ -1,8 +1,8 @@
-// city-menu-edit.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { Editor, Toolbar } from 'ngx-editor';
 import { CityService } from '../../../../core/services/city.service';
 import { MenuService } from '../../../../core/services/menu.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -29,6 +29,19 @@ export class CityMenuEditComponent implements OnInit, OnDestroy {
   
   Status = Status;
   
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ['horizontal_rule', 'format_clear']
+  ];
+  
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -45,7 +58,8 @@ export class CityMenuEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('📝 [CityMenuEditComponent] Initializing city menu edit component');
     
-    // Check authentication
+    this.editor = new Editor();
+    
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isAuthenticated => {
@@ -55,7 +69,6 @@ export class CityMenuEditComponent implements OnInit, OnDestroy {
           return;
         }
         
-        // Get route parameters
         const cityId = this.route.snapshot.paramMap.get('cityId');
         const menuItemId = this.route.snapshot.paramMap.get('menuItemId');
         
@@ -82,6 +95,7 @@ export class CityMenuEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.editor.destroy();
     this.destroy$.next();
     this.destroy$.complete();
   }

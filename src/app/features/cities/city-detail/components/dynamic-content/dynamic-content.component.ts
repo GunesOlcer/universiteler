@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { City } from '../../../../../core/models/city.model';
 import { CityMenu } from '../../../../../core/models/menu.model';
 
 @Component({
-  selector: 'app-economy-work',
-  templateUrl: './economy-work.component.html',
-  styleUrls: ['./economy-work.component.scss']
+  selector: 'app-dynamic-content',
+  templateUrl: './dynamic-content.component.html',
+  styleUrls: ['./dynamic-content.component.scss']
 })
-export class EconomyWorkComponent implements OnInit {
-  @Input() city: City | undefined;
+export class DynamicContentComponent implements OnInit {
   @Input() menuContent: CityMenu | undefined;
+  @Input() menuTitle: string = '';
 
   ngOnInit(): void {}
 

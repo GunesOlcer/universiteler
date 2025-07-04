@@ -1,9 +1,6 @@
 <section class="content-section">
-  <div class="section-header">
-    <h2 class="section-title">
-      <i class="fas fa-cloud-sun"></i>
-      İklim
-    </h2>
+  <div class="section-header" *ngIf="menuTitle">
+    <h2 class="section-title">{{ menuTitle }}</h2>
   </div>
   
   <div class="content-card" *ngIf="hasContent()">
@@ -14,11 +11,11 @@
   
   <div class="empty-state" *ngIf="!hasContent()">
     <div class="empty-icon">
-      <i class="fas fa-cloud-sun"></i>
+      <i class="fas fa-file-alt"></i>
     </div>
-    <h3 class="empty-title">İklim Bilgisi Bulunmuyor</h3>
+    <h3 class="empty-title">İçerik Bulunmuyor</h3>
     <p class="empty-message">
-      {{ city?.name }} şehri için iklim bilgisi henüz eklenmemiş.
+      Bu menü için henüz içerik eklenmemiş.
     </p>
   </div>
 </section>

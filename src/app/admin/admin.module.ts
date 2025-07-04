@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxEditorModule } from 'ngx-editor';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
@@ -135,7 +136,8 @@ import { AdminGuard } from './guards/admin.guard';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    NgxEditorModule
   ],
   providers: [
     AuthGuard,

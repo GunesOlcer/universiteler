@@ -3,8 +3,11 @@
   <!-- Page Header -->
   <div class="page-header">
     <div class="container">
-      <h1 class="page-title">Ülkeler</h1>
-      <p class="page-subtitle">Üniversite eğitimi alabileceğiniz ülkeler hakkında detaylı bilgi edinin</p>
+      <h1 class="page-title">
+        <i class="fas fa-globe"></i>
+        Ülkeler
+      </h1>
+      <p class="page-subtitle">Eğitim alabileceğiniz ülkeler hakkında bilgi edinin</p>
     </div>
   </div>
 
@@ -28,7 +31,6 @@
     <div class="page-content">
       <!-- Search and Filter Section -->
       <div class="search-filter-container">
-        <!-- Search Section -->
         <div class="search-section">
           <label class="section-title" for="country-search">Ülke Ara</label>
           <div class="search-box">
@@ -37,20 +39,17 @@
               type="text" 
               [value]="searchTerm"
               (input)="onSearchInput($event)"
-              placeholder="Ülke adı veya kodu..." 
-              class="search-input"
-              name="search">
+              placeholder="Ülke adı veya kodu ara..." 
+              class="search-input">
             <button type="button" class="search-button">
               <i class="fas fa-search"></i>
             </button>
           </div>
         </div>
 
-        <!-- Sorting -->
         <div class="filter-section">
           <label class="section-title" for="sorting">Sırala</label>
           <select id="sorting" 
-                  name="sorting" 
                   class="select-box" 
                   [(ngModel)]="sorting" 
                   (change)="onSortingChange()">
@@ -61,12 +60,33 @@
           </select>
         </div>
 
-        <!-- Filter Actions -->
         <div class="filter-actions">
           <button class="clear-button" (click)="resetFilters()">
             <i class="fas fa-eraser"></i>
             Filtreleri Temizle
           </button>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section" *ngIf="!isLoading">
+        <div class="stats-card">
+          <div class="stat-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value">{{ totalItems }}</h3>
+            <span class="stat-label">Toplam Ülke</span>
+          </div>
+        </div>
+        <div class="stats-card">
+          <div class="stat-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value">{{ filteredCountries.length }}</h3>
+            <span class="stat-label">Filtrelenmiş Sonuç</span>
+          </div>
         </div>
       </div>
 
@@ -78,50 +98,46 @@
           <p>Ülkeler yükleniyor...</p>
         </div>
 
-        <!-- Results -->
-        <div class="countries-content" *ngIf="!isLoading">
-          <!-- Results Count -->
-          <div class="results-header" *ngIf="filteredCountries.length > 0">
-            <div class="results-count">
-              <strong>{{ filteredCountries.length }}</strong> ülke bulundu
-            </div>
-          </div>
-
-          <!-- Countries Grid -->
-          <div class="countries-grid" *ngIf="filteredCountries.length > 0">
-            <div class="country-card" 
-                 *ngFor="let country of filteredCountries; trackBy: trackByCountry"
-                 [routerLink]="['/ulkeler', country.id]">
-              <div class="card-content">
-                <div class="country-flag">
-                  <i class="fas fa-flag"></i>
-                </div>
+        <!-- Countries Grid -->
+        <div class="countries-grid" *ngIf="!isLoading && filteredCountries.length > 0">
+          <div class="country-card" 
+               *ngFor="let country of filteredCountries; trackBy: trackByCountry"
+               (click)="navigateToCountry(country)">
+            <div class="card-content">
+              <div class="country-flag">
+                <i class="fas fa-flag"></i>
+              </div>
+              <div class="country-info">
                 <h3 class="country-name">{{ country.name }}</h3>
-                <p class="country-code">{{ country.code }}</p>
-                <div class="country-stats" *ngIf="country.description">
-                  <p class="country-description">
-                    {{ country.description.length > 100 ? (country.description.substring(0, 100) + '...') : country.description }}
-                  </p>
+                <span class="country-code">{{ country.code }}</span>
+                <div class="country-meta">
+                  <span class="created-date">
+                    <i class="fas fa-calendar"></i>
+                    {{ country.createdDate | date:'dd.MM.yyyy' }}
+                  </span>
                 </div>
+              </div>
+              <div class="card-arrow">
+                <i class="fas fa-chevron-right"></i>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Empty State -->
-          <div class="empty-state" *ngIf="filteredCountries.length === 0">
-            <div class="empty-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h3 class="empty-title">Ülke Bulunamadı</h3>
-            <p class="empty-message">
-              Arama kriterlerinize uygun ülke bulunamadı. 
-              Filtreleri değiştirerek tekrar deneyin.
-            </p>
-            <button class="reset-button" (click)="resetFilters()">
-              <i class="fas fa-redo"></i>
-              Filtreleri Sıfırla
-            </button>
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="!isLoading && filteredCountries.length === 0">
+          <div class="empty-icon">
+            <i class="fas fa-search"></i>
           </div>
+          <h3 class="empty-title">Ülke Bulunamadı</h3>
+          <p class="empty-message">
+            Arama kriterlerinize uygun ülke bulunamadı. 
+            Filtreleri değiştirerek tekrar deneyin.
+          </p>
+          <button class="reset-button" (click)="resetFilters()">
+            <i class="fas fa-redo"></i>
+            Filtreleri Sıfırla
+          </button>
         </div>
       </div>
     </div>

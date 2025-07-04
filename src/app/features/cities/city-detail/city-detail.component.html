@@ -1,4 +1,3 @@
-<!-- src/app/features/cities/city-detail/city-detail.component.html -->
 <section class="city-detail-page">
   <!-- Loading Overlay -->
   <div class="loading-overlay" *ngIf="isLoading">
@@ -13,7 +12,6 @@
         <i class="fas fa-exclamation-triangle"></i>
         <h2>Bir Hata Oluştu</h2>
         <p>{{ error }}</p>
-        <!-- ✅ Path'i düzelt -->
         <a routerLink="/sehirler" class="back-button">
           <i class="fas fa-arrow-left"></i>
           Şehirler Sayfasına Dön
@@ -29,7 +27,6 @@
         <i class="fas fa-map-marker-alt"></i>
         <h2>Şehir Bulunamadı</h2>
         <p>Aradığınız şehir sistemde bulunamadı veya kaldırılmış olabilir.</p>
-        <!-- ✅ Path'i düzelt -->
         <a routerLink="/sehirler" class="back-button">
           <i class="fas fa-arrow-left"></i>
           Şehirler Sayfasına Dön
@@ -48,7 +45,6 @@
             <a routerLink="/">Ana Sayfa</a>
           </li>
           <li class="breadcrumb-item">
-            <!-- ✅ Path'i düzelt -->
             <a routerLink="/sehirler">Şehirler</a>
           </li>
           <li class="breadcrumb-item active">{{ city.name }}</li>
@@ -142,88 +138,20 @@
           <div class="sidebar-container">
             <app-sidebar 
               [city]="city" 
-              [activeSection]="activeSection"
-              (sectionChange)="onSectionChange($event)">
+              [cityMenus]="cityMenus"
+              [activeMenuId]="activeMenuId"
+              (menuSelect)="onMenuSelect($event)">
             </app-sidebar>
           </div>
 
           <!-- Main Content -->
           <div class="main-content-container">
             <div class="main-content">
-              <!-- Dynamic Components -->
-              <div [ngSwitch]="activeSection">
-                <app-general-info 
-                  *ngSwitchCase="'general-info'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('general-info')">
-                </app-general-info>
-                
-                <app-climate 
-                  *ngSwitchCase="'climate'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('climate')">
-                </app-climate>
-                
-                <app-demographics 
-                  *ngSwitchCase="'demographics'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('demographics')">
-                </app-demographics>
-                
-                <app-universities 
-                  *ngSwitchCase="'universities'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('universities')">
-                </app-universities>
-                
-                <app-dormitories 
-                  *ngSwitchCase="'dormitories'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('dormitories')">
-                </app-dormitories>
-                
-                <app-lifestyle 
-                  *ngSwitchCase="'lifestyle'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('lifestyle')">
-                </app-lifestyle>
-                
-                <app-culture-art 
-                  *ngSwitchCase="'culture-art'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('culture-art')">
-                </app-culture-art>
-                
-                <app-important-places 
-                  *ngSwitchCase="'important-places'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('important-places')">
-                </app-important-places>
-                
-                <app-food-drink 
-                  *ngSwitchCase="'food-drink'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('food-drink')">
-                </app-food-drink>
-                
-                <app-economy-work 
-                  *ngSwitchCase="'economy-work'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('economy-work')">
-                </app-economy-work>
-                
-                <app-health-sports 
-                  *ngSwitchCase="'health-sports'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('health-sports')">
-                </app-health-sports>
-                
-                <app-transportation 
-                  *ngSwitchCase="'transportation'" 
-                  [city]="city"
-                  [menuContent]="getMenuContentForSection('transportation')">
-                </app-transportation>
-              </div>
+              <!-- Dynamic Content Component -->
+              <app-dynamic-content
+                [menuContent]="activeMenu"
+                [menuTitle]="activeMenu?.title || ''">
+              </app-dynamic-content>
             </div>
           </div>
 
