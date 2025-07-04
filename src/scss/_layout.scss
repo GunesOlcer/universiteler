@@ -1,0 +1,15 @@
+// Global layout styles
+
+// Hide footer in admin layout
+body.admin-layout {
+  app-footer {
+    display: none !important;
+  }
+}
+
+// Main content should take full height when footer is hidden
+body.admin-layout {
+  .main-content {
+    min-height: calc(100vh - 60px); // Adjust based on your header height
+  }
+}

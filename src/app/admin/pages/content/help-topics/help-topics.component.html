@@ -1,0 +1,249 @@
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-question-circle"></i>
+          Yardım Konuları Yönetimi
+        </h1>
+        <p class="page-subtitle">Sistemdeki yardım kategorilerini ve konularını ekleyin, düzenleyin veya silin</p>
+      </div>
+      
+      <div class="page-actions">
+        <button type="button" class="btn-add" (click)="openAddCategoryModal()">
+          <span class="btn-icon"><i class="fas fa-plus"></i></span>
+          <span class="btn-text">Yeni Kategori</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Help Categories Grid -->
+    <div class="help-categories-grid">
+      <!-- Empty state if no categories exist -->
+      <div *ngIf="helpCategories.length === 0" class="empty-state">
+        <div class="empty-icon">
+          <i class="fas fa-folder-open"></i>
+        </div>
+        <h3 class="empty-title">Henüz Yardım Kategorisi Bulunmuyor</h3>
+        <p class="empty-description">Sistem kullanıcıları için yardım içerikleri oluşturmak üzere ilk kategoriyi ekleyin.</p>
+        <button type="button" class="btn-add-first" (click)="openAddCategoryModal()">
+          <i class="fas fa-plus"></i>
+          İlk Kategoriyi Ekle
+        </button>
+      </div>
+      
+      <!-- Category Cards -->
+      <div *ngFor="let category of helpCategories" class="category-card">
+        <div class="category-header">
+          <div class="category-info">
+            <div class="category-icon">
+              <i class="fas fa-folder"></i>
+            </div>
+            <h3 class="category-title">{{ category.name }}</h3>
+            <span class="topic-count">{{ category.topics.length }} konu</span>
+          </div>
+          
+          <div class="category-actions">
+            <button type="button" class="btn-category-action btn-edit" (click)="openEditCategoryModal(category)" title="Kategoriyi Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn-category-action btn-delete" (click)="confirmDeleteCategory(category)" title="Kategoriyi Sil">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="category-content">
+          <div class="category-toolbar">
+            <h4 class="toolbar-title">
+              <i class="fas fa-list"></i>
+              Yardım Konuları
+            </h4>
+            <button type="button" class="btn-topic-add" (click)="openAddTopicModal(category.id)">
+              <i class="fas fa-plus"></i>
+              Konu Ekle
+            </button>
+          </div>
+          
+          <div class="topics-list">
+            <div *ngIf="category.topics.length === 0" class="no-topics">
+              <div class="no-topics-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <p class="no-topics-text">Bu kategoride henüz yardım konusu bulunmamaktadır.</p>
+              <button type="button" class="btn-add-topic" (click)="openAddTopicModal(category.id)">
+                <i class="fas fa-plus"></i>
+                İlk Konuyu Ekle
+              </button>
+            </div>
+            
+            <div *ngFor="let topic of category.topics" class="topic-item">
+              <div class="topic-header" (click)="topic.isExpanded = !topic.isExpanded">
+                <div class="topic-info">
+                  <i class="fas" [ngClass]="topic.isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                  <h5 class="topic-title">{{ topic.title }}</h5>
+                </div>
+                
+                <div class="topic-actions">
+                  <button type="button" class="btn-topic-action btn-edit" (click)="openEditTopicModal(category.id, topic); $event.stopPropagation()" title="Konuyu Düzenle">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn-topic-action btn-delete" (click)="confirmDeleteTopic(category.id, topic); $event.stopPropagation()" title="Konuyu Sil">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="topic-content" [class.expanded]="topic.isExpanded">
+                <div class="content-wrapper" [innerHTML]="topic.content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Category Modal -->
+  <div class="modal" *ngIf="showCategoryModal">
+    <div class="modal-backdrop" (click)="closeCategoryModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-folder"></i>
+            {{ selectedCategoryId ? 'Kategori Düzenle' : 'Yeni Kategori Ekle' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="closeCategoryModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="categoryForm">
+            <div class="form-group">
+              <label for="categoryName">Kategori Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="categoryName"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched}"
+                placeholder="Kategori adını giriniz"
+              >
+              <div class="form-error" *ngIf="categoryForm.get('name')?.errors?.required && categoryForm.get('name')?.touched">
+                Kategori adı gereklidir.
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeCategoryModal()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-save" [disabled]="categoryForm.invalid" (click)="saveCategory()">
+            <i class="fas fa-save"></i> Kaydet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Topic Modal -->
+  <div class="modal" *ngIf="showTopicModal">
+    <div class="modal-backdrop" (click)="closeTopicModal()"></div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-file-alt"></i>
+            {{ selectedTopicId ? 'Yardım Konusu Düzenle' : 'Yeni Yardım Konusu Ekle' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="closeTopicModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="topicForm">
+            <div class="form-group">
+              <label for="topicTitle">Konu Başlığı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="topicTitle"
+                formControlName="title"
+                class="form-control"
+                [ngClass]="{'is-invalid': topicForm.get('title')?.invalid && topicForm.get('title')?.touched}"
+                placeholder="Konu başlığını giriniz"
+              >
+              <div class="form-error" *ngIf="topicForm.get('title')?.errors?.required && topicForm.get('title')?.touched">
+                Konu başlığı gereklidir.
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="topicContent">İçerik <span class="required">*</span></label>
+              <textarea 
+                id="topicContent"
+                formControlName="content"
+                class="form-control"
+                rows="10"
+                [ngClass]="{'is-invalid': topicForm.get('content')?.invalid && topicForm.get('content')?.touched}"
+                placeholder="Yardım içeriğini HTML formatında giriniz"
+              ></textarea>
+              <div class="form-error" *ngIf="topicForm.get('content')?.errors?.required && topicForm.get('content')?.touched">
+                İçerik gereklidir.
+              </div>
+              <div class="form-hint">
+                <i class="fas fa-info-circle"></i>
+                İçerik HTML formatında girilmelidir. Örn: &lt;p&gt;Paragraf&lt;/p&gt;
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeTopicModal()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-save" [disabled]="topicForm.invalid" (click)="saveTopic()">
+            <i class="fas fa-save"></i> Kaydet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" *ngIf="showConfirmDialog">
+    <div class="modal-backdrop" (click)="cancelDelete()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-exclamation-triangle text-danger"></i>
+            {{ deleteType === 'category' ? 'Kategori Sil' : 'Yardım Konusu Sil' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="cancelDelete()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="delete-message">
+            <strong>{{ deleteType === 'category' ? itemToDelete?.name : itemToDelete?.title }}</strong> 
+            {{ deleteType === 'category' ? 'kategorisini' : 'konusunu' }} silmek istediğinizden emin misiniz?
+          </p>
+          <p class="delete-warning">
+            <i class="fas fa-info-circle"></i>
+            {{ deleteType === 'category' 
+              ? 'Bu işlem geri alınamaz ve kategoriye bağlı tüm yardım konuları da silinecektir.' 
+              : 'Bu işlem geri alınamaz ve konuyla ilgili tüm içerikler silinecektir.' }}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="cancelDelete()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-confirm" (click)="deleteItem()">
+            <i class="fas fa-trash-alt"></i> Evet, Sil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,39 @@
+<div class="university-card" [routerLink]="['/universiteler', university.id]">
+  <div class="card-image">
+    <img [src]="getImageUrl()" [alt]="university.name">
+    <div class="type-badge" [ngClass]="getTypeCssClass()">
+      {{ getTypeLabel() }}
+    </div>
+  </div>
+  <div class="card-content">
+    <h3 class="university-name">{{ university.name }}</h3>
+    <div class="university-location">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>{{ university.cityName }}, {{ university.countryName }}</span>
+    </div>
+    <div class="university-info">
+      <div class="info-item" *ngIf="university.studentCount">
+        <span class="label">Öğrenci Sayısı</span>
+        <span class="value">{{ university.studentCount | number }}</span>
+      </div>
+      <div class="info-item" *ngIf="university.ranking">
+        <span class="label">Sıralama</span>
+        <span class="value">#{{ university.ranking }}</span>
+      </div>
+    </div>
+    <div class="university-features">
+      <div class="feature" *ngIf="university.hasLibrary">
+        <i class="fas fa-book"></i>
+        <span>Kütüphane</span>
+      </div>
+      <div class="feature" *ngIf="university.hasSportsFacility">
+        <i class="fas fa-running"></i>
+        <span>Spor Tesisi</span>
+      </div>
+      <div class="feature" *ngIf="university.hasDormitory">
+        <i class="fas fa-home"></i>
+        <span>Yurt</span>
+      </div>
+    </div>
+  </div>
+</div>

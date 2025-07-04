@@ -1,0 +1,75 @@
+<!-- src/app/features/departments/department-detail/content/kim-icin-uygun/kim-icin-uygun.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-user-check"></i>
+      Kim İçin Uygun?
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümünde başarılı olabilecek öğrenci profilleri</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>İçerik yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Specific Suitability Content -->
+    <div class="content-card" *ngIf="suitabilityContent">
+      <h3 class="content-title">
+        <i class="fas fa-info-circle"></i>
+        {{ suitabilityContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(suitabilityContent.content)"></div>
+    </div>
+
+    <!-- All Related Menus -->
+    <div class="menu-items" *ngIf="departmentMenus.length > 0">
+      <div class="menu-item" *ngFor="let menu of departmentMenus">
+        <div class="menu-header">
+          <h4 class="menu-title">{{ menu.title }}</h4>
+          <span class="menu-order">{{ menu.order }}</span>
+        </div>
+        <div class="menu-content" [innerHTML]="formatContent(menu.content)"></div>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!suitabilityContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Genel Değerlendirme
+        </h3>
+        <div class="general-info">
+          <p>{{ department?.name }} bölümü için uygunluk kriterleri henüz tanımlanmamıştır.</p>
+          <p>Genel olarak bu tür bölümler için şu özellikler önemli olabilir:</p>
+          <ul>
+            <li>İlgili alanda temel bilgi ve ilgi</li>
+            <li>Analitik düşünme yeteneği</li>
+            <li>Öğrenmeye açık olma</li>
+            <li>Problem çözme becerileri</li>
+          </ul>
+          <div class="note">
+            <p><strong>Not:</strong> Detaylı bilgi için üniversitenin akademik danışmanlarına başvurunuz.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

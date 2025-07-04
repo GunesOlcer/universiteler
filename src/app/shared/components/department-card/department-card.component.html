@@ -1,0 +1,100 @@
+<!-- src/app/shared/components/department-card/department-card.component.html -->
+<div [class]="getCardClasses()" [routerLink]="['/bolumler', department.id]">
+  <!-- Card Image -->
+  <div class="card-image" *ngIf="department.imagePath">
+    <img [src]="getDepartmentImageUrl()" 
+         [alt]="department.name + ' bölümü'" 
+         loading="lazy"
+         (error)="$event.target.style.display='none'">
+    <div class="image-overlay"></div>
+    <div class="status-indicator" [ngClass]="'status-' + department.status">
+      <span>{{ getStatusName(department.status) }}</span>
+    </div>
+  </div>
+
+  <!-- Card Content -->
+  <div class="card-content">
+    <!-- Header Section -->
+    <div class="card-header">
+      <div class="badges-section">
+        <span class="faculty-badge">{{ department.facultyName }}</span>
+        <span class="english-badge" *ngIf="department.hasEnglishProgram">
+          <i class="fas fa-language"></i>
+          EN
+        </span>
+      </div>
+      
+      <h3 class="department-name" [title]="department.name">
+        {{ department.name }}
+      </h3>
+      
+      <div class="university-info">
+        <i class="fas fa-university"></i>
+        <span [title]="department.universityName">{{ department.universityName }}</span>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="description-section" *ngIf="department.description">
+      <p class="description-text">
+        {{ truncateText(department.description, 100) }}
+      </p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section" *ngIf="hasBasicInfo()">
+      <div class="stat-item" *ngIf="department.averageEducationYears">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ getEducationYearsText(department.averageEducationYears) }}</span>
+          <span class="stat-label">Eğitim Süresi</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="department.averageSalary">
+        <div class="stat-icon">
+          <i class="fas fa-lira-sign"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ formatSalary(department.averageSalary) }}</span>
+          <span class="stat-label">Ort. Maaş</span>
+        </div>
+      </div>
+
+      <div class="stat-item english-program" *ngIf="department.hasEnglishProgram">
+        <div class="stat-icon">
+          <i class="fas fa-language"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">Mevcut</span>
+          <span class="stat-label">İngilizce</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="card-footer">
+      <div class="department-meta">
+        <span class="created-date" *ngIf="department.createdDate">
+          <i class="fas fa-calendar-plus"></i>
+          {{ department.createdDate | date:'dd.MM.yyyy' }}
+        </span>
+      </div>
+      
+      <div class="action-section">
+        <div class="status-badge" [ngClass]="'status-' + department.status">
+          {{ getStatusName(department.status) }}
+        </div>
+        <div class="view-detail">
+          <span>Detayları Gör</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hover Effect Overlay -->
+  <div class="hover-overlay"></div>
+</div>

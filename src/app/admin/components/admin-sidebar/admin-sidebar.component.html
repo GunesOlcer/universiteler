@@ -1,0 +1,102 @@
+<aside class="admin-sidebar" 
+       [class.collapsed]="collapsed" 
+       [class.mobile]="isMobile"
+       role="navigation"
+       aria-label="Admin Navigation">
+  
+  <div class="sidebar-header">
+    <a routerLink="/admin/dashboard" class="sidebar-logo" [attr.aria-label]="collapsed ? 'Dashboard' : 'Üniversiteler.net Admin Panel'">
+      <img src="../../../../assets/icons/settings-logo.jpg" alt="Logo" class="logo-image">
+      <span class="sidebar-title">Admin Panel</span>
+    </a>
+    <button class="sidebar-toggle" 
+            (click)="toggleSidebar()" 
+            [attr.aria-label]="collapsed ? 'Menüyü Genişlet' : 'Menüyü Daralt'"
+            [attr.aria-expanded]="!collapsed">
+      <i class="fas" [ngClass]="collapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">
+      <i class="fas fa-user"></i>
+    </div>
+    <div class="user-info">
+      <h3 class="user-name">Admin</h3>
+      <span class="user-role">Yönetici</span>
+    </div>
+  </div>
+
+  <div class="sidebar-content">
+    <nav class="sidebar-nav">
+      <ul class="nav-menu" role="menubar">
+        <li *ngFor="let item of menuItems" 
+            class="nav-item" 
+            [class.nav-item-has-children]="item.children && item.children.length > 0"
+            [class.open]="isMenuOpen(item.id)"
+            [class.active]="hasActiveChild(item)"
+            role="none">
+          
+          <!-- Menu item without children -->
+          <a *ngIf="!item.children && item.route" 
+             [routerLink]="item.route" 
+             routerLinkActive="active" 
+             class="nav-link"
+             role="menuitem"
+             [attr.aria-current]="isRouteActive(item.route) ? 'page' : null"
+             [title]="collapsed ? item.title : ''">
+            <i [class]="item.icon" aria-hidden="true"></i>
+            <span class="nav-text">{{ item.title }}</span>
+          </a>
+
+          <!-- Menu item with children -->
+          <button *ngIf="item.children && item.children.length > 0" 
+                  class="nav-link nav-button" 
+                  (click)="toggleMenu(item.id)"
+                  [attr.aria-expanded]="isMenuOpen(item.id)"
+                  [attr.aria-controls]="'submenu-' + item.id"
+                  role="menuitem"
+                  [title]="collapsed ? item.title : ''">
+            <i [class]="item.icon" aria-hidden="true"></i>
+            <span class="nav-text">{{ item.title }}</span>
+            <i class="fas fa-chevron-down nav-dropdown-icon" 
+               [class.rotated]="isMenuOpen(item.id)"
+               aria-hidden="true"></i>
+          </button>
+
+          <!-- Submenu -->
+          <ul *ngIf="item.children && item.children.length > 0" 
+              class="nav-submenu" 
+              [id]="'submenu-' + item.id"
+              [attr.aria-hidden]="!isMenuOpen(item.id)"
+              role="menu">
+            <li *ngFor="let child of item.children" 
+                class="nav-subitem" 
+                role="none">
+              <a [routerLink]="child.route!" 
+                 routerLinkActive="active" 
+                 class="nav-sublink"
+                 role="menuitem"
+                 [attr.aria-current]="isRouteActive(child.route!) ? 'page' : null"
+                 (click)="navigateTo(child.route!)">
+                <i [class]="child.icon" aria-hidden="true"></i>
+                <span>{{ child.title }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-footer">
+    <a href="javascript:void(0)" class="footer-link" title="Yardım">
+      <i class="fas fa-question-circle" aria-hidden="true"></i>
+      <span class="link-text">Yardım</span>
+    </a>
+    <button class="footer-link logout-btn" (click)="logout()" title="Çıkış Yap">
+      <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+      <span class="link-text">Çıkış</span>
+    </button>
+  </div>
+</aside>

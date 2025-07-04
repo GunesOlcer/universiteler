@@ -1,0 +1,43 @@
+<div class="modal-backdrop" (click)="onCancel()"></div>
+<div class="modal-container" role="dialog" aria-modal="true" [attr.aria-labelledby]="'dialog-title-' + title">
+  <div class="modal-content" [class]="'dialog-' + type">
+    <div class="modal-header">
+      <h3 class="modal-title" [id]="'dialog-title-' + title">{{ title }}</h3>
+      <button type="button" class="modal-close" (click)="onCancel()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="dialog-content">
+        <div *ngIf="showIcon" class="dialog-icon" [class]="getIconClass()">
+          <i class="fas fa-{{ getIcon() }}"></i>
+        </div>
+        
+        <div class="dialog-message">
+          <p>{{ message }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button 
+        type="button" 
+        class="btn-cancel" 
+        (click)="onCancel()" 
+        [disabled]="isProcessing">
+        {{ cancelButtonText }}
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn-confirm" 
+        [class]="getButtonClass()" 
+        (click)="onConfirm()" 
+        [disabled]="isProcessing">
+        <i *ngIf="isProcessing" class="fas fa-spinner fa-spin"></i>
+        <span>{{ confirmButtonText }}</span>
+      </button>
+    </div>
+  </div>
+</div>

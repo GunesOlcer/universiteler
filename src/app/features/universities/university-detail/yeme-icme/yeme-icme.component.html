@@ -1,0 +1,396 @@
+<section class="content-section">
+  <h2 class="section-title">Yeme İçme</h2>
+  <div class="content-card">
+    <div class="dining-services" *ngIf="university">
+      <div class="dining-overview">
+        <div class="overview-message">
+          <i class="fas fa-utensils"></i>
+          <div>
+            <h4>Kampüs Beslenme Hizmetleri</h4>
+            <p>{{ university.name }} kampüsünde öğrencilerin beslenme ihtiyaçları için çeşitli seçenekler sunulmaktadır.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dining-options">
+        <h3 class="subsection-title">Yemek Seçenekleri</h3>
+        <div class="options-grid">
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="option-content">
+              <h4>Ana Yemekhane</h4>
+              <p>Günlük sıcak yemek servisi ve çorba seçenekleri</p>
+              <div class="option-features">
+                <span>Öğle yemeği</span>
+                <span>Akşam yemeği</span>
+                <span>Ekonomik fiyatlar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-coffee"></i>
+            </div>
+            <div class="option-content">
+              <h4>Kafeterya</h4>
+              <p>Kahve, sandviç ve atıştırmalık seçenekleri</p>
+              <div class="option-features">
+                <span>Kahve çeşitleri</span>
+                <span>Tost ve sandviç</span>
+                <span>Kek ve pasta</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-pizza-slice"></i>
+            </div>
+            <div class="option-content">
+              <h4>Fast Food</h4>
+              <p>Hızlı atıştırmalık ve fast food seçenekleri</p>
+              <div class="option-features">
+                <span>Pizza dilimi</span>
+                <span>Hamburger</span>
+                <span>Döner</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="option-content">
+              <h4>Sağlıklı Seçenekler</h4>
+              <p>Organik ve sağlıklı beslenme alternatifleri</p>
+              <div class="option-features">
+                <span>Salata bar</span>
+                <span>Meyve suları</span>
+                <span>Vegan menü</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="option-content">
+              <h4>Market</h4>
+              <p>Temel gıda maddesi ve içecek alışverişi</p>
+              <div class="option-features">
+                <span>Atıştırmalık</span>
+                <span>İçecekler</span>
+                <span>Temel gıdalar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <div class="option-icon">
+              <i class="fas fa-ice-cream"></i>
+            </div>
+            <div class="option-content">
+              <h4>Tatlı ve İçecek</h4>
+              <p>Dondurma, tatlı ve soğuk içecek seçenekleri</p>
+              <div class="option-features">
+                <span>Dondurma</span>
+                <span>Milkshake</span>
+                <span>Taze meyve suyu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meal-plans">
+        <h3 class="subsection-title">Yemek Planları</h3>
+        <div class="plans-container">
+          <div class="plan-card basic">
+            <div class="plan-header">
+              <h4>Temel Plan</h4>
+              <div class="plan-price">₺150/Hafta</div>
+            </div>
+            <div class="plan-content">
+              <ul>
+                <li>5 öğle yemeği</li>
+                <li>Çorba servisi</li>
+                <li>Su ücretsiz</li>
+                <li>Temel menü seçenekleri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="plan-card standard">
+            <div class="plan-header">
+              <h4>Standart Plan</h4>
+              <div class="plan-price">₺250/Hafta</div>
+            </div>
+            <div class="plan-content">
+              <ul>
+                <li>5 öğle + 5 akşam yemeği</li>
+                <li>Çorba ve salata bar</li>
+                <li>Meşrubat dahil</li>
+                <li>Geniş menü seçenekleri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="plan-card premium">
+            <div class="plan-header">
+              <h4>Premium Plan</h4>
+              <div class="plan-price">₺350/Hafta</div>
+            </div>
+            <div class="plan-content">
+              <ul>
+                <li>Sınırsız öğün</li>
+                <li>Tüm menü seçenekleri</li>
+                <li>Kafeterya kredisi</li>
+                <li>Misafir yemek hakkı</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="special-diets">
+        <h3 class="subsection-title">Özel Beslenme</h3>
+        <div class="diets-grid">
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Vejetaryen/Vegan</h4>
+              <p>Et içermeyen beslenme seçenekleri</p>
+            </div>
+          </div>
+
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-bread-slice"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Glutensiz</h4>
+              <p>Çölyak hastalarına uygun menüler</p>
+            </div>
+          </div>
+
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-apple-alt"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Diyabetik</h4>
+              <p>Şeker hastalarına uygun beslenme</p>
+            </div>
+          </div>
+
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Kalp Sağlığı</h4>
+              <p>Düşük yağ ve tuzlu beslenme</p>
+            </div>
+          </div>
+
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-weight"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Kilo Kontrolü</h4>
+              <p>Kalori kontrollü menü seçenekleri</p>
+            </div>
+          </div>
+
+          <div class="diet-item">
+            <div class="diet-icon">
+              <i class="fas fa-mosque"></i>
+            </div>
+            <div class="diet-content">
+              <h4>Helal Beslenme</h4>
+              <p>Dini kurallara uygun yemek servisi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dining-hours">
+        <h3 class="subsection-title">Servis Saatleri</h3>
+        <div class="hours-container">
+          <div class="hours-section">
+            <h4>Ana Yemekhane</h4>
+            <div class="hours-table">
+              <div class="hours-row">
+                <span class="meal">Kahvaltı</span>
+                <span class="time">07:30 - 09:30</span>
+              </div>
+              <div class="hours-row">
+                <span class="meal">Öğle Yemeği</span>
+                <span class="time">11:30 - 14:30</span>
+              </div>
+              <div class="hours-row">
+                <span class="meal">Akşam Yemeği</span>
+                <span class="time">17:00 - 20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hours-section">
+            <h4>Kafeterya</h4>
+            <div class="hours-table">
+              <div class="hours-row">
+                <span class="meal">Pazartesi - Cuma</span>
+                <span class="time">07:00 - 22:00</span>
+              </div>
+              <div class="hours-row">
+                <span class="meal">Cumartesi</span>
+                <span class="time">08:00 - 20:00</span>
+              </div>
+              <div class="hours-row">
+                <span class="meal">Pazar</span>
+                <span class="time">09:00 - 18:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-options">
+        <h3 class="subsection-title">Ödeme Seçenekleri</h3>
+        <div class="payment-grid">
+          <div class="payment-item">
+            <div class="payment-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="payment-content">
+              <h4>Öğrenci Kartı</h4>
+              <p>Öğrenci kartına yüklenen bakiye ile ödeme</p>
+            </div>
+          </div>
+
+          <div class="payment-item">
+            <div class="payment-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-content">
+              <h4>Kredi/Banka Kartı</h4>
+              <p>POS cihazı ile kart ödemesi</p>
+            </div>
+          </div>
+
+          <div class="payment-item">
+            <div class="payment-icon">
+              <i class="fas fa-money-bill"></i>
+            </div>
+            <div class="payment-content">
+              <h4>Nakit</h4>
+              <p>Nakit ödeme seçeneği</p>
+            </div>
+          </div>
+
+          <div class="payment-item">
+            <div class="payment-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="payment-content">
+              <h4>Mobil Ödeme</h4>
+              <p>QR kod ve mobil uygulamalar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nutrition-tips">
+        <h3 class="subsection-title">Beslenme İpuçları</h3>
+        <div class="nutrition-container">
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Düzenli Öğünler</h4>
+              <p>3 ana öğün ve 2 ara öğünü atlamamaya özen gösterin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Dengeli Beslenme</h4>
+              <p>Karbonhidrat, protein ve vitamin dengesi kurun</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Bol Su İçin</h4>
+              <p>Günde en az 8-10 bardak su tüketmeye dikkat edin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-carrot"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Meyve ve Sebze</h4>
+              <p>Günlük en az 5 porsiyon meyve ve sebze tüketin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-ban"></i>
+            </div>
+            <div class="tip-content">
+              <h4>İşlenmiş Gıdalardan Kaçının</h4>
+              <p>Fazla şeker, tuz ve yağ içeren gıdaları sınırlayın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-walking"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Yemek Sonrası Aktivite</h4>
+              <p>Öğünlerden sonra kısa yürüyüşler yapın</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-dining">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-utensils"></i>
+          <div>
+            <h4>Beslenme Hizmetleri</h4>
+            <p>Yemek planları, özel beslenme ihtiyaçları ve menü bilgileri için beslenme hizmetleri birimi ile iletişime geçebilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

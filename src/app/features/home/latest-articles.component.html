@@ -1,0 +1,49 @@
+<section class="articles-section">
+  <div class="container">
+    <div class="section-header centered">
+      <div class="header-text">
+        <h2 class="section-title">En Yeni Makaleler</h2>
+        <p class="section-subtitle">Üniversite adayları için rehber ve öneriler</p>
+      </div>
+      
+      <a routerLink="/makaleler" class="view-all-button">
+        Tüm Makaleleri Keşfet
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+    
+    <div class="articles-container">
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Makaleler yükleniyor...</p>
+      </div>
+      
+      <!-- Error State -->
+      <div class="error-state" *ngIf="errorMessage && !isLoading">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Bir Hata Oluştu</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="retry-button" (click)="retryLoad()">
+          <i class="fas fa-redo"></i>
+          Tekrar Dene
+        </button>
+      </div>
+      
+      <!-- Articles Grid -->
+      <div class="articles-grid" *ngIf="!isLoading && !errorMessage" #articlesGrid>
+        <app-article-card 
+          *ngFor="let article of articles; trackBy: trackByArticleId" 
+          [article]="article">
+        </app-article-card>
+        
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="articles.length === 0">
+          <i class="fas fa-newspaper"></i>
+          <h3>Henüz Makale Yok</h3>
+          <p>Yakında yeni makaleler yayınlanacak.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

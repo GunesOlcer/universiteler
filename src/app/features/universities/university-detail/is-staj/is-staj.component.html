@@ -1,0 +1,131 @@
+<section class="content-section">
+  <h2 class="section-title">İş ve Staj İmkanları</h2>
+  <div class="content-card">
+    <div class="career-opportunities" *ngIf="university">
+      <div class="university-type-info">
+        <h3 class="subsection-title">{{ university.typeName }} Üniversitesi Avantajları</h3>
+        <div class="type-benefits">
+          <div class="benefit-item" *ngFor="let advantage of getUniversityTypeAdvantages()">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ advantage }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-services">
+        <h3 class="subsection-title">Kariyer Hizmetleri</h3>
+        <div class="services-grid">
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="service-content">
+              <h4>Staj Programları</h4>
+              <p>Sektörel staj imkanları ve uygulama fırsatları</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="service-content">
+              <h4>Kariyer Fuarları</h4>
+              <p>İş dünyasıyla buluşma ve networking etkinlikleri</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="service-content">
+              <h4>Kariyer Danışmanlığı</h4>
+              <p>Profesyonel kariyer planlama desteği</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-laptop"></i>
+            </div>
+            <div class="service-content">
+              <h4>Online İş Portalı</h4>
+              <p>İş ilanları ve başvuru sistemi</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <div class="service-content">
+              <h4>Sektörel İşbirlikleri</h4>
+              <p>Firmalarla yapılan özel anlaşmalar</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="service-content">
+              <h4>Mezun Ağı</h4>
+              <p>Alumni network üzerinden iş imkanları</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="location-advantage" *ngIf="university.cityName">
+        <h3 class="subsection-title">{{ university.cityName }} Avantajları</h3>
+        <div class="location-benefits">
+          <div class="location-card">
+            <i class="fas fa-building"></i>
+            <div>
+              <h4>Şehir İmkanları</h4>
+              <p>{{ university.cityName }} şehrinin sunduğu iş imkanları ve sektörel çeşitlilik sayesinde öğrenciler için geniş bir kariyer yelpazesi bulunmaktadır.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="internship-tips">
+        <h3 class="subsection-title">Staj ve İş Arama İpuçları</h3>
+        <div class="tips-grid">
+          <div class="tip-item">
+            <div class="tip-number">1</div>
+            <div class="tip-content">
+              <h4>Erken Başvuru</h4>
+              <p>Staj başvurularınızı mümkün olduğunca erken yapın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-number">2</div>
+            <div class="tip-content">
+              <h4>CV Hazırlığı</h4>
+              <p>Profesyonel bir CV hazırlayın ve düzenli olarak güncelleyin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-number">3</div>
+            <div class="tip-content">
+              <h4>Network Kurma</h4>
+              <p>Sektördeki profesyonellerle bağlantı kurmaya odaklanın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-number">4</div>
+            <div class="tip-content">
+              <h4>Beceri Geliştirme</h4>
+              <p>Sektörünüzle ilgili becerilerinizi sürekli geliştirin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

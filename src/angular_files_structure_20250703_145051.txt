@@ -1,0 +1,793 @@
+src
+├── app
+│   ├── admin
+│   │   ├── admin-routing.module.ts
+│   │   ├── admin.component.html
+│   │   ├── admin.component.scss
+│   │   ├── admin.component.ts
+│   │   ├── admin.module.ts
+│   │   ├── components
+│   │   │   ├── admin-header
+│   │   │   │   ├── admin-header.component.html
+│   │   │   │   ├── admin-header.component.scss
+│   │   │   │   ├── admin-header.component.ts
+│   │   │   │   └── index.scss
+│   │   │   ├── admin-sidebar
+│   │   │   │   ├── admin-sidebar.component.html
+│   │   │   │   ├── admin-sidebar.component.scss
+│   │   │   │   └── admin-sidebar.component.ts
+│   │   │   ├── breadcrumb
+│   │   │   │   ├── breadcrumb.component.html
+│   │   │   │   ├── breadcrumb.component.scss
+│   │   │   │   ├── breadcrumb.component.spec.ts
+│   │   │   │   └── breadcrumb.component.ts
+│   │   │   ├── confirm-dialog
+│   │   │   │   ├── confirm-dialog.component.html
+│   │   │   │   ├── confirm-dialog.component.scss
+│   │   │   │   ├── confirm-dialog.component.spec.ts
+│   │   │   │   └── confirm-dialog.component.ts
+│   │   │   ├── content
+│   │   │   ├── file-upload
+│   │   │   │   ├── file-upload.component.html
+│   │   │   │   ├── file-upload.component.scss
+│   │   │   │   ├── file-upload.component.spec.ts
+│   │   │   │   └── file-upload.component.ts
+│   │   │   └── pagination
+│   │   │       ├── pagination.component.html
+│   │   │       ├── pagination.component.scss
+│   │   │       ├── pagination.component.spec.ts
+│   │   │       └── pagination.component.ts
+│   │   ├── guards
+│   │   │   └── admin.guard.ts
+│   │   ├── pages
+│   │   │   ├── auth
+│   │   │   │   └── login
+│   │   │   │       ├── login.component.html
+│   │   │   │       ├── login.component.scss
+│   │   │   │       └── login.component.ts
+│   │   │   ├── content
+│   │   │   │   ├── articles-add-edit
+│   │   │   │   │   ├── articles-add-edit.component.html
+│   │   │   │   │   ├── articles-add-edit.component.scss
+│   │   │   │   │   ├── articles-add-edit.component.spec.ts
+│   │   │   │   │   └── articles-add-edit.component.ts
+│   │   │   │   ├── articles-list
+│   │   │   │   │   ├── articles-list.component.html
+│   │   │   │   │   ├── articles-list.component.scss
+│   │   │   │   │   ├── articles-list.component.spec.ts
+│   │   │   │   │   └── articles-list.component.ts
+│   │   │   │   ├── dynamic-menus
+│   │   │   │   │   ├── dynamic-menus.component.html
+│   │   │   │   │   ├── dynamic-menus.component.scss
+│   │   │   │   │   ├── dynamic-menus.component.spec.ts
+│   │   │   │   │   └── dynamic-menus.component.ts
+│   │   │   │   ├── help-topics
+│   │   │   │   │   ├── help-topics.component.html
+│   │   │   │   │   ├── help-topics.component.scss
+│   │   │   │   │   ├── help-topics.component.spec.ts
+│   │   │   │   │   └── help-topics.component.ts
+│   │   │   │   ├── module-menus
+│   │   │   │   │   ├── module-menus.component.html
+│   │   │   │   │   ├── module-menus.component.scss
+│   │   │   │   │   ├── module-menus.component.spec.ts
+│   │   │   │   │   └── module-menus.component.ts
+│   │   │   │   ├── news-add-edit
+│   │   │   │   │   ├── news-add-edit.component.html
+│   │   │   │   │   ├── news-add-edit.component.scss
+│   │   │   │   │   ├── news-add-edit.component.spec.ts
+│   │   │   │   │   └── news-add-edit.component.ts
+│   │   │   │   ├── news-list
+│   │   │   │   │   ├── news-list.component.html
+│   │   │   │   │   ├── news-list.component.scss
+│   │   │   │   │   ├── news-list.component.spec.ts
+│   │   │   │   │   └── news-list.component.ts
+│   │   │   │   ├── pages-add-edit
+│   │   │   │   │   ├── pages-add-edit.component.html
+│   │   │   │   │   ├── pages-add-edit.component.scss
+│   │   │   │   │   ├── pages-add-edit.component.spec.ts
+│   │   │   │   │   └── pages-add-edit.component.ts
+│   │   │   │   └── pages-list
+│   │   │   │       ├── pages-list.component.html
+│   │   │   │       ├── pages-list.component.scss
+│   │   │   │       ├── pages-list.component.spec.ts
+│   │   │   │       └── pages-list.component.ts
+│   │   │   ├── dashboard
+│   │   │   │   ├── dashboard.component.html
+│   │   │   │   ├── dashboard.component.scss
+│   │   │   │   └── dashboard.component.ts
+│   │   │   ├── dormitories
+│   │   │   │   ├── dormitory-add-edit
+│   │   │   │   │   ├── dormitory-add-edit.component.html
+│   │   │   │   │   ├── dormitory-add-edit.component.scss
+│   │   │   │   │   ├── dormitory-add-edit.component.spec.ts
+│   │   │   │   │   └── dormitory-add-edit.component.ts
+│   │   │   │   ├── dormitory-features
+│   │   │   │   │   ├── dormitory-features.component.html
+│   │   │   │   │   ├── dormitory-features.component.scss
+│   │   │   │   │   ├── dormitory-features.component.spec.ts
+│   │   │   │   │   └── dormitory-features.component.ts
+│   │   │   │   ├── dormitory-list
+│   │   │   │   │   ├── dormitory-list.component.html
+│   │   │   │   │   ├── dormitory-list.component.scss
+│   │   │   │   │   ├── dormitory-list.component.spec.ts
+│   │   │   │   │   └── dormitory-list.component.ts
+│   │   │   │   ├── dormitory-menu
+│   │   │   │   │   ├── dormitory-menu
+│   │   │   │   │   │   ├── dormitory-menu.component.html
+│   │   │   │   │   │   ├── dormitory-menu.component.scss
+│   │   │   │   │   │   ├── dormitory-menu.component.spec.ts
+│   │   │   │   │   │   └── dormitory-menu.component.ts
+│   │   │   │   │   └── dormitory-menu-edit
+│   │   │   │   │       ├── dormitory-menu-edit.component.html
+│   │   │   │   │       ├── dormitory-menu-edit.component.scss
+│   │   │   │   │       ├── dormitory-menu-edit.component.spec.ts
+│   │   │   │   │       └── dormitory-menu-edit.component.ts
+│   │   │   │   └── feature-category-add-edit
+│   │   │   │       ├── feature-category-add-edit.component.html
+│   │   │   │       ├── feature-category-add-edit.component.scss
+│   │   │   │       ├── feature-category-add-edit.component.spec.ts
+│   │   │   │       └── feature-category-add-edit.component.ts
+│   │   │   ├── regions
+│   │   │   │   ├── cities-list
+│   │   │   │   │   ├── cities-list.component.html
+│   │   │   │   │   ├── cities-list.component.scss
+│   │   │   │   │   └── cities-list.component.ts
+│   │   │   │   ├── city-add-edit
+│   │   │   │   │   ├── city-add-edit.component.html
+│   │   │   │   │   ├── city-add-edit.component.scss
+│   │   │   │   │   └── city-add-edit.component.ts
+│   │   │   │   ├── city-menu
+│   │   │   │   │   ├── city-menu.component.html
+│   │   │   │   │   ├── city-menu.component.scss
+│   │   │   │   │   └── city-menu.component.ts
+│   │   │   │   ├── city-menu-edit
+│   │   │   │   │   ├── city-menu-edit.component.html
+│   │   │   │   │   ├── city-menu-edit.component.scss
+│   │   │   │   │   └── city-menu-edit.component.ts
+│   │   │   │   ├── countries-list
+│   │   │   │   │   ├── countries-list.component.html
+│   │   │   │   │   ├── countries-list.component.scss
+│   │   │   │   │   └── countries-list.component.ts
+│   │   │   │   └── country-add-edit
+│   │   │   │       ├── country-add-edit.component.html
+│   │   │   │       ├── country-add-edit.component.scss
+│   │   │   │       └── country-add-edit.component.ts
+│   │   │   ├── site
+│   │   │   │   ├── admin-users
+│   │   │   │   │   ├── admin-users.component.html
+│   │   │   │   │   ├── admin-users.component.scss
+│   │   │   │   │   └── admin-users.component.ts
+│   │   │   │   └── site-settings
+│   │   │   │       ├── site-settings.component.html
+│   │   │   │       ├── site-settings.component.scss
+│   │   │   │       └── site-settings.component.ts
+│   │   │   ├── universities
+│   │   │   │   ├── department-add-edit
+│   │   │   │   │   ├── department-add-edit.component.html
+│   │   │   │   │   ├── department-add-edit.component.scss
+│   │   │   │   │   ├── department-add-edit.component.spec.ts
+│   │   │   │   │   └── department-add-edit.component.ts
+│   │   │   │   ├── department-list
+│   │   │   │   │   ├── department-list.component.html
+│   │   │   │   │   ├── department-list.component.scss
+│   │   │   │   │   ├── department-list.component.spec.ts
+│   │   │   │   │   └── department-list.component.ts
+│   │   │   │   ├── department-menu
+│   │   │   │   │   ├── department-menu.component.html
+│   │   │   │   │   ├── department-menu.component.scss
+│   │   │   │   │   ├── department-menu.component.spec.ts
+│   │   │   │   │   └── department-menu.component.ts
+│   │   │   │   ├── department-menu-edit
+│   │   │   │   │   ├── department-menu-edit.component.html
+│   │   │   │   │   ├── department-menu-edit.component.scss
+│   │   │   │   │   ├── department-menu-edit.component.spec.ts
+│   │   │   │   │   └── department-menu-edit.component.ts
+│   │   │   │   ├── faculty-add-edit
+│   │   │   │   │   ├── faculty-add-edit.component.html
+│   │   │   │   │   ├── faculty-add-edit.component.scss
+│   │   │   │   │   ├── faculty-add-edit.component.spec.ts
+│   │   │   │   │   └── faculty-add-edit.component.ts
+│   │   │   │   ├── faculty-list
+│   │   │   │   │   ├── faculty-list.component.html
+│   │   │   │   │   ├── faculty-list.component.scss
+│   │   │   │   │   ├── faculty-list.component.spec.ts
+│   │   │   │   │   └── faculty-list.component.ts
+│   │   │   │   ├── program-add-edit
+│   │   │   │   │   ├── program-add-edit.component.html
+│   │   │   │   │   ├── program-add-edit.component.scss
+│   │   │   │   │   ├── program-add-edit.component.spec.ts
+│   │   │   │   │   └── program-add-edit.component.ts
+│   │   │   │   ├── program-list
+│   │   │   │   │   ├── program-list.component.html
+│   │   │   │   │   ├── program-list.component.scss
+│   │   │   │   │   ├── program-list.component.spec.ts
+│   │   │   │   │   └── program-list.component.ts
+│   │   │   │   ├── program-menu
+│   │   │   │   │   ├── program-menu.component.html
+│   │   │   │   │   ├── program-menu.component.scss
+│   │   │   │   │   ├── program-menu.component.spec.ts
+│   │   │   │   │   └── program-menu.component.ts
+│   │   │   │   ├── program-menu-edit
+│   │   │   │   │   ├── program-menu-edit.component.html
+│   │   │   │   │   ├── program-menu-edit.component.scss
+│   │   │   │   │   ├── program-menu-edit.component.spec.ts
+│   │   │   │   │   └── program-menu-edit.component.ts
+│   │   │   │   ├── program-quota-add-edit
+│   │   │   │   │   ├── program-quota-add-edit.component.html
+│   │   │   │   │   ├── program-quota-add-edit.component.scss
+│   │   │   │   │   ├── program-quota-add-edit.component.spec.ts
+│   │   │   │   │   └── program-quota-add-edit.component.ts
+│   │   │   │   ├── program-quotas
+│   │   │   │   │   ├── program-quotas.component.html
+│   │   │   │   │   ├── program-quotas.component.scss
+│   │   │   │   │   ├── program-quotas.component.spec.ts
+│   │   │   │   │   └── program-quotas.component.ts
+│   │   │   │   ├── program-ranking-add-edit
+│   │   │   │   │   ├── program-ranking-add-edit.component.html
+│   │   │   │   │   ├── program-ranking-add-edit.component.scss
+│   │   │   │   │   ├── program-ranking-add-edit.component.spec.ts
+│   │   │   │   │   └── program-ranking-add-edit.component.ts
+│   │   │   │   ├── program-rankings
+│   │   │   │   │   ├── program-rankings.component.html
+│   │   │   │   │   ├── program-rankings.component.scss
+│   │   │   │   │   ├── program-rankings.component.spec.ts
+│   │   │   │   │   └── program-rankings.component.ts
+│   │   │   │   ├── university-add-edit
+│   │   │   │   │   ├── university-add-edit.component.html
+│   │   │   │   │   ├── university-add-edit.component.scss
+│   │   │   │   │   ├── university-add-edit.component.spec.ts
+│   │   │   │   │   └── university-add-edit.component.ts
+│   │   │   │   ├── university-list
+│   │   │   │   │   ├── university-list.component.html
+│   │   │   │   │   ├── university-list.component.scss
+│   │   │   │   │   ├── university-list.component.spec.ts
+│   │   │   │   │   └── university-list.component.ts
+│   │   │   │   ├── university-menu
+│   │   │   │   │   ├── university-menu.component.html
+│   │   │   │   │   ├── university-menu.component.scss
+│   │   │   │   │   ├── university-menu.component.spec.ts
+│   │   │   │   │   └── university-menu.component.ts
+│   │   │   │   └── university-menu-edit
+│   │   │   │       ├── university-menu-edit.component.html
+│   │   │   │       ├── university-menu-edit.component.scss
+│   │   │   │       ├── university-menu-edit.component.spec.ts
+│   │   │   │       └── university-menu-edit.component.ts
+│   │   │   └── users
+│   │   │       ├── online-users
+│   │   │       │   ├── online-users.component.html
+│   │   │       │   ├── online-users.component.scss
+│   │   │       │   ├── online-users.component.spec.ts
+│   │   │       │   └── online-users.component.ts
+│   │   │       └── user-list
+│   │   │           ├── user-list.component.html
+│   │   │           ├── user-list.component.scss
+│   │   │           ├── user-list.component.spec.ts
+│   │   │           └── user-list.component.ts
+│   │   ├── services
+│   │   │   ├── admin.service.ts
+│   │   │   ├── auth.service.spec.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── city-menu.service.spec.ts
+│   │   │   ├── city-menu.service.ts
+│   │   │   ├── city.service.spec.ts
+│   │   │   ├── city.service.ts
+│   │   │   ├── content.service.spec.ts
+│   │   │   ├── content.service.ts
+│   │   │   ├── country.service.spec.ts
+│   │   │   ├── country.service.ts
+│   │   │   ├── department-menu.service.spec.ts
+│   │   │   ├── department-menu.service.ts
+│   │   │   ├── department.service.spec.ts
+│   │   │   ├── department.service.ts
+│   │   │   ├── dormitory-menu.service.spec.ts
+│   │   │   ├── dormitory-menu.service.ts
+│   │   │   ├── dormitory.service.spec.ts
+│   │   │   ├── dormitory.service.ts
+│   │   │   ├── faculty.service.spec.ts
+│   │   │   ├── faculty.service.ts
+│   │   │   ├── program-menu.service.ts
+│   │   │   ├── program.service.ts
+│   │   │   ├── site.service.spec.ts
+│   │   │   ├── site.service.ts
+│   │   │   ├── university-menu.service.spec.ts
+│   │   │   ├── university-menu.service.ts
+│   │   │   ├── university.service.spec.ts
+│   │   │   ├── university.service.ts
+│   │   │   ├── user.service.spec.ts
+│   │   │   └── user.service.ts
+│   │   └── styles
+│   │       └── admin-styles.scss
+│   ├── app-routing.module.ts
+│   ├── app.component.html
+│   ├── app.component.scss
+│   ├── app.component.ts
+│   ├── app.module.ts
+│   ├── core
+│   │   ├── guards
+│   │   │   └── auth.guard.ts
+│   │   ├── interceptors
+│   │   │   └── auth.interceptor.ts
+│   │   ├── models
+│   │   │   ├── admin-permission.model.ts
+│   │   │   ├── article-tag.model.ts
+│   │   │   ├── article.model.ts
+│   │   │   ├── auth.model.ts
+│   │   │   ├── base.model.ts
+│   │   │   ├── city.model.ts
+│   │   │   ├── country.model.ts
+│   │   │   ├── department.model.ts
+│   │   │   ├── dormitory-feature.model.ts
+│   │   │   ├── dormitory.model.ts
+│   │   │   ├── faculty.model.ts
+│   │   │   ├── feature-category.model.ts
+│   │   │   ├── help-topic.model.ts
+│   │   │   ├── index.ts
+│   │   │   ├── menu.model.ts
+│   │   │   ├── news.model.ts
+│   │   │   ├── page.model.ts
+│   │   │   ├── program-quota.model.ts
+│   │   │   ├── program-ranking.model.ts
+│   │   │   ├── program.model.ts
+│   │   │   ├── selection.model.ts
+│   │   │   ├── site-setting.model.ts
+│   │   │   ├── university.model.ts
+│   │   │   └── user.model.ts
+│   │   ├── services
+│   │   │   ├── admin-permission.service.ts
+│   │   │   ├── article-tag.service.ts
+│   │   │   ├── article.service.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── base.service.ts
+│   │   │   ├── city.service.ts
+│   │   │   ├── content-formatter.service.ts
+│   │   │   ├── country.service.ts
+│   │   │   ├── department.service.ts
+│   │   │   ├── diagnostic.service.ts
+│   │   │   ├── dormitory-feature.service.ts
+│   │   │   ├── dormitory.service.ts
+│   │   │   ├── faculty.service.ts
+│   │   │   ├── feature-category.service.ts
+│   │   │   ├── help-topic.service.ts
+│   │   │   ├── index.ts
+│   │   │   ├── layout.service.ts
+│   │   │   ├── menu.service.ts
+│   │   │   ├── news.service.ts
+│   │   │   ├── page.service.ts
+│   │   │   ├── program-quota.service.ts
+│   │   │   ├── program-ranking.service.ts
+│   │   │   ├── program.service.ts
+│   │   │   ├── selection.service.ts
+│   │   │   ├── site-setting.service.ts
+│   │   │   ├── test-auth.service.ts
+│   │   │   ├── university.service.ts
+│   │   │   └── user.service.ts
+│   │   └── utils
+│   │       └── content-formatter.ts
+│   ├── features
+│   │   ├── articles
+│   │   │   ├── article-detail.component.html
+│   │   │   ├── article-detail.component.scss
+│   │   │   ├── article-detail.component.ts
+│   │   │   ├── articles-list.component.html
+│   │   │   ├── articles-list.component.scss
+│   │   │   ├── articles-list.component.ts
+│   │   │   └── articles.module.ts
+│   │   ├── cities
+│   │   │   ├── cities-list.component.html
+│   │   │   ├── cities-list.component.scss
+│   │   │   ├── cities-list.component.ts
+│   │   │   ├── cities.module.ts
+│   │   │   └── city-detail
+│   │   │       ├── city-detail.component.html
+│   │   │       ├── city-detail.component.scss
+│   │   │       ├── city-detail.component.ts
+│   │   │       └── components
+│   │   │           ├── climate
+│   │   │           │   ├── climate.component.html
+│   │   │           │   ├── climate.component.scss
+│   │   │           │   └── climate.component.ts
+│   │   │           ├── culture-art
+│   │   │           │   ├── culture-art.component.html
+│   │   │           │   ├── culture-art.component.scss
+│   │   │           │   └── culture-art.component.ts
+│   │   │           ├── demographics
+│   │   │           │   ├── demographics.component.html
+│   │   │           │   ├── demographics.component.scss
+│   │   │           │   └── demographics.component.ts
+│   │   │           ├── dormitories
+│   │   │           │   ├── dormitories.component.html
+│   │   │           │   ├── dormitories.component.scss
+│   │   │           │   └── dormitories.component.ts
+│   │   │           ├── economy-work
+│   │   │           │   ├── economy-work.component.html
+│   │   │           │   ├── economy-work.component.scss
+│   │   │           │   └── economy-work.component.ts
+│   │   │           ├── food-drink
+│   │   │           │   ├── food-drink.component.html
+│   │   │           │   ├── food-drink.component.scss
+│   │   │           │   └── food-drink.component.ts
+│   │   │           ├── general-info
+│   │   │           │   ├── general-info.component.html
+│   │   │           │   ├── general-info.component.scss
+│   │   │           │   └── general-info.component.ts
+│   │   │           ├── health-sports
+│   │   │           │   ├── health-sports.component.html
+│   │   │           │   ├── health-sports.component.scss
+│   │   │           │   └── health-sports.component.ts
+│   │   │           ├── important-places
+│   │   │           │   ├── important-places.component.html
+│   │   │           │   ├── important-places.component.scss
+│   │   │           │   └── important-places.component.ts
+│   │   │           ├── lifestyle
+│   │   │           │   ├── lifestyle.component.html
+│   │   │           │   ├── lifestyle.component.scss
+│   │   │           │   └── lifestyle.component.ts
+│   │   │           ├── nearby-cities
+│   │   │           │   ├── nearby-cities.component.html
+│   │   │           │   ├── nearby-cities.component.scss
+│   │   │           │   └── nearby-cities.component.ts
+│   │   │           ├── sidebar
+│   │   │           │   ├── sidebar.component.html
+│   │   │           │   ├── sidebar.component.scss
+│   │   │           │   └── sidebar.component.ts
+│   │   │           ├── transportation
+│   │   │           │   ├── transportation.component.html
+│   │   │           │   ├── transportation.component.scss
+│   │   │           │   └── transportation.component.ts
+│   │   │           └── universities
+│   │   │               ├── universities.component.html
+│   │   │               ├── universities.component.scss
+│   │   │               └── universities.component.ts
+│   │   ├── contact
+│   │   │   ├── contact-routing.module.ts
+│   │   │   ├── contact.component.html
+│   │   │   ├── contact.component.scss
+│   │   │   ├── contact.component.spec.ts
+│   │   │   ├── contact.component.ts
+│   │   │   └── contact.module.ts
+│   │   ├── countries
+│   │   │   ├── countries-list.component.html
+│   │   │   ├── countries-list.component.scss
+│   │   │   ├── countries-list.component.ts
+│   │   │   ├── countries.module.ts
+│   │   │   └── country-detail
+│   │   │       ├── components
+│   │   │       │   ├── cities
+│   │   │       │   │   ├── cities.component.html
+│   │   │       │   │   ├── cities.component.scss
+│   │   │       │   │   └── cities.component.ts
+│   │   │       │   ├── culture
+│   │   │       │   │   ├── culture.component.html
+│   │   │       │   │   ├── culture.component.scss
+│   │   │       │   │   └── culture.component.ts
+│   │   │       │   ├── education-system
+│   │   │       │   │   ├── education-system.component.html
+│   │   │       │   │   ├── education-system.component.scss
+│   │   │       │   │   └── education-system.component.ts
+│   │   │       │   ├── general-info
+│   │   │       │   │   ├── general-info.component.html
+│   │   │       │   │   ├── general-info.component.scss
+│   │   │       │   │   └── general-info.component.ts
+│   │   │       │   ├── sidebar
+│   │   │       │   │   ├── sidebar.component.html
+│   │   │       │   │   ├── sidebar.component.scss
+│   │   │       │   │   └── sidebar.component.ts
+│   │   │       │   ├── travel-info
+│   │   │       │   │   ├── travel-info.component.html
+│   │   │       │   │   ├── travel-info.component.scss
+│   │   │       │   │   └── travel-info.component.ts
+│   │   │       │   └── universities
+│   │   │       │       ├── universities.component.html
+│   │   │       │       ├── universities.component.scss
+│   │   │       │       └── universities.component.ts
+│   │   │       ├── country-detail.component.html
+│   │   │       ├── country-detail.component.scss
+│   │   │       └── country-detail.component.ts
+│   │   ├── departments
+│   │   │   ├── department-detail
+│   │   │   │   ├── content
+│   │   │   │   │   ├── calisma-hayati
+│   │   │   │   │   │   ├── calisma-hayati.component.html
+│   │   │   │   │   │   ├── calisma-hayati.component.scss
+│   │   │   │   │   │   └── calisma-hayati.component.ts
+│   │   │   │   │   ├── genel-bilgi
+│   │   │   │   │   │   ├── genel-bilgi.component.html
+│   │   │   │   │   │   ├── genel-bilgi.component.scss
+│   │   │   │   │   │   └── genel-bilgi.component.ts
+│   │   │   │   │   ├── gerekli-beceriler
+│   │   │   │   │   │   ├── gerekli-beceriler.component.html
+│   │   │   │   │   │   ├── gerekli-beceriler.component.scss
+│   │   │   │   │   │   └── gerekli-beceriler.component.ts
+│   │   │   │   │   ├── icerik-mufredat
+│   │   │   │   │   │   ├── icerik-mufredat.component.html
+│   │   │   │   │   │   ├── icerik-mufredat.component.scss
+│   │   │   │   │   │   └── icerik-mufredat.component.ts
+│   │   │   │   │   ├── kim-icin-uygun
+│   │   │   │   │   │   ├── kim-icin-uygun.component.html
+│   │   │   │   │   │   ├── kim-icin-uygun.component.scss
+│   │   │   │   │   │   └── kim-icin-uygun.component.ts
+│   │   │   │   │   ├── kim-icin-uygun-degil
+│   │   │   │   │   │   ├── kim-icin-uygun-degil.component.html
+│   │   │   │   │   │   ├── kim-icin-uygun-degil.component.scss
+│   │   │   │   │   │   └── kim-icin-uygun-degil.component.ts
+│   │   │   │   │   └── tavsiyeler
+│   │   │   │   │       ├── tavsiyeler.component.html
+│   │   │   │   │       ├── tavsiyeler.component.scss
+│   │   │   │   │       └── tavsiyeler.component.ts
+│   │   │   │   ├── department-detail.component.html
+│   │   │   │   ├── department-detail.component.scss
+│   │   │   │   ├── department-detail.component.ts
+│   │   │   │   ├── related-content
+│   │   │   │   │   ├── related-content.component.html
+│   │   │   │   │   ├── related-content.component.scss
+│   │   │   │   │   └── related-content.component.ts
+│   │   │   │   └── sidebar
+│   │   │   │       ├── sidebar.component.html
+│   │   │   │       ├── sidebar.component.scss
+│   │   │   │       └── sidebar.component.ts
+│   │   │   ├── departments-list
+│   │   │   │   ├── departments-list.component.html
+│   │   │   │   ├── departments-list.component.scss
+│   │   │   │   └── departments-list.component.ts
+│   │   │   └── departments.module.ts
+│   │   ├── dormitories
+│   │   │   ├── dormitories-list.component.html
+│   │   │   ├── dormitories-list.component.scss
+│   │   │   ├── dormitories-list.component.ts
+│   │   │   ├── dormitories.module.ts
+│   │   │   └── dormitory-detail
+│   │   │       ├── dormitory-detail.component.html
+│   │   │       ├── dormitory-detail.component.scss
+│   │   │       ├── dormitory-detail.component.ts
+│   │   │       ├── genel-bilgi
+│   │   │       │   ├── genel-bilgi.component.html
+│   │   │       │   ├── genel-bilgi.component.scss
+│   │   │       │   └── genel-bilgi.component.ts
+│   │   │       ├── konum-cevre
+│   │   │       │   ├── konum-cevre.component.html
+│   │   │       │   ├── konum-cevre.component.scss
+│   │   │       │   └── konum-cevre.component.ts
+│   │   │       ├── olanaklar
+│   │   │       │   ├── olanaklar.component.html
+│   │   │       │   ├── olanaklar.component.scss
+│   │   │       │   └── olanaklar.component.ts
+│   │   │       ├── sidebar
+│   │   │       │   ├── sidebar.component.html
+│   │   │       │   ├── sidebar.component.scss
+│   │   │       │   └── sidebar.component.ts
+│   │   │       └── yakin-universiteler
+│   │   │           ├── yakin-universiteler.component.html
+│   │   │           ├── yakin-universiteler.component.scss
+│   │   │           └── yakin-universiteler.component.ts
+│   │   ├── home
+│   │   │   ├── featured-dormitories.component.html
+│   │   │   ├── featured-dormitories.component.scss
+│   │   │   ├── featured-dormitories.component.ts
+│   │   │   ├── featured-universities.component.html
+│   │   │   ├── featured-universities.component.scss
+│   │   │   ├── featured-universities.component.ts
+│   │   │   ├── hero-section.component.html
+│   │   │   ├── hero-section.component.scss
+│   │   │   ├── hero-section.component.ts
+│   │   │   ├── home.component.html
+│   │   │   ├── home.component.scss
+│   │   │   ├── home.component.ts
+│   │   │   ├── home.module.ts
+│   │   │   ├── latest-articles.component.html
+│   │   │   ├── latest-articles.component.scss
+│   │   │   ├── latest-articles.component.ts
+│   │   │   ├── popular-cities.component.html
+│   │   │   ├── popular-cities.component.scss
+│   │   │   ├── popular-cities.component.ts
+│   │   │   ├── popular-departments.component.html
+│   │   │   ├── popular-departments.component.scss
+│   │   │   ├── popular-departments.component.ts
+│   │   │   ├── selection-bot-promo.component.html
+│   │   │   ├── selection-bot-promo.component.scss
+│   │   │   └── selection-bot-promo.component.ts
+│   │   ├── selection-bot
+│   │   │   ├── selection-bot.component.html
+│   │   │   ├── selection-bot.component.scss
+│   │   │   ├── selection-bot.component.ts
+│   │   │   └── selection-bot.module.ts
+│   │   ├── static-pages
+│   │   │   ├── about
+│   │   │   │   ├── about.component.html
+│   │   │   │   ├── about.component.scss
+│   │   │   │   ├── about.component.spec.ts
+│   │   │   │   └── about.component.ts
+│   │   │   ├── cookie-policy
+│   │   │   │   ├── cookie-policy.component.html
+│   │   │   │   ├── cookie-policy.component.scss
+│   │   │   │   └── cookie-policy.component.ts
+│   │   │   ├── faq
+│   │   │   │   ├── faq.component.html
+│   │   │   │   ├── faq.component.scss
+│   │   │   │   └── faq.component.ts
+│   │   │   ├── privacy
+│   │   │   │   ├── privacy.component.html
+│   │   │   │   ├── privacy.component.scss
+│   │   │   │   └── privacy.component.ts
+│   │   │   ├── static-pages-routing.module.ts
+│   │   │   ├── static-pages-shared.scss
+│   │   │   ├── static-pages.module.ts
+│   │   │   ├── static-sidebar
+│   │   │   │   ├── static-sidebar.component.html
+│   │   │   │   ├── static-sidebar.component.scss
+│   │   │   │   └── static-sidebar.component.ts
+│   │   │   └── terms
+│   │   │       ├── terms.component.html
+│   │   │       ├── terms.component.scss
+│   │   │       └── terms.component.ts
+│   │   └── universities
+│   │       ├── universities-list.component.html
+│   │       ├── universities-list.component.scss
+│   │       ├── universities-list.component.ts
+│   │       ├── universities.module.ts
+│   │       └── university-detail
+│   │           ├── akreditasyon
+│   │           │   ├── akreditasyon.component.html
+│   │           │   ├── akreditasyon.component.scss
+│   │           │   └── akreditasyon.component.ts
+│   │           ├── burslar
+│   │           │   ├── burslar.component.html
+│   │           │   ├── burslar.component.scss
+│   │           │   └── burslar.component.ts
+│   │           ├── cift-ana-dal
+│   │           │   ├── cift-ana-dal.component.html
+│   │           │   ├── cift-ana-dal.component.scss
+│   │           │   └── cift-ana-dal.component.ts
+│   │           ├── custom-menu-content
+│   │           │   ├── custom-menu-content.component.html
+│   │           │   ├── custom-menu-content.component.scss
+│   │           │   └── custom-menu-content.component.ts
+│   │           ├── egitim-sistemi
+│   │           │   ├── egitim-sistemi.component.html
+│   │           │   ├── egitim-sistemi.component.scss
+│   │           │   └── egitim-sistemi.component.ts
+│   │           ├── erasmus
+│   │           │   ├── erasmus.component.html
+│   │           │   ├── erasmus.component.scss
+│   │           │   └── erasmus.component.ts
+│   │           ├── genel-bilgi
+│   │           │   ├── genel-bilgi.component.html
+│   │           │   ├── genel-bilgi.component.scss
+│   │           │   └── genel-bilgi.component.ts
+│   │           ├── hazirlik-egitimi
+│   │           │   ├── hazirlik-egitimi.component.html
+│   │           │   ├── hazirlik-egitimi.component.scss
+│   │           │   └── hazirlik-egitimi.component.ts
+│   │           ├── is-staj
+│   │           │   ├── is-staj.component.html
+│   │           │   ├── is-staj.component.scss
+│   │           │   └── is-staj.component.ts
+│   │           ├── kampus-yasam
+│   │           │   ├── kampus-yasam.component.html
+│   │           │   ├── kampus-yasam.component.scss
+│   │           │   └── kampus-yasam.component.ts
+│   │           ├── kampusler
+│   │           │   ├── kampusler.component.html
+│   │           │   ├── kampusler.component.scss
+│   │           │   └── kampusler.component.ts
+│   │           ├── kilit-ozellikler
+│   │           │   ├── kilit-ozellikler.component.html
+│   │           │   ├── kilit-ozellikler.component.scss
+│   │           │   └── kilit-ozellikler.component.ts
+│   │           ├── kutuphane
+│   │           │   ├── kutuphane.component.html
+│   │           │   ├── kutuphane.component.scss
+│   │           │   └── kutuphane.component.ts
+│   │           ├── nearby-universities
+│   │           │   ├── nearby-universities.component.html
+│   │           │   ├── nearby-universities.component.scss
+│   │           │   └── nearby-universities.component.ts
+│   │           ├── saglik-olanaklari
+│   │           │   ├── saglik-olanaklari.component.html
+│   │           │   ├── saglik-olanaklari.component.scss
+│   │           │   └── saglik-olanaklari.component.ts
+│   │           ├── sidebar
+│   │           │   ├── sidebar.component.html
+│   │           │   ├── sidebar.component.scss
+│   │           │   └── sidebar.component.ts
+│   │           ├── taban-puanlar
+│   │           │   ├── taban-puanlar.component.html
+│   │           │   ├── taban-puanlar.component.scss
+│   │           │   └── taban-puanlar.component.ts
+│   │           ├── topluluklar
+│   │           │   ├── topluluklar.component.html
+│   │           │   ├── topluluklar.component.scss
+│   │           │   └── topluluklar.component.ts
+│   │           ├── ulasim
+│   │           │   ├── ulasim.component.html
+│   │           │   ├── ulasim.component.scss
+│   │           │   └── ulasim.component.ts
+│   │           ├── uluslararasi
+│   │           │   ├── uluslararasi.component.html
+│   │           │   ├── uluslararasi.component.scss
+│   │           │   └── uluslararasi.component.ts
+│   │           ├── university-detail
+│   │           ├── university-detail.component.html
+│   │           ├── university-detail.component.scss
+│   │           ├── university-detail.component.ts
+│   │           ├── uzaktan-egitim
+│   │           │   ├── uzaktan-egitim.component.html
+│   │           │   ├── uzaktan-egitim.component.scss
+│   │           │   └── uzaktan-egitim.component.ts
+│   │           ├── yeme-icme
+│   │           │   ├── yeme-icme.component.html
+│   │           │   ├── yeme-icme.component.scss
+│   │           │   └── yeme-icme.component.ts
+│   │           └── yurtlar
+│   │               ├── yurtlar.component.html
+│   │               ├── yurtlar.component.scss
+│   │               └── yurtlar.component.ts
+│   ├── layout
+│   │   ├── footer.component.html
+│   │   ├── footer.component.scss
+│   │   ├── footer.component.ts
+│   │   ├── header.component.html
+│   │   ├── header.component.scss
+│   │   └── header.component.ts
+│   └── shared
+│       ├── components
+│       │   ├── article-card
+│       │   │   ├── article-card.component.html
+│       │   │   ├── article-card.component.scss
+│       │   │   └── article-card.component.ts
+│       │   ├── city-card
+│       │   │   ├── city-card.component.html
+│       │   │   ├── city-card.component.scss
+│       │   │   └── city-card.component.ts
+│       │   ├── country-card
+│       │   │   ├── country-card.component.html
+│       │   │   ├── country-card.component.scss
+│       │   │   └── country-card.component.ts
+│       │   ├── department-card
+│       │   │   ├── department-card.component.html
+│       │   │   ├── department-card.component.scss
+│       │   │   └── department-card.component.ts
+│       │   ├── dormitory-card
+│       │   │   ├── dormitory-card.component.html
+│       │   │   ├── dormitory-card.component.scss
+│       │   │   └── dormitory-card.component.ts
+│       │   └── university-card
+│       │       ├── university-card.component.html
+│       │       ├── university-card.component.scss
+│       │       └── university-card.component.ts
+│       ├── directives
+│       ├── pipes
+│       │   └── safe-url.pipe.ts
+│       └── shared.module.ts
+├── assets
+│   ├── fonts
+│   ├── icons
+│   └── images
+│       ├── articles
+│       ├── authors
+│       ├── cities
+│       ├── dormitories
+│       ├── logos
+│       └── universities
+│           └── bogazici-kampusler
+├── environments
+│   ├── environment.prod.ts
+│   └── environment.ts
+├── index.html
+├── main.ts
+├── scss
+│   ├── _layout.scss
+│   └── _variables.scss
+└── styles.scss
+
+============================================================
+Angular Project Statistics (HTML, SCSS, TS files):
+============================================================
+Total directories: 183
+Total Angular files: 597
+  └── HTML files: 148
+  └── SCSS files: 153
+  └── TypeScript files: 296
+
+File Sizes:
+Total size of all Angular files: 0 B
+============================================================

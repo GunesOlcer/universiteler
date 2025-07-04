@@ -1,0 +1,87 @@
+<!-- src/app/features/departments/department-detail/content/kim-icin-uygun-degil/kim-icin-uygun-degil.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-user-times"></i>
+      Kim İçin Uygun Değil?
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümünde zorlanabilecek öğrenci profilleri</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>İçerik yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Warning Box -->
+    <div class="warning-box">
+      <div class="warning-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="warning-content">
+        <h3>Önemli Not</h3>
+        <p>Bu bilgiler genel değerlendirmeler içerir ve kesin yargılar değildir. Her birey farklıdır ve kendi güçlü yönlerini geliştirebilir. Bu kategorilerde görmeniz, bu bölümü kesinlikle seçmemeniz gerektiği anlamına gelmez.</p>
+      </div>
+    </div>
+
+    <!-- Specific Unsuitability Content -->
+    <div class="content-card" *ngIf="unsuitabilityContent">
+      <h3 class="content-title">
+        <i class="fas fa-info-circle"></i>
+        {{ unsuitabilityContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(unsuitabilityContent.content)"></div>
+    </div>
+
+    <!-- All Related Menus -->
+    <div class="menu-items" *ngIf="departmentMenus.length > 0">
+      <div class="menu-item" *ngFor="let menu of departmentMenus">
+        <div class="menu-header">
+          <h4 class="menu-title">{{ menu.title }}</h4>
+          <span class="menu-order">{{ menu.order }}</span>
+        </div>
+        <div class="menu-content" [innerHTML]="formatContent(menu.content)"></div>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!unsuitabilityContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Genel Değerlendirme
+        </h3>
+        <div class="general-info">
+          <p>{{ department?.name }} bölümü için uygunsuzluk kriterleri henüz tanımlanmamıştır.</p>
+          <p>Genel olarak zorluk yaşanabilecek durumlar:</p>
+          <ul>
+            <li>İlgili alanda hiç ilgi duymama</li>
+            <li>Teorik çalışmalardan kaçınma</li>
+            <li>Uzun süreli odaklanma problemi</li>
+            <li>Sürekli öğrenme isteksizliği</li>
+          </ul>
+          <div class="encouraging-note">
+            <h4>Unutmayın:</h4>
+            <p>Bu zorlukların çoğu, doğru motivasyon ve çalışma ile aşılabilir. Kendinizi geliştirme konusunda kararlıysanız, her zaman başarılı olma şansınız vardır.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

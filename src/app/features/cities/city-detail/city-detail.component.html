@@ -1,0 +1,238 @@
+<!-- src/app/features/cities/city-detail/city-detail.component.html -->
+<section class="city-detail-page">
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="container">
+      <div class="error-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Bir Hata Oluştu</h2>
+        <p>{{ error }}</p>
+        <!-- ✅ Path'i düzelt -->
+        <a routerLink="/sehirler" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Şehirler Sayfasına Dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- City Not Found -->
+  <div class="city-not-found" *ngIf="!city && !isLoading && !error">
+    <div class="container">
+      <div class="not-found-content">
+        <i class="fas fa-map-marker-alt"></i>
+        <h2>Şehir Bulunamadı</h2>
+        <p>Aradığınız şehir sistemde bulunamadı veya kaldırılmış olabilir.</p>
+        <!-- ✅ Path'i düzelt -->
+        <a routerLink="/sehirler" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Şehirler Sayfasına Dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <ng-container *ngIf="city && !isLoading && !error">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/">Ana Sayfa</a>
+          </li>
+          <li class="breadcrumb-item">
+            <!-- ✅ Path'i düzelt -->
+            <a routerLink="/sehirler">Şehirler</a>
+          </li>
+          <li class="breadcrumb-item active">{{ city.name }}</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- City Header -->
+    <div class="city-header-container">
+      <div class="container">
+        <div class="city-header">
+          <div class="city-image" *ngIf="city.imageUrl">
+            <img [src]="city.imageUrl" [alt]="city.name" loading="eager">
+            <div class="image-overlay"></div>
+          </div>
+          
+          <div class="city-info">
+            <div class="city-badges">
+              <div class="country-badge">
+                <i class="fas fa-flag"></i>
+                {{ city.countryName }}
+              </div>
+              <div class="region-badge" *ngIf="city.region">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ getRegionName(city.region) }} Bölgesi
+              </div>
+            </div>
+            
+            <h1 class="city-name">{{ city.name }}</h1>
+            
+            <div class="city-description" *ngIf="city.description">
+              <p>{{ city.description }}</p>
+            </div>
+            
+            <div class="city-stats">
+              <div class="stat-item" *ngIf="city.population">
+                <div class="stat-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">{{ city.population | number }}</span>
+                  <span class="stat-label">Nüfus</span>
+                </div>
+              </div>
+              
+              <div class="stat-item" *ngIf="city.studentPopulation">
+                <div class="stat-icon">
+                  <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">{{ city.studentPopulation | number }}</span>
+                  <span class="stat-label">Öğrenci</span>
+                </div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-university"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">{{ city.universityCount }}</span>
+                  <span class="stat-label">Üniversite</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="city-features" *ngIf="city.hasAirport || city.hasTrainStation || city.hasHighSpeedTrain">
+              <div class="feature-item" *ngIf="city.hasAirport">
+                <i class="fas fa-plane"></i>
+                <span>Havalimanı</span>
+              </div>
+              <div class="feature-item" *ngIf="city.hasTrainStation">
+                <i class="fas fa-train"></i>
+                <span>Tren İstasyonu</span>
+              </div>
+              <div class="feature-item" *ngIf="city.hasHighSpeedTrain">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Hızlı Tren</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="city-content">
+      <div class="container">
+        <div class="content-wrapper">
+          <!-- Sidebar Component -->
+          <div class="sidebar-container">
+            <app-sidebar 
+              [city]="city" 
+              [activeSection]="activeSection"
+              (sectionChange)="onSectionChange($event)">
+            </app-sidebar>
+          </div>
+
+          <!-- Main Content -->
+          <div class="main-content-container">
+            <div class="main-content">
+              <!-- Dynamic Components -->
+              <div [ngSwitch]="activeSection">
+                <app-general-info 
+                  *ngSwitchCase="'general-info'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('general-info')">
+                </app-general-info>
+                
+                <app-climate 
+                  *ngSwitchCase="'climate'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('climate')">
+                </app-climate>
+                
+                <app-demographics 
+                  *ngSwitchCase="'demographics'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('demographics')">
+                </app-demographics>
+                
+                <app-universities 
+                  *ngSwitchCase="'universities'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('universities')">
+                </app-universities>
+                
+                <app-dormitories 
+                  *ngSwitchCase="'dormitories'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('dormitories')">
+                </app-dormitories>
+                
+                <app-lifestyle 
+                  *ngSwitchCase="'lifestyle'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('lifestyle')">
+                </app-lifestyle>
+                
+                <app-culture-art 
+                  *ngSwitchCase="'culture-art'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('culture-art')">
+                </app-culture-art>
+                
+                <app-important-places 
+                  *ngSwitchCase="'important-places'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('important-places')">
+                </app-important-places>
+                
+                <app-food-drink 
+                  *ngSwitchCase="'food-drink'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('food-drink')">
+                </app-food-drink>
+                
+                <app-economy-work 
+                  *ngSwitchCase="'economy-work'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('economy-work')">
+                </app-economy-work>
+                
+                <app-health-sports 
+                  *ngSwitchCase="'health-sports'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('health-sports')">
+                </app-health-sports>
+                
+                <app-transportation 
+                  *ngSwitchCase="'transportation'" 
+                  [city]="city"
+                  [menuContent]="getMenuContentForSection('transportation')">
+                </app-transportation>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nearby Cities Component -->
+          <div class="nearby-container">
+            <app-nearby-cities [city]="city"></app-nearby-cities>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

@@ -1,0 +1,129 @@
+<!-- src/app/features/countries/countries-list.component.html -->
+<section class="countries-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Ülkeler</h1>
+      <p class="page-subtitle">Üniversite eğitimi alabileceğiniz ülkeler hakkında detaylı bilgi edinin</p>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li *ngFor="let item of breadcrumbPath" 
+              class="breadcrumb-item" 
+              [class.active]="item.active">
+            <a *ngIf="!item.active" [routerLink]="item.url">{{ item.label }}</a>
+            <span *ngIf="item.active">{{ item.label }}</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-content">
+      <!-- Search and Filter Section -->
+      <div class="search-filter-container">
+        <!-- Search Section -->
+        <div class="search-section">
+          <label class="section-title" for="country-search">Ülke Ara</label>
+          <div class="search-box">
+            <input 
+              id="country-search"
+              type="text" 
+              [value]="searchTerm"
+              (input)="onSearchInput($event)"
+              placeholder="Ülke adı veya kodu..." 
+              class="search-input"
+              name="search">
+            <button type="button" class="search-button">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sorting -->
+        <div class="filter-section">
+          <label class="section-title" for="sorting">Sırala</label>
+          <select id="sorting" 
+                  name="sorting" 
+                  class="select-box" 
+                  [(ngModel)]="sorting" 
+                  (change)="onSortingChange()">
+            <option *ngFor="let option of sortingOptions" 
+                    [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="filter-actions">
+          <button class="clear-button" (click)="resetFilters()">
+            <i class="fas fa-eraser"></i>
+            Filtreleri Temizle
+          </button>
+        </div>
+      </div>
+
+      <!-- Countries Container -->
+      <div class="countries-container">
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Ülkeler yükleniyor...</p>
+        </div>
+
+        <!-- Results -->
+        <div class="countries-content" *ngIf="!isLoading">
+          <!-- Results Count -->
+          <div class="results-header" *ngIf="filteredCountries.length > 0">
+            <div class="results-count">
+              <strong>{{ filteredCountries.length }}</strong> ülke bulundu
+            </div>
+          </div>
+
+          <!-- Countries Grid -->
+          <div class="countries-grid" *ngIf="filteredCountries.length > 0">
+            <div class="country-card" 
+                 *ngFor="let country of filteredCountries; trackBy: trackByCountry"
+                 [routerLink]="['/ulkeler', country.id]">
+              <div class="card-content">
+                <div class="country-flag">
+                  <i class="fas fa-flag"></i>
+                </div>
+                <h3 class="country-name">{{ country.name }}</h3>
+                <p class="country-code">{{ country.code }}</p>
+                <div class="country-stats" *ngIf="country.description">
+                  <p class="country-description">
+                    {{ country.description.length > 100 ? (country.description.substring(0, 100) + '...') : country.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="filteredCountries.length === 0">
+            <div class="empty-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 class="empty-title">Ülke Bulunamadı</h3>
+            <p class="empty-message">
+              Arama kriterlerinize uygun ülke bulunamadı. 
+              Filtreleri değiştirerek tekrar deneyin.
+            </p>
+            <button class="reset-button" (click)="resetFilters()">
+              <i class="fas fa-redo"></i>
+              Filtreleri Sıfırla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

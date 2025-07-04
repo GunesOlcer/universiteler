@@ -1,0 +1,519 @@
+<section class="content-section">
+  <h2 class="section-title">Yurtlar ve Konaklama</h2>
+  <div class="content-card">
+    <div class="dormitory-services" *ngIf="university">
+      <div class="dormitory-status">
+        <div class="status-message" [class.available]="university.hasDormitory">
+          <i class="fas" [ngClass]="university.hasDormitory ? 'fa-home' : 'fa-info-circle'"></i>
+          <div>
+            <h4>Yurt Durumu</h4>
+            <p>Bu üniversitede yurt hizmeti {{ university.hasDormitory ? 'bulunmaktadır' : 'hakkında bilgi bulunamadı. Detaylı bilgi için üniversite ile iletişime geçiniz' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dormitory-types" *ngIf="university.hasDormitory">
+        <h3 class="subsection-title">Yurt Türleri</h3>
+        <div class="types-grid">
+          <div class="type-card">
+            <div class="type-header">
+              <i class="fas fa-bed"></i>
+              <h4>Tek Kişilik Oda</h4>
+            </div>
+            <div class="type-content">
+              <p>Kişisel mahremiyeti tercih eden öğrenciler için</p>
+              <ul>
+                <li>Özel yatak odası</li>
+                <li>Çalışma masası</li>
+                <li>Dolap ve kıyafet alanı</li>
+                <li>Kişisel banyo (bazı yurtlarda)</li>
+              </ul>
+              <div class="price-range">₺800-1200/Ay</div>
+            </div>
+          </div>
+
+          <div class="type-card">
+            <div class="type-header">
+              <i class="fas fa-users"></i>
+              <h4>İki Kişilik Oda</h4>
+            </div>
+            <div class="type-content">
+              <p>Sosyal ortamı seven öğrenciler için ideal</p>
+              <ul>
+                <li>2 yatak ve çalışma alanı</li>
+                <li>Ortak kullanım alanları</li>
+                <li>Uygun fiyat seçeneği</li>
+                <li>Arkadaşlık kurma imkanı</li>
+              </ul>
+              <div class="price-range">₺500-800/Ay</div>
+            </div>
+          </div>
+
+          <div class="type-card">
+            <div class="type-header">
+              <i class="fas fa-building"></i>
+              <h4>Suit Odalar</h4>
+            </div>
+            <div class="type-content">
+              <p>Lüks konaklama tercih eden öğrenciler için</p>
+              <ul>
+                <li>Özel banyo ve duş</li>
+                <li>Mini mutfak</li>
+                <li>Geniş yaşam alanı</li>
+                <li>Premium hizmetler</li>
+              </ul>
+              <div class="price-range">₺1200-1800/Ay</div>
+            </div>
+          </div>
+
+          <div class="type-card">
+            <div class="type-header">
+              <i class="fas fa-home"></i>
+              <h4>Aile Yurdu</h4>
+            </div>
+            <div class="type-content">
+              <p>Evli öğrenciler ve aileleri için</p>
+              <ul>
+                <li>1-2 yatak odalı daireler</li>
+                <li>Tam donanımlı mutfak</li>
+                <li>Çocuk oyun alanları</li>
+                <li>Aile dostu ortam</li>
+              </ul>
+              <div class="price-range">₺1500-2500/Ay</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dormitory-amenities" *ngIf="university.hasDormitory">
+        <h3 class="subsection-title">Yurt İmkanları</h3>
+        <div class="amenities-grid">
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>İnternet</h4>
+              <p>Tüm odalarda ücretsiz WiFi</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Yemek Hizmeti</h4>
+              <p>3 öğün yemek servisi</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-soap"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Temizlik</h4>
+              <p>Günlük temizlik hizmeti</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Güvenlik</h4>
+              <p>24 saat güvenlik hizmeti</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-tshirt"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Çamaşırhane</h4>
+              <p>Çamaşır yıkama imkanı</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Sosyal Alanlar</h4>
+              <p>TV salonu ve oyun alanları</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Çalışma Alanları</h4>
+              <p>Sessiz çalışma salonları</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-parking"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Otopark</h4>
+              <p>Araç park alanları</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-dumbbell"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Spor Salonu</h4>
+              <p>Fitness ve egzersiz alanları</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Market</h4>
+              <p>Temel ihtiyaç marketleri</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-coffee"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Kafeterya</h4>
+              <p>Kahve ve atıştırmalık</p>
+            </div>
+          </div>
+
+          <div class="amenity-item">
+            <div class="amenity-icon">
+              <i class="fas fa-medkit"></i>
+            </div>
+            <div class="amenity-content">
+              <h4>Sağlık Hizmeti</h4>
+              <p>İlk yardım ve sağlık desteği</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="application-process" *ngIf="university.hasDormitory">
+        <h3 class="subsection-title">Başvuru Süreci</h3>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Online Başvuru</h4>
+              <p>Üniversite web sitesinden yurt başvuru formunu doldurun</p>
+              <span class="deadline">Mayıs - Ağustos</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Belge Teslimi</h4>
+              <p>Gerekli belgeleri öğrenci işlerine teslim edin</p>
+              <span class="deadline">Başvuru sonrası 1 hafta</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Değerlendirme</h4>
+              <p>Başvurular öncelik sırasına göre değerlendirilir</p>
+              <span class="deadline">2-3 hafta</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Sonuç Bildirimi</h4>
+              <p>Kabul durumunuz SMS ve e-mail ile bildirilir</p>
+              <span class="deadline">Ağustos sonu</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h4>Ödeme ve Kayıt</h4>
+              <p>Yer aldıysanız ödemenizi yapın ve kaydınızı tamamlayın</p>
+              <span class="deadline">Eylül başı</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="requirements" *ngIf="university.hasDormitory">
+        <h3 class="subsection-title">Başvuru Şartları</h3>
+        <div class="requirements-container">
+          <div class="requirement-section">
+            <h4>Öncelik Sırası</h4>
+            <div class="priority-list">
+              <div class="priority-item">
+                <span class="priority-number">1</span>
+                <div class="priority-content">
+                  <h5>Şehir Dışından Gelen Öğrenciler</h5>
+                  <p>İkamet adresi farklı şehirde olan öğrenciler</p>
+                </div>
+              </div>
+
+              <div class="priority-item">
+                <span class="priority-number">2</span>
+                <div class="priority-content">
+                  <h5>Sosyal Yardım Alan Öğrenciler</h5>
+                  <p>Burs alan veya maddi imkanları kısıtlı öğrenciler</p>
+                </div>
+              </div>
+
+              <div class="priority-item">
+                <span class="priority-number">3</span>
+                <div class="priority-content">
+                  <h5>Akademik Başarı</h5>
+                  <p>Yüksek GPA'ya sahip öğrenciler</p>
+                </div>
+              </div>
+
+              <div class="priority-item">
+                <span class="priority-number">4</span>
+                <div class="priority-content">
+                  <h5>Kayıt Tarihi</h5>
+                  <p>Erken başvuru yapan öğrenciler</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="requirement-section">
+            <h4>Gerekli Belgeler</h4>
+            <div class="documents-list">
+              <div class="document-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Yurt başvuru formu</span>
+              </div>
+              <div class="document-item">
+                <i class="fas fa-id-card"></i>
+                <span>Nüfus cüzdanı fotokopisi</span>
+              </div>
+              <div class="document-item">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Öğrenci belgesi</span>
+              </div>
+              <div class="document-item">
+                <i class="fas fa-home"></i>
+                <span>İkamet belgesi</span>
+              </div>
+              <div class="document-item">
+                <i class="fas fa-money-bill"></i>
+                <span>Gelir belgesi</span>
+              </div>
+              <div class="document-item">
+                <i class="fas fa-heartbeat"></i>
+                <span>Sağlık raporu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dormitory-rules" *ngIf="university.hasDormitory">
+        <h3 class="subsection-title">Yurt Kuralları</h3>
+        <div class="rules-grid">
+          <div class="rules-category">
+            <h4>Genel Kurallar</h4>
+            <ul>
+              <li>Giriş çıkış saatleri: 06:00 - 24:00</li>
+              <li>Misafir kabul saatleri: 10:00 - 22:00</li>
+              <li>Sigara içmek kesinlikle yasaktır</li>
+              <li>Alkol ve uyuşturucu madde yasaktır</li>
+              <li>Gürültü yapmak yasaktır</li>
+            </ul>
+          </div>
+
+          <div class="rules-category">
+            <h4>Oda Kuralları</h4>
+            <ul>
+              <li>Odalar temiz tutulmalıdır</li>
+              <li>Eşyalar zarar görmemelidir</li>
+              <li>Elektrikli cihaz kullanımı sınırlıdır</li>
+              <li>Hayvan beslemek yasaktır</li>
+              <li>Oda değişimi izin alınarak yapılır</li>
+            </ul>
+          </div>
+
+          <div class="rules-category">
+            <h4>Sosyal Kurallar</h4>
+            <ul>
+              <li>Ortak alanlar temiz tutulmalıdır</li>
+              <li>Diğer öğrencilere saygı gösterilmelidir</li>
+              <li>Çalışma saatlerinde sessizlik sağlanmalıdır</li>
+              <li>Etkinlikler için izin alınmalıdır</li>
+              <li>Kıyafet kurallarına uyulmalıdır</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="alternative-housing" *ngIf="!university.hasDormitory">
+        <h3 class="subsection-title">Alternatif Konaklama Seçenekleri</h3>
+        <div class="alternatives-grid">
+          <div class="alternative-item">
+            <div class="alternative-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="alternative-content">
+              <h4>Özel Yurtlar</h4>
+              <p>Kampüs çevresindeki özel yurt işletmeleri</p>
+              <div class="features">
+                <span>Çeşitli fiyat seçenekleri</span>
+                <span>Farklı hizmet kaliteleri</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alternative-item">
+            <div class="alternative-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <div class="alternative-content">
+              <h4>Ev Kiralama</h4>
+              <p>Arkadaşlarla ortak ev kiralama seçeneği</p>
+              <div class="features">
+                <span>Daha fazla özgürlük</span>
+                <span>Grup halinde ekonomik</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alternative-item">
+            <div class="alternative-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="alternative-content">
+              <h4>Ev Arkadaşlığı</h4>
+              <p>Mevcut kiracılarla oda paylaşımı</p>
+              <div class="features">
+                <span>Düşük maliyet</span>
+                <span>Sosyal ortam</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alternative-item">
+            <div class="alternative-icon">
+              <i class="fas fa-bed"></i>
+            </div>
+            <div class="alternative-content">
+              <h4>Pansiyon</h4>
+              <p>Kısa süreli konaklama seçenekleri</p>
+              <div class="features">
+                <span>Esnek koşullar</span>
+                <span>Yemek dahil seçenekler</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="housing-tips">
+        <h3 class="subsection-title">Konaklama İpuçları</h3>
+        <div class="tips-container">
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Erken Başvuru</h4>
+              <p>Yurt başvurularını mümkün olduğunca erken yapın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Konum Araştırması</h4>
+              <p>Kampüse yakınlık ve ulaşım imkanlarını kontrol edin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Bütçe Planlama</h4>
+              <p>Kira, faturalar ve diğer masrafları hesaplayın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Güvenlik Kontrolü</h4>
+              <p>Konaklama yerinin güvenlik durumunu araştırın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Sözleşme İncelemesi</h4>
+              <p>Kiralama sözleşmesini dikkatlice okuyun</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Oda Arkadaşı Seçimi</h4>
+              <p>Uyumlu oda arkadaşı seçimi için özen gösterin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-housing">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-home"></i>
+          <div>
+            <h4>Yurt ve Konaklama Bilgileri</h4>
+            <p>Yurt başvuruları, fiyatlar ve konaklama seçenekleri hakkında detaylı bilgi için üniversitenin öğrenci işleri biriminden bilgi alabilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

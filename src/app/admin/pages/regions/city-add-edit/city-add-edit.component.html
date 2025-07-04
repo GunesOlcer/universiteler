@@ -1,0 +1,257 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-city"></i>
+        {{ isEditMode ? 'Şehir Düzenle' : 'Yeni Şehir Ekle' }}
+      </h1>
+      <p class="page-subtitle">
+        {{ isEditMode ? 'Şehir bilgilerini güncelleyin' : 'Sisteme yeni bir şehir kaydı ekleyin' }}
+      </p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn-back" (click)="cancel()">
+        <i class="fas fa-arrow-left"></i>
+        Listeye Dön
+      </button>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <form [formGroup]="cityForm" (ngSubmit)="saveCity()" *ngIf="!loading">
+      <!-- Temel Bilgiler -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Temel Bilgiler
+          </h2>
+          <p class="card-subtitle">Şehrin temel bilgilerini girin</p>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Şehir Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f['name'].errors}"
+                placeholder="Şehir adını girin"
+              >
+              <div *ngIf="submitted && f['name'].errors" class="form-error">
+                <div *ngIf="f['name'].errors?.['required']">Şehir adı gereklidir.</div>
+                <div *ngIf="f['name'].errors?.['minlength']">Şehir adı en az 2 karakter olmalıdır.</div>
+                <div *ngIf="f['name'].errors?.['maxlength']">Şehir adı en fazla 100 karakter olabilir.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="country">Ülke <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="country"
+                  formControlName="countryId"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f['countryId'].errors}"
+                >
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f['countryId'].errors" class="form-error">
+                <div *ngIf="f['countryId'].errors?.['required']">Ülke seçimi gereklidir.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="region">Bölge</label>
+              <div class="select-wrapper">
+                <select 
+                  id="region"
+                  formControlName="region"
+                  class="form-control"
+                >
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let option of getRegionOptions()" [value]="option.value">{{ option.label }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="status">Durum <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="status"
+                  formControlName="status"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f['status'].errors}"
+                >
+                  <option [value]="Status.Active">Aktif</option>
+                  <option [value]="Status.Passive">Pasif</option>
+                  <option [value]="Status.Pending">Beklemede</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f['status'].errors" class="form-error">
+                <div *ngIf="f['status'].errors?.['required']">Durum seçimi gereklidir.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- İçerik Bilgileri -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-file-alt"></i>
+            İçerik Bilgileri
+          </h2>
+          <p class="card-subtitle">Şehrin içerik ve görsel bilgilerini girin</p>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="description">Açıklama</label>
+            <textarea 
+              id="description"
+              formControlName="description"
+              class="form-control"
+              rows="6"
+              placeholder="Şehir hakkında detaylı bilgi girin"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Şehir Görseli</label>
+            <div class="media-upload-container">
+              <div class="media-preview" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Şehir Görseli" class="preview-image">
+                <div class="media-actions">
+                  <button type="button" class="btn-remove-media" (click)="removeImage()">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="media-upload" *ngIf="!imagePreview">
+                <input 
+                  type="file" 
+                  #imageInput
+                  (change)="onImageChange($event)"
+                  accept="image/*"
+                  hidden
+                >
+                <button type="button" class="btn-upload" (click)="imageInput.click()">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Görsel Ekle</span>
+                </button>
+                <p class="upload-info">JPG, PNG formatında ve en fazla 5 MB olmalıdır.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- İstatistik Bilgileri -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-chart-bar"></i>
+            İstatistik Bilgileri
+          </h2>
+          <p class="card-subtitle">Şehre ait çeşitli istatistikleri girin</p>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="population">Nüfus</label>
+              <input 
+                type="number"
+                id="population"
+                formControlName="population"
+                class="form-control"
+                min="0"
+                placeholder="Şehir nüfusunu girin"
+              >
+            </div>
+            <div class="form-group col-md-6">
+              <label for="studentPopulation">Öğrenci Nüfusu</label>
+              <input 
+                type="number"
+                id="studentPopulation"
+                formControlName="studentPopulation"
+                class="form-control"
+                min="0"
+                placeholder="Öğrenci nüfusunu girin"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <div class="checkbox-group">
+                <input 
+                  type="checkbox"
+                  id="hasAirport"
+                  formControlName="hasAirport"
+                  class="form-checkbox"
+                >
+                <label for="hasAirport" class="checkbox-label">
+                  <i class="fas fa-plane"></i>
+                  Havaalanı Var
+                </label>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <div class="checkbox-group">
+                <input 
+                  type="checkbox"
+                  id="hasTrainStation"
+                  formControlName="hasTrainStation"
+                  class="form-checkbox"
+                >
+                <label for="hasTrainStation" class="checkbox-label">
+                  <i class="fas fa-train"></i>
+                  Tren İstasyonu Var
+                </label>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <div class="checkbox-group">
+                <input 
+                  type="checkbox"
+                  id="hasHighSpeedTrain"
+                  formControlName="hasHighSpeedTrain"
+                  class="form-checkbox"
+                >
+                <label for="hasHighSpeedTrain" class="checkbox-label">
+                  <i class="fas fa-shipping-fast"></i>
+                  Hızlı Tren Var
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

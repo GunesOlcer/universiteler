@@ -1,0 +1,74 @@
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-folder"></i>
+          {{ isEditMode ? 'Kategori Düzenle' : 'Yeni Kategori Ekle' }}
+        </h1>
+        <p class="page-subtitle">
+          {{ isEditMode ? 'Kategori bilgilerini güncelleyin' : 'Yurt özellikleri için yeni bir kategori oluşturun' }}
+        </p>
+      </div>
+      
+      <div class="page-actions">
+        <button type="button" class="btn-back" routerLink="/admin/dormitory-features">
+          <i class="fas fa-arrow-left"></i>
+          Listeye Dön
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <div class="form-sticky-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/dormitory-features">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-save" (click)="saveCategory()">
+          <i class="fas fa-save"></i> {{ isEditMode ? 'Güncelle' : 'Kaydet' }}
+        </button>
+      </div>
+      
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+        <!-- Kategori Bilgileri -->
+        <div class="form-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-info-circle"></i>
+              Kategori Bilgileri
+            </h2>
+            <p class="card-subtitle">Yurt özellikleri için kategori bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-group">
+              <label for="name">Kategori Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.name.errors}"
+                placeholder="Kategori adını girin"
+              >
+              <div *ngIf="submitted && f.name.errors" class="form-error">
+                <div *ngIf="f.name.errors.required">Kategori adı gereklidir.</div>
+              </div>
+              <div class="form-hint">Örn: "Oda Özellikleri", "Sosyal Alanlar", "Güvenlik" vb.</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Actions (Bottom) -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/admin/dormitory-features">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="submit" class="btn-save" [disabled]="submitting">
+            <i class="fas fa-save"></i>
+            <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+            <span *ngIf="submitting" class="spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,110 @@
+<!-- src/app/features/departments/department-detail/content/genel-bilgi/genel-bilgi.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-info-circle"></i>
+      Genel Bilgi
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümü hakkında temel bilgiler</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid" *ngIf="department">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ department.facultyName }}</div>
+        <div class="stat-label">Fakülte</div>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="department.averageEducationYears">
+      <div class="stat-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ department.averageEducationYears }} Yıl</div>
+        <div class="stat-label">Eğitim Süresi</div>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="department.averageSalary">
+      <div class="stat-icon">
+        <i class="fas fa-lira-sign"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ formatSalary(department.averageSalary) }}</div>
+        <div class="stat-label">Ortalama Maaş</div>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="department.hasEnglishProgram">
+      <div class="stat-icon">
+        <i class="fas fa-language"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">Mevcut</div>
+        <div class="stat-label">İngilizce Program</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description Content -->
+  <div class="content-card">
+    <h3 class="content-title">
+      <i class="fas fa-file-text"></i>
+      Bölüm Açıklaması
+    </h3>
+    
+    <div class="description-content" *ngIf="formattedDescription" [innerHTML]="formattedDescription"></div>
+    
+    <div class="no-content" *ngIf="!formattedDescription">
+      <div class="no-content-icon">
+        <i class="fas fa-info-circle"></i>
+      </div>
+      <p>Bu bölüm için henüz detaylı açıklama bulunmamaktadır.</p>
+      <small>Bilgiler güncellendiğinde bu alan doldurulacaktır.</small>
+    </div>
+  </div>
+
+  <!-- Job Opportunities -->
+  <div class="content-card" *ngIf="department?.jobOpportunities">
+    <h3 class="content-title">
+      <i class="fas fa-briefcase"></i>
+      İş Olanakları
+    </h3>
+    
+    <div class="job-opportunities">
+      <p>{{ department.jobOpportunities }}</p>
+    </div>
+  </div>
+
+  <!-- Additional Info -->
+  <div class="info-grid">
+    <div class="info-card university-info">
+      <div class="info-header">
+        <i class="fas fa-university"></i>
+        <h4>Üniversite Bilgisi</h4>
+      </div>
+      <div class="info-content">
+        <p><strong>{{ department?.universityName }}</strong></p>
+        <p class="info-meta">{{ department?.facultyName }}</p>
+      </div>
+    </div>
+
+    <div class="info-card program-info" *ngIf="department?.hasEnglishProgram">
+      <div class="info-header">
+        <i class="fas fa-globe"></i>
+        <h4>Dil Seçenekleri</h4>
+      </div>
+      <div class="info-content">
+        <div class="language-tag">
+          <i class="fas fa-check-circle"></i>
+          <span>İngilizce Program Mevcut</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

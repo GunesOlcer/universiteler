@@ -1,0 +1,355 @@
+.content-section {
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .subsection-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .accreditation-info {
+    .accreditation-overview {
+      margin-bottom: 32px;
+
+      .overview-message {
+        display: flex;
+        gap: 16px;
+        padding: 20px;
+        background-color: #fef3c7;
+        border: 1px solid #fbbf24;
+        border-radius: 8px;
+        color: #92400e;
+
+        i {
+          font-size: 24px;
+          color: #d97706;
+          margin-top: 4px;
+        }
+
+        div {
+          h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+
+          p {
+            margin: 0;
+            line-height: 1.5;
+          }
+        }
+      }
+    }
+
+    .accreditation-types {
+      margin-bottom: 32px;
+
+      .types-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+
+        .accreditation-item {
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+          }
+
+          .accreditation-header {
+            padding: 20px;
+            text-align: center;
+
+            .accreditation-badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 6px 12px;
+              border-radius: 20px;
+              margin-bottom: 12px;
+              font-size: 12px;
+              font-weight: 500;
+
+              &.national {
+                background-color: #fef2f2;
+                color: #991b1b;
+                border: 1px solid #fecaca;
+              }
+
+              &.international {
+                background-color: #f0f9ff;
+                color: #1e40af;
+                border: 1px solid #bfdbfe;
+              }
+
+              &.professional {
+                background-color: #f0fdf4;
+                color: #166534;
+                border: 1px solid #bbf7d0;
+              }
+
+              i {
+                font-size: 14px;
+              }
+            }
+
+            h4 {
+              font-size: 20px;
+              font-weight: 600;
+              color: #1e293b;
+              margin-bottom: 8px;
+            }
+
+            .full-name {
+              font-size: 14px;
+              color: #64748b;
+              margin: 0;
+              font-style: italic;
+            }
+          }
+
+          .accreditation-content {
+            padding: 0 20px 20px;
+
+            p {
+              font-size: 14px;
+              color: #374151;
+              margin-bottom: 12px;
+              line-height: 1.5;
+            }
+
+            .requirement-status {
+              display: inline-block;
+              padding: 4px 8px;
+              border-radius: 4px;
+              font-size: 12px;
+              font-weight: 500;
+              background-color: #f1f5f9;
+              color: #64748b;
+
+              &.required {
+                background-color: #fef2f2;
+                color: #991b1b;
+              }
+            }
+          }
+
+          &.national .accreditation-header {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+          }
+
+          &.international .accreditation-header {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+          }
+
+          &.professional .accreditation-header {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+          }
+        }
+      }
+    }
+
+    .quality-assurance {
+      margin-bottom: 32px;
+
+      .quality-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+
+        .quality-item {
+          display: flex;
+          gap: 16px;
+          padding: 20px;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+
+          .quality-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 8px;
+            flex-shrink: 0;
+
+            i {
+              font-size: 24px;
+            }
+          }
+
+          .quality-content {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #1e293b;
+              margin-bottom: 8px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #64748b;
+              margin: 0;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+    }
+
+    .recognition-info {
+      margin-bottom: 32px;
+
+      .recognition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+
+        .recognition-card {
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+          .card-header {
+            padding: 20px;
+            text-align: center;
+            color: white;
+
+            i {
+              font-size: 32px;
+              margin-bottom: 8px;
+              display: block;
+            }
+
+            h4 {
+              font-size: 18px;
+              font-weight: 600;
+              margin: 0;
+            }
+          }
+
+          .card-content {
+            padding: 20px;
+            background-color: #f8fafc;
+
+            ul {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+
+              li {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #374151;
+                margin-bottom: 8px;
+
+                &::before {
+                  content: '\f00c';
+                  font-family: 'Font Awesome 5 Free';
+                  font-weight: 900;
+                  color: #16a34a;
+                  margin-right: 8px;
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+
+          &.national .card-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+          }
+
+          &.international .card-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+          }
+        }
+      }
+    }
+
+    .verification-info {
+      .verification-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+
+        .step {
+          text-align: center;
+          padding: 20px;
+          background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+          border: 1px solid #a5b4fc;
+          border-radius: 8px;
+
+          .step-icon {
+            margin-bottom: 12px;
+
+            i {
+              font-size: 32px;
+              color: #6366f1;
+            }
+          }
+
+          .step-content {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #3730a3;
+              margin-bottom: 8px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #4338ca;
+              margin: 0;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content-section {
+    .accreditation-info {
+      .accreditation-types .types-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quality-assurance .quality-features {
+        grid-template-columns: 1fr;
+      }
+
+      .recognition-info .recognition-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .verification-info .verification-steps {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

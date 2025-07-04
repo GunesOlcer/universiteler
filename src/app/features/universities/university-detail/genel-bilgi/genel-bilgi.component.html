@@ -1,0 +1,111 @@
+<section class="content-section">
+  <h2 class="section-title">Genel Bilgi</h2>
+  
+  <div class="university-stats-grid" *ngIf="university">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Kuruluş Yılı</h3>
+        <p class="stat-value">{{ university.foundationYear || 'Bilinmiyor' }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="university.studentCount">
+      <div class="stat-icon">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Öğrenci Sayısı</h3>
+        <p class="stat-value">{{ university.studentCount | number }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="university.facultyCount">
+      <div class="stat-icon">
+        <i class="fas fa-chalkboard-teacher"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Fakülte Sayısı</h3>
+        <p class="stat-value">{{ university.facultyCount }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" *ngIf="university.ranking">
+      <div class="stat-icon">
+        <i class="fas fa-trophy"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Sıralama</h3>
+        <p class="stat-value">#{{ university.ranking }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-university"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Üniversite Türü</h3>
+        <p class="stat-value">{{ getTypeDisplayName() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">Üniversite Hakkında</h3>
+  <div class="content-card">
+    <div class="enhanced-formatting" *ngIf="university?.description" [innerHTML]="getFormattedDescription()"></div>
+    <div *ngIf="!university?.description" class="no-content">
+      <p>Bu üniversite hakkında detaylı bilgi bulunmamaktadır.</p>
+    </div>
+  </div>
+
+  <div class="university-features" *ngIf="university">
+    <h3 class="subsection-title">Özellikler</h3>
+    <div class="features-grid">
+      <div class="feature-item" [class.available]="university.hasLibrary">
+        <i class="fas fa-book"></i>
+        <span>Kütüphane</span>
+      </div>
+      <div class="feature-item" [class.available]="university.hasSportsFacility">
+        <i class="fas fa-running"></i>
+        <span>Spor Tesisleri</span>
+      </div>
+      <div class="feature-item" [class.available]="university.hasDormitory">
+        <i class="fas fa-home"></i>
+        <span>Yurt</span>
+      </div>
+      <div class="feature-item" [class.available]="university.hasInternationalPrograms">
+        <i class="fas fa-globe"></i>
+        <span>Uluslararası Programlar</span>
+      </div>
+      <div class="feature-item" [class.available]="university.hasScholarship">
+        <i class="fas fa-graduation-cap"></i>
+        <span>Burs Olanakları</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-info" *ngIf="university && (university.website || university.email || university.phone)">
+    <h3 class="subsection-title">İletişim Bilgileri</h3>
+    <div class="contact-grid">
+      <div class="contact-item" *ngIf="university.website">
+        <i class="fas fa-globe"></i>
+        <a [href]="university.website" target="_blank" rel="noopener noreferrer">{{ university.website }}</a>
+      </div>
+      <div class="contact-item" *ngIf="university.email">
+        <i class="fas fa-envelope"></i>
+        <a [href]="'mailto:' + university.email">{{ university.email }}</a>
+      </div>
+      <div class="contact-item" *ngIf="university.phone">
+        <i class="fas fa-phone"></i>
+        <span>{{ university.phone }}</span>
+      </div>
+      <div class="contact-item" *ngIf="university.address">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>{{ university.address }}</span>
+      </div>
+    </div>
+  </div>
+</section>

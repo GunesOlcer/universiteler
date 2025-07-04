@@ -1,0 +1,134 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-content">
+      <div class="login-header">
+        <div class="logo-container">
+          <img src="assets/images/Logo.png" alt="Üniversiteler.net Admin" class="logo">
+        </div>
+        <h1 class="login-title">Yönetici Paneli</h1>
+        <p class="login-subtitle">Giriş bilgilerinizi kullanarak devam edin</p>
+      </div>
+      
+      <!-- Error Message -->
+      <div *ngIf="loginError" class="login-error" role="alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ loginError }}</span>
+      </div>
+      
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username">Kullanıcı Adı</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input 
+              type="text" 
+              id="username" 
+              formControlName="username" 
+              class="form-control"
+              placeholder="Kullanıcı adınızı girin"
+              [class.is-invalid]="isFieldInvalid('username')"
+              autocomplete="username">
+          </div>
+          <div *ngIf="isFieldInvalid('username')" class="form-error" role="alert">
+            <i class="fas fa-info-circle"></i>
+            <span>{{ getFieldError('username') }}</span>
+          </div>
+        </div>
+        
+        <!-- Password Field -->
+        <div class="form-group">
+          <div class="label-wrapper">
+            <label for="password">Şifre</label>
+            <a href="#" class="forgot-password" tabindex="-1" (click)="$event.preventDefault()">Şifremi Unuttum</a>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              class="form-control"
+              placeholder="Şifrenizi girin"
+              [class.is-invalid]="isFieldInvalid('password')"
+              autocomplete="current-password">
+          </div>
+          <div *ngIf="isFieldInvalid('password')" class="form-error" role="alert">
+            <i class="fas fa-info-circle"></i>
+            <span>{{ getFieldError('password') }}</span>
+          </div>
+        </div>
+        
+        <!-- Remember Me -->
+        <div class="form-group remember-me">
+          <label class="checkbox-container">
+            <input 
+              type="checkbox" 
+              id="rememberMe" 
+              formControlName="rememberMe">
+            <span class="checkmark"></span>
+            <span class="label-text">Beni Hatırla</span>
+          </label>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn-login" 
+            [class.loading]="loading">
+            <span *ngIf="!loading" class="btn-text">
+              <i class="fas fa-sign-in-alt"></i>
+              Giriş Yap
+            </span>
+            <span *ngIf="loading" class="btn-loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              Giriş yapılıyor...
+            </span>
+          </button>
+        </div>
+      </form>
+      
+      <div class="login-footer">
+        <p class="copyright">© 2025 Üniversiteler.net - Tüm Hakları Saklıdır</p>
+      </div>
+    </div>
+    
+    <div class="login-decoration">
+      <div class="decoration-content">
+        <h2 class="decoration-title">Üniversiteler.net Yönetim Paneli</h2>
+        <p class="decoration-text">Üniversite ve bölüm bilgilerini kolayca yönetin, site içeriğini düzenleyin ve kullanıcı istatistiklerini takip edin.</p>
+        <div class="decoration-features">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="feature-info">
+              <h3>Üniversite Yönetimi</h3>
+              <p>Tüm üniversiteleri, bölümleri ve programları kolayca ekleyin ve düzenleyin.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="feature-info">
+              <h3>Kullanıcı Yönetimi</h3>
+              <p>Kullanıcıları yönetin ve gerçek zamanlı istatistikleri takip edin.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="feature-info">
+              <h3>Site Ayarları</h3>
+              <p>Site görünümünü ve içeriğini kolayca özelleştirin.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

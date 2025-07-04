@@ -1,0 +1,330 @@
+<section class="content-section">
+  <h2 class="section-title">Sağlık Olanakları</h2>
+  <div class="content-card">
+    <div class="health-services" *ngIf="university">
+      <div class="health-overview">
+        <div class="overview-message">
+          <i class="fas fa-heartbeat"></i>
+          <div>
+            <h4>Öğrenci Sağlık Hizmetleri</h4>
+            <p>{{ university.name }} kampüsünde öğrencilerin sağlık ihtiyaçları için kapsamlı hizmetler sunulmaktadır.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="health-facilities">
+        <h3 class="subsection-title">Sağlık Tesisleri</h3>
+        <div class="facilities-grid">
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-clinic-medical"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Sağlık Merkezi</h4>
+              <p>Kampüs içi sağlık merkezi ve revir hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Doktor Hizmeti</h4>
+              <p>Genel pratisyen doktor muayene hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-user-nurse"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Hemşire Hizmeti</h4>
+              <p>Profesyonel hemşirelik bakım hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-pills"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Eczane</h4>
+              <p>Kampüs eczanesi ve ilaç temini hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-ambulance"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Acil Müdahale</h4>
+              <p>7/24 acil durum müdahale hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="facility-item">
+            <div class="facility-icon">
+              <i class="fas fa-x-ray"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Tetkik Hizmetleri</h4>
+              <p>Temel laboratuvar ve görüntüleme hizmetleri</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="medical-services">
+        <h3 class="subsection-title">Tıbbi Hizmetler</h3>
+        <div class="services-container">
+          <div class="service-category">
+            <div class="category-header">
+              <i class="fas fa-stethoscope"></i>
+              <h4>Genel Tıp</h4>
+            </div>
+            <div class="category-content">
+              <ul>
+                <li>Genel muayene ve kontrol</li>
+                <li>Ateş, grip, nezle tedavisi</li>
+                <li>Kan basıncı ölçümü</li>
+                <li>Kronik hastalık takibi</li>
+                <li>Reçete yazımı</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="service-category">
+            <div class="category-header">
+              <i class="fas fa-brain"></i>
+              <h4>Psikolojik Destek</h4>
+            </div>
+            <div class="category-content">
+              <ul>
+                <li>Psikolojik danışmanlık</li>
+                <li>Stres yönetimi</li>
+                <li>Sınav kaygısı desteği</li>
+                <li>Kişisel gelişim</li>
+                <li>Grup terapileri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="service-category">
+            <div class="category-header">
+              <i class="fas fa-shield-virus"></i>
+              <h4>Koruyucu Hekimlik</h4>
+            </div>
+            <div class="category-content">
+              <ul>
+                <li>Aşılama hizmetleri</li>
+                <li>Sağlık taramaları</li>
+                <li>Beslenme danışmanlığı</li>
+                <li>Sağlıklı yaşam eğitimleri</li>
+                <li>Bağımlılık önleme</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="service-category">
+            <div class="category-header">
+              <i class="fas fa-band-aid"></i>
+              <h4>İlk Yardım</h4>
+            </div>
+            <div class="category-content">
+              <ul>
+                <li>Yaralanma müdahalesi</li>
+                <li>Burkulma tedavisi</li>
+                <li>Küçük cerrahi müdahaleler</li>
+                <li>Pansuman hizmetleri</li>
+                <li>Acil durum stabilizasyonu</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="health-programs">
+        <h3 class="subsection-title">Sağlık Programları</h3>
+        <div class="programs-grid">
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-running"></i>
+            </div>
+            <div class="program-content">
+              <h4>Fitness ve Wellness</h4>
+              <p>Fiziksel aktivite programları ve spor sağlığı</p>
+            </div>
+          </div>
+
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-apple-alt"></i>
+            </div>
+            <div class="program-content">
+              <h4>Beslenme Danışmanlığı</h4>
+              <p>Sağlıklı beslenme planları ve diyet programları</p>
+            </div>
+          </div>
+
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-smoking-ban"></i>
+            </div>
+            <div class="program-content">
+              <h4>Bağımlılık Önleme</h4>
+              <p>Sigara, alkol ve madde bağımlılığı önleme</p>
+            </div>
+          </div>
+
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-meditation"></i>
+            </div>
+            <div class="program-content">
+              <h4>Stres Yönetimi</h4>
+              <p>Meditasyon, yoga ve rahatlatma teknikleri</p>
+            </div>
+          </div>
+
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="program-content">
+              <h4>Sağlık Taramaları</h4>
+              <p>Düzenli sağlık kontrolleri ve erken tanı</p>
+            </div>
+          </div>
+
+          <div class="program-item">
+            <div class="program-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="program-content">
+              <h4>Grup Terapileri</h4>
+              <p>Sosyal destek grupları ve topluluk terapisi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="emergency-info">
+        <h3 class="subsection-title">Acil Durum Bilgileri</h3>
+        <div class="emergency-grid">
+          <div class="emergency-card critical">
+            <div class="emergency-header">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h4>Acil Durumlar</h4>
+            </div>
+            <div class="emergency-content">
+              <p><strong>Kampüs Acil Hat:</strong> 112</p>
+              <p><strong>Sağlık Merkezi:</strong> İç Hat 2000</p>
+              <p><strong>Güvenlik:</strong> İç Hat 1500</p>
+              <p><strong>7/24 Hizmet:</strong> Acil müdahale ekibi</p>
+            </div>
+          </div>
+
+          <div class="emergency-card info">
+            <div class="emergency-header">
+              <i class="fas fa-info-circle"></i>
+              <h4>Önemli Bilgiler</h4>
+            </div>
+            <div class="emergency-content">
+              <p>• Acil durumlarda panik yapmayın</p>
+              <p>• Öğrenci kartınızı yanınızda bulundurun</p>
+              <p>• Kronik rahatsızlıklarınızı bildirin</p>
+              <p>• İlaç alerjilerinizi belirtin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="health-tips">
+        <h3 class="subsection-title">Sağlık İpuçları</h3>
+        <div class="tips-container">
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Bol Su İçin</h4>
+              <p>Günde en az 8 bardak su içmeyi alışkanlık edinin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-bed"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Düzenli Uyku</h4>
+              <p>Günde 7-8 saat kaliteli uyku almaya özen gösterin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Düzenli Beslenme</h4>
+              <p>3 ana öğün ve 2 ara öğün yaparak metabolizmanızı canlı tutun</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-walking"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Fiziksel Aktivite</h4>
+              <p>Haftada en az 150 dakika orta şiddetli egzersiz yapın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-spa"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Stres Kontrolü</h4>
+              <p>Meditasyon ve nefes egzersizleri ile stresi yönetin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <div class="tip-icon">
+              <i class="fas fa-user-friends"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Sosyal Bağlantılar</h4>
+              <p>Arkadaşlarınızla kaliteli zaman geçirin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-health">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-phone-alt"></i>
+          <div>
+            <h4>Sağlık Merkezi İletişim</h4>
+            <p>Sağlık hizmetleri hakkında detaylı bilgi için kampüs sağlık merkezi ile iletişime geçebilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

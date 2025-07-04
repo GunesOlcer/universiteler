@@ -1,0 +1,174 @@
+<section class="content-section">
+  <h2 class="section-title">Erasmus ve Uluslararası Programlar</h2>
+  <div class="content-card">
+    <div class="international-status" *ngIf="university">
+      <div class="status-badge" [class.available]="university.hasInternationalPrograms">
+        <i class="fas" [ngClass]="university.hasInternationalPrograms ? 'fa-check-circle' : 'fa-times-circle'"></i>
+        <span>Bu üniversitede uluslararası programlar {{ university.hasInternationalPrograms ? 'bulunmaktadır' : 'hakkında bilgi bulunamamıştır' }}</span>
+      </div>
+    </div>
+
+    <div class="international-programs" *ngIf="university?.hasInternationalPrograms">
+      <h3 class="subsection-title">Uluslararası Fırsatlar</h3>
+      <div class="programs-grid">
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-plane"></i>
+          </div>
+          <div class="program-content">
+            <h4>Erasmus+</h4>
+            <p>Avrupa ülkelerinde eğitim ve staj imkanları</p>
+            <ul>
+              <li>6-12 ay eğitim süresi</li>
+              <li>Dil öğrenme fırsatı</li>
+              <li>Kültürel deneyim</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-globe-americas"></i>
+          </div>
+          <div class="program-content">
+            <h4>Değişim Programları</h4>
+            <p>Partner üniversitelerle öğrenci değişimi</p>
+            <ul>
+              <li>Çift diploma programları</li>
+              <li>Araştırma projeleri</li>
+              <li>Akademik işbirliği</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-language"></i>
+          </div>
+          <div class="program-content">
+            <h4>Dil Eğitimi</h4>
+            <p>Yabancı dil öğrenme ve geliştirme programları</p>
+            <ul>
+              <li>Hazırlık programları</li>
+              <li>Sertifika kursları</li>
+              <li>Online platformlar</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="program-content">
+            <h4>İkili Diploma</h4>
+            <p>Partner üniversitelerle ortak diploma programları</p>
+            <ul>
+              <li>Çifte mezuniyet</li>
+              <li>Uluslararası geçerlilik</li>
+              <li>Kariyer avantajı</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <div class="program-content">
+            <h4>Staj Programları</h4>
+            <p>Uluslararası staj ve iş deneyimi</p>
+            <ul>
+              <li>Yurt dışı stajlar</li>
+              <li>Uluslararası şirketler</li>
+              <li>Profesyonel network</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <div class="program-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="program-content">
+            <h4>Kültürel Değişim</h4>
+            <p>Farklı kültürlerle etkileşim fırsatları</p>
+            <ul>
+              <li>Yabancı öğrenci topluluğu</li>
+              <li>Kültürel etkinlikler</li>
+              <li>Mentor programları</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="application-info">
+        <h3 class="subsection-title">Başvuru Süreçleri</h3>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Bilgi Toplama</h4>
+              <p>Uluslararası İlişkiler Ofisi'nden detaylı bilgi alın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Başvuru Hazırlığı</h4>
+              <p>Gerekli belgeleri ve dil yeterlilik belgelerini hazırlayın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Online Başvuru</h4>
+              <p>Belirlenen süre içinde online sistemden başvurunuzu yapın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Değerlendirme</h4>
+              <p>Başvurular akademik kriterler doğrultusunda değerlendirilir</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-card">
+          <h4>İletişim</h4>
+          <p>Uluslararası programlara başvuru ve detaylı bilgi için:</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <i class="fas fa-building"></i>
+              <span>Uluslararası İlişkiler Ofisi</span>
+            </div>
+            <div class="contact-item" *ngIf="university.website">
+              <i class="fas fa-globe"></i>
+              <a [href]="university.website" target="_blank">{{ university.website }}</a>
+            </div>
+            <div class="contact-item" *ngIf="university.email">
+              <i class="fas fa-envelope"></i>
+              <a [href]="'mailto:' + university.email">{{ university.email }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-programs" *ngIf="university && !university.hasInternationalPrograms">
+      <div class="info-message">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <h4>Uluslararası Program Bilgisi Bulunamadı</h4>
+          <p>Bu üniversite için uluslararası program bilgisi bulunamadı. Güncel bilgiler için üniversiteyle direkt iletişime geçmenizi öneririz.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<!-- src/app/features/dormitories/dormitory-detail/sidebar/sidebar.component.html -->
+<div class="sidebar">
+    <nav class="sidebar-nav">
+      <ul class="nav-menu">
+        <li class="nav-item" [class.active]="activeSection === 'genel-bilgi'">
+          <a class="nav-link" (click)="selectSection('genel-bilgi')">Genel Bilgi</a>
+        </li>
+        
+        <li class="nav-item" [class.active]="activeSection === 'olanaklar'">
+          <a class="nav-link" (click)="selectSection('olanaklar')">Olanaklar</a>
+        </li>
+        
+        <li class="nav-item" [class.active]="activeSection === 'yakin-universiteler'">
+          <a class="nav-link" (click)="selectSection('yakin-universiteler')">Yakın Üniversiteler</a>
+        </li>
+        
+        <li class="nav-item" [class.active]="activeSection === 'konum-cevre'">
+          <a class="nav-link" (click)="selectSection('konum-cevre')">Konum ve Çevre</a>
+        </li>
+      </ul>
+    </nav>
+  </div>

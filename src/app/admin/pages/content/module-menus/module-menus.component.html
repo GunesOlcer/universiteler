@@ -1,0 +1,329 @@
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-sitemap"></i>
+          Modül Menüleri
+        </h1>
+        <p class="page-subtitle">Site içerisindeki modül menülerini düzenleyin ve yönetin</p>
+      </div>
+      
+      <div class="page-actions">
+        <button type="button" class="btn-add" (click)="openAddMenuModal()">
+          <span class="btn-icon"><i class="fas fa-plus"></i></span>
+          <span class="btn-text">Yeni Modül Menüsü</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-row row">
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-sitemap"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value">{{ moduleMenus.length }}</h3>
+            <span class="stat-label">Toplam Modül Menüsü</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon menu-icon">
+            <i class="fas fa-list"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value">{{ getTotalMenuItems() }}</h3>
+            <span class="stat-label">Toplam Menü Başlığı</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon active-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value">{{ moduleMenus.length > 0 ? moduleMenus.length : 0 }}</h3>
+            <span class="stat-label">Aktif URL Adresi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Açıklama Kartı -->
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fas fa-info-circle"></i>
+      </div>
+      <div class="info-content">
+        <h4 class="info-title">Modül Menüleri Nasıl Çalışır?</h4>
+        <p class="info-text">
+          Modül menüleri, sitenin belirli bölümlerinde kullanılan menüleri yönetmenizi sağlar. Her bir modül menüsü, bir ana URL yolu ve bu yol altındaki sayfalara ait başlıklardan oluşur. Eklediğiniz her menü başlığı, sitede dinamik olarak görüntülenir.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Modül Menüleri Listesi -->
+    <div class="module-menus-list">
+      <div *ngFor="let menu of moduleMenus" class="menu-card">
+        <div class="menu-header">
+          <div class="menu-header-content">
+            <h3 class="menu-title">{{ menu.title }}</h3>
+            <span class="menu-admin-title">{{ menu.adminTitle }}</span>
+          </div>
+          
+          <div class="menu-actions">
+            <button type="button" class="btn-add-item" (click)="openAddMenuItemModal(menu.id)" title="Menü Başlığı Ekle">
+              <i class="fas fa-plus"></i> Başlık Ekle
+            </button>
+            <button type="button" class="btn-action btn-edit" (click)="openEditMenuModal(menu)" title="Menüyü Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn-action btn-delete" (click)="confirmDeleteMenu(menu)" title="Menüyü Sil">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="menu-url-info">
+          <div class="url-badge">
+            <i class="fas fa-link"></i>
+            <span class="url-path">/<strong>{{ menu.slug }}</strong>/[url-segment]</span>
+          </div>
+        </div>
+        
+        <div class="menu-items-container">
+          <div *ngIf="menu.items?.length === 0" class="no-items">
+            <div class="no-items-message">
+              <i class="fas fa-list-ul"></i>
+              <p>Bu menüye henüz başlık eklenmemiştir.</p>
+              <button class="btn-add-now" (click)="openAddMenuItemModal(menu.id)">Şimdi Başlık Ekle</button>
+            </div>
+          </div>
+          
+          <div *ngIf="menu.items?.length > 0" class="items-table-container">
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th class="th-title">Başlık</th>
+                  <th class="th-url">URL Segmenti</th>
+                  <th class="th-full-url">Tam URL</th>
+                  <th class="th-actions">İşlemler</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of menu.items">
+                  <td class="td-title">{{ item.title }}</td>
+                  <td class="td-url">
+                    <span class="url-segment">{{ item.url }}</span>
+                  </td>
+                  <td class="td-full-url">
+                    <span class="full-url">/<span class="main-slug">{{ menu.slug }}</span>/{{ item.url }}</span>
+                  </td>
+                  <td class="td-actions">
+                    <div class="action-buttons">
+                      <button type="button" class="btn-action btn-edit" (click)="openEditMenuItemModal(menu.id, item)" title="Düzenle">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button type="button" class="btn-action btn-delete" (click)="confirmDeleteMenuItem(menu.id, item)" title="Sil">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="moduleMenus.length === 0" class="no-menus">
+        <div class="no-data-message">
+          <i class="fas fa-sitemap"></i>
+          <p>Henüz modül menüsü bulunmamaktadır.</p>
+          <button class="btn-reset-search" (click)="openAddMenuModal()">Yeni Modül Menüsü Ekle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Menü Ekle/Düzenle Modal -->
+  <div class="modal" *ngIf="showMenuModal">
+    <div class="modal-backdrop" (click)="closeMenuModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-sitemap"></i>
+            {{ selectedMenuId ? 'Modül Menüsü Düzenle' : 'Yeni Modül Menüsü Ekle' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="closeMenuModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="menuForm">
+            <div class="form-group">
+              <label for="menuTitle">Menü Başlığı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="menuTitle"
+                formControlName="title"
+                class="form-control"
+                [ngClass]="{'is-invalid': menuForm.get('title')?.invalid && menuForm.get('title')?.touched}"
+                placeholder="Örn: Üniversiteler Menüsü"
+              >
+              <div *ngIf="menuForm.get('title')?.errors?.required && menuForm.get('title')?.touched" class="form-error">
+                Menü başlığı gereklidir.
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="menuAdminTitle">Yönetim Menü Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="menuAdminTitle"
+                formControlName="adminTitle"
+                class="form-control"
+                [ngClass]="{'is-invalid': menuForm.get('adminTitle')?.invalid && menuForm.get('adminTitle')?.touched}"
+                placeholder="Örn: Üniversite Sayfaları"
+              >
+              <div *ngIf="menuForm.get('adminTitle')?.errors?.required && menuForm.get('adminTitle')?.touched" class="form-error">
+                Yönetim menü adı gereklidir.
+              </div>
+              <div class="form-hint">Bu başlık sadece yönetim panelinde görünür.</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="menuSlug">Menü URL <span class="required">*</span></label>
+              <div class="input-group">
+                <div class="input-prefix">/</div>
+                <input 
+                  type="text"
+                  id="menuSlug"
+                  formControlName="slug"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': menuForm.get('slug')?.invalid && menuForm.get('slug')?.touched}"
+                  placeholder="Örn: universiteler"
+                >
+                <div class="input-suffix">/[url-segment]</div>
+              </div>
+              <div *ngIf="menuForm.get('slug')?.errors?.required && menuForm.get('slug')?.touched" class="form-error">
+                Menü URL gereklidir.
+              </div>
+              <div class="form-hint">URL'de boşluk ve Türkçe karakterler kullanmayın.</div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeMenuModal()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-confirm" [disabled]="menuForm.invalid" (click)="saveMenu()">
+            <i class="fas fa-save"></i> Kaydet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Menü Başlığı Ekle/Düzenle Modal -->
+  <div class="modal" *ngIf="showMenuItemModal">
+    <div class="modal-backdrop" (click)="closeMenuItemModal()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-list"></i>
+            {{ selectedMenuItemId ? 'Menü Başlığı Düzenle' : 'Yeni Menü Başlığı Ekle' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="closeMenuItemModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="menuItemForm">
+            <div class="form-group">
+              <label for="menuItemTitle">Menü Başlığı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="menuItemTitle"
+                formControlName="title"
+                class="form-control"
+                [ngClass]="{'is-invalid': menuItemForm.get('title')?.invalid && menuItemForm.get('title')?.touched}"
+                placeholder="Örn: Genel Bilgiler"
+              >
+              <div *ngIf="menuItemForm.get('title')?.errors?.required && menuItemForm.get('title')?.touched" class="form-error">
+                Menü başlığı gereklidir.
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="menuItemUrl">URL Segmenti <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="menuItemUrl"
+                formControlName="url"
+                class="form-control"
+                [ngClass]="{'is-invalid': menuItemForm.get('url')?.invalid && menuItemForm.get('url')?.touched}"
+                placeholder="Örn: genel-bilgiler"
+              >
+              <div *ngIf="menuItemForm.get('url')?.errors?.required && menuItemForm.get('url')?.touched" class="form-error">
+                URL segmenti gereklidir.
+              </div>
+              <div class="form-hint">URL'de boşluk ve Türkçe karakterler kullanmayın, kelimeler arası tire (-) kullanın.</div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeMenuItemModal()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-confirm" [disabled]="menuItemForm.invalid" (click)="saveMenuItem()">
+            <i class="fas fa-save"></i> Kaydet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" *ngIf="showConfirmDialog">
+    <div class="modal-backdrop" (click)="cancelDelete()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-exclamation-triangle text-danger"></i>
+            {{ deleteType === 'menu' ? 'Modül Menüsünü Sil' : 'Menü Başlığını Sil' }}
+          </h3>
+          <button type="button" class="modal-close" (click)="cancelDelete()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="delete-message">
+            <strong>{{ deleteType === 'menu' ? itemToDelete?.title : itemToDelete?.title }}</strong> 
+            {{ deleteType === 'menu' ? 'modül menüsünü' : 'menü başlığını' }} silmek istediğinizden emin misiniz?
+          </p>
+          <p class="delete-warning">
+            <i class="fas fa-info-circle"></i>
+            Bu işlem geri alınamaz. {{ deleteType === 'menu' ? 'Menüye ait tüm başlıklar da silinecektir.' : '' }}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="cancelDelete()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-confirm" (click)="deleteItem()">
+            <i class="fas fa-trash-alt"></i> Evet, Sil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,121 @@
+<!-- src/app/admin/pages/universities/program-ranking-add-edit/program-ranking-add-edit.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-trophy"></i>
+        {{ isEditMode ? 'Başarı Sırası Düzenle' : 'Yeni Başarı Sırası Ekle' }}
+      </h1>
+      <p class="page-subtitle">{{ program.name }} - Başarı sırası bilgilerini {{ isEditMode ? 'düzenleyin' : 'ekleyin' }}</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs/rankings', programId]">
+        <i class="fas fa-arrow-left"></i>
+        Başarı Sırası Listesine Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">
+    <form [formGroup]="rankingForm" (ngSubmit)="saveRanking()">
+      <!-- Temel Bilgiler -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Başarı Sırası Bilgileri
+          </h2>
+          <p class="card-subtitle">Başarı sırası ve puan bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="year">Yıl <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="year"
+                formControlName="year"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.year.errors}"
+                placeholder="Örn: 2023"
+              >
+              <div *ngIf="submitted && f.year.errors" class="form-error">
+                <div *ngIf="f.year.errors.required">Yıl alanı gereklidir.</div>
+                <div *ngIf="f.year.errors.min || f.year.errors.max">Yıl 2000-2100 arasında olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="rank">Başarı Sırası <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="rank"
+                formControlName="rank"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.rank.errors}"
+                min="1"
+                placeholder="Örn: 15000"
+              >
+              <div *ngIf="submitted && f.rank.errors" class="form-error">
+                <div *ngIf="f.rank.errors.required">Başarı sırası gereklidir.</div>
+                <div *ngIf="f.rank.errors.min">Başarı sırası 1 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.minScore.errors}"
+                step="0.01"
+                min="0"
+                placeholder="Örn: 350.25"
+              >
+              <div *ngIf="submitted && f.minScore.errors" class="form-error">
+                <div *ngIf="f.minScore.errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="f.minScore.errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.maxScore.errors}"
+                step="0.01"
+                min="0"
+                placeholder="Örn: 450.75"
+              >
+              <div *ngIf="submitted && f.maxScore.errors" class="form-error">
+                <div *ngIf="f.maxScore.errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="f.maxScore.errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" [routerLink]="['/admin/programs/rankings', programId]">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

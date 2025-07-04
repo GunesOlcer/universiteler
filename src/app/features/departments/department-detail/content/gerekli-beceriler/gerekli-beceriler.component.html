@@ -1,0 +1,145 @@
+<!-- src/app/features/departments/department-detail/content/gerekli-beceriler/gerekli-beceriler.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-cogs"></i>
+      Gerekli Beceriler
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümünde başarılı olmak için gerekli yetenek ve beceriler</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Beceri bilgileri yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Introduction -->
+    <div class="intro-card">
+      <div class="intro-icon">
+        <i class="fas fa-lightbulb"></i>
+      </div>
+      <div class="intro-content">
+        <h3>Başarı İçin Gerekli Yetenekler</h3>
+        <p>{{ department?.name }} bölümünde başarılı olmak ve mezuniyet sonrası iş hayatında ilerlemek için belirli beceriler önemlidir.</p>
+      </div>
+    </div>
+
+    <!-- Specific Skills Content -->
+    <div class="content-card" *ngIf="skillsContent">
+      <h3 class="content-title">
+        <i class="fas fa-star"></i>
+        {{ skillsContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(skillsContent.content)"></div>
+    </div>
+
+    <!-- All Skills Menus -->
+    <div class="skills-grid" *ngIf="departmentMenus.length > 0">
+      <div class="skill-card" *ngFor="let menu of departmentMenus">
+        <div class="skill-header">
+          <div class="skill-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h4 class="skill-title">{{ menu.title }}</h4>
+        </div>
+        <div class="skill-content" [innerHTML]="formatContent(menu.content)"></div>
+        <div class="skill-order">
+          <span class="order-badge">Öncelik: {{ menu.order }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!skillsContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Genel Beceri Gereksinimleri
+        </h3>
+        <div class="general-skills">
+          <p>{{ department?.name }} bölümü için özel beceri tanımları henüz eklenmemiştir. Genel olarak bu tür bölümler için önemli beceriler:</p>
+          
+          <div class="skill-categories">
+            <div class="skill-category">
+              <h4>
+                <i class="fas fa-brain"></i>
+                Zihinsel Beceriler
+              </h4>
+              <ul>
+                <li>Analitik düşünme yeteneği</li>
+                <li>Problem çözme becerileri</li>
+                <li>Eleştirel düşünme</li>
+                <li>Yaratıcılık ve yenilikçilik</li>
+              </ul>
+            </div>
+
+            <div class="skill-category">
+              <h4>
+                <i class="fas fa-users"></i>
+                Sosyal Beceriler
+              </h4>
+              <ul>
+                <li>Etkili iletişim</li>
+                <li>Takım çalışması</li>
+                <li>Liderlik yeteneği</li>
+                <li>Empati ve anlayış</li>
+              </ul>
+            </div>
+
+            <div class="skill-category">
+              <h4>
+                <i class="fas fa-laptop"></i>
+                Teknik Beceriler
+              </h4>
+              <ul>
+                <li>Temel bilgisayar kullanımı</li>
+                <li>Araştırma yöntemleri</li>
+                <li>Veri analizi</li>
+                <li>Sürekli öğrenme</li>
+              </ul>
+            </div>
+
+            <div class="skill-category">
+              <h4>
+                <i class="fas fa-clock"></i>
+                Kişisel Beceriler
+              </h4>
+              <ul>
+                <li>Zaman yönetimi</li>
+                <li>Öz-disiplin</li>
+                <li>Stres yönetimi</li>
+                <li>Adaptasyon yeteneği</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="development-note">
+            <div class="note-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="note-content">
+              <h4>Beceri Geliştirme</h4>
+              <p>Bu becerilerin çoğu eğitim sürecinde geliştirilebilir. Kendinizi sürekli geliştirmeye açık olmak, başarı için en önemli faktördür.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

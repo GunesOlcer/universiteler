@@ -1,0 +1,49 @@
+<!--src\app\shared\components\city-card\city-card.component.html-->
+<div class="city-card" [routerLink]="['/sehirler', city.id]">
+  <div class="card-image">
+    <img [src]="getImageUrl()" 
+         [alt]="city.name" 
+         (error)="onImageError($event)"
+         loading="lazy">
+    <div class="card-overlay">
+      <h3 class="city-name">{{ city.name }}</h3>
+      <p class="country-name">{{ city.countryName }}</p>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="city-region">
+      <i class="fas fa-map-marker-alt"></i>
+      <span class="region-name">{{ getRegion() }}</span>
+    </div>
+    
+    <div class="city-stats">
+      <div class="stat-item">
+        <span class="value">{{ city.universityCount }}</span>
+        <span class="label">Üniversite</span>
+      </div>
+      <div class="stat-item" *ngIf="city.studentPopulation">
+        <span class="value">{{ (city.studentPopulation / 1000).toFixed(0) }}K+</span>
+        <span class="label">Öğrenci</span>
+      </div>
+      <div class="stat-item" *ngIf="city.population">
+        <span class="value">{{ (city.population / 1000000).toFixed(1) }}M</span>
+        <span class="label">Nüfus</span>
+      </div>
+    </div>
+    
+    <div class="city-features">
+      <div class="feature" *ngIf="city.hasAirport">
+        <i class="fas fa-plane"></i>
+        <span>Havalimanı</span>
+      </div>
+      <div class="feature" *ngIf="city.hasTrainStation">
+        <i class="fas fa-train"></i>
+        <span>Tren</span>
+      </div>
+      <div class="feature" *ngIf="city.hasHighSpeedTrain">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Hızlı Tren</span>
+      </div>
+    </div>
+  </div>
+</div>

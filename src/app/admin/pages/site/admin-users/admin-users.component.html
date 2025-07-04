@@ -1,0 +1,384 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-user-shield"></i>
+        Yönetici Kullanıcılar
+      </h1>
+      <p class="page-subtitle">Site yöneticilerini görüntüleyin, ekleyin ve düzenleyin</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-add" (click)="openAddAdminModal()">
+        <span class="btn-icon"><i class="fas fa-plus"></i></span>
+        <span class="btn-text">Yeni Yönetici</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Stats Cards -->
+  <div class="stats-row row">
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-users-cog"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ totalItems }}</h3>
+          <span class="stat-label">Toplam Yönetici</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon active-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ activeCount }}</h3>
+          <span class="stat-label">Aktif Yönetici</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon inactive-icon">
+          <i class="fas fa-user-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ totalItems - activeCount }}</h3>
+          <span class="stat-label">İnaktif Yönetici</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-header">
+      <h2 class="filter-title">
+        <i class="fas fa-filter"></i> Filtreler
+      </h2>
+      <button class="btn-filter-toggle" (click)="filterPanelOpen = !filterPanelOpen">
+        {{ filterPanelOpen ? 'Filtreleri Gizle' : 'Filtreleri Göster' }}
+        <i class="fas" [ngClass]="filterPanelOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+    </div>
+    
+    <div class="filter-body" [class.open]="filterPanelOpen">
+      <div class="filter-row row">
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="search-filter">Ara (İsim, Kullanıcı Adı, E-posta)</label>
+          <div class="input-icon-wrapper">
+            <input 
+              type="text"
+              id="search-filter"
+              [(ngModel)]="filters.search"
+              placeholder="Arama terimi girin..."
+              class="filter-input"
+            >
+            <i class="fas fa-search input-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="permission-filter">Yetki</label>
+          <div class="select-wrapper">
+            <select id="permission-filter" [(ngModel)]="filters.permission" class="filter-select">
+              <option value="">Tümü</option>
+              <option *ngFor="let option of permissionOptions" [value]="option.id">{{ option.name }}</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="status-filter">Durum</label>
+          <div class="select-wrapper">
+            <select id="status-filter" [(ngModel)]="filters.status" class="filter-select">
+              <option value="">Tümü</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">İnaktif</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button type="button" class="btn-reset" (click)="resetFilters()">
+          <i class="fas fa-undo"></i> Filtreleri Sıfırla
+        </button>
+        <button type="button" class="btn-apply" (click)="applyFilters()">
+          <i class="fas fa-filter"></i> Filtrele
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Admin Users Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Yönetici Listesi
+      </h2>
+      <div class="table-actions">
+        <button class="btn-refresh" (click)="loadAdmins()">
+          <i class="fas fa-sync-alt"></i> Yenile
+        </button>
+      </div>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table admin-table">
+        <thead>
+          <tr>
+            <th class="th-name">Adı Soyadı</th>
+            <th class="th-username">Kullanıcı Adı</th>
+            <th class="th-email">E-posta</th>
+            <th class="th-permissions">Yetkiler</th>
+            <th class="th-last-login">Son Giriş</th>
+            <th class="th-status">Durum</th>
+            <th class="th-actions">İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admin of admins">
+            <td class="td-name">
+              <div class="admin-name">{{ admin.fullName }}</div>
+            </td>
+            <td class="td-username">
+              <div class="username">{{ admin.username }}</div>
+            </td>
+            <td class="td-email">
+              <div class="email">{{ admin.email }}</div>
+            </td>
+            <td class="td-permissions">
+              <div class="permissions-list">
+                <span *ngIf="admin.permissions.includes('full_admin')" class="permission-badge full-admin">
+                  Tam Yetkili
+                </span>
+                <span *ngIf="!admin.permissions.includes('full_admin') && admin.permissions.length > 0" class="permission-badge">
+                  {{ getPermissionNames(admin.permissions) }}
+                </span>
+                <span *ngIf="admin.permissions.length === 0" class="permission-badge restricted">
+                  Yetki Yok
+                </span>
+              </div>
+            </td>
+            <td class="td-last-login">
+              <div class="last-login">{{ formatDate(admin.lastLogin) }}</div>
+            </td>
+            <td class="td-status">
+              <span class="status-badge" [ngClass]="admin.isActive ? 'status-active' : 'status-inactive'">
+                <i class="fas" [ngClass]="admin.isActive ? 'fa-check-circle' : 'fa-times-circle'"></i>
+                {{ admin.isActive ? 'Aktif' : 'İnaktif' }}
+              </span>
+            </td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button type="button" class="btn-action btn-edit" title="Düzenle" (click)="openEditAdminModal(admin)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn-action btn-delete" title="Sil" (click)="confirmDelete(admin)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="admins.length === 0">
+            <td colspan="7" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-search"></i>
+                <p>Aradığınız kriterlere uygun yönetici bulunamadı.</p>
+                <button class="btn-reset-search" (click)="resetFilters()">Filtreleri Sıfırla</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="table-footer">
+      <div class="pagination-info">
+        Toplam {{ totalItems }} kayıttan {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalItems) }} arası gösteriliyor
+      </div>
+      
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Add/Edit Modal -->
+<div class="modal" *ngIf="showAdminModal">
+  <div class="modal-backdrop" (click)="closeAdminModal()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-user-shield"></i>
+          {{ selectedAdminId ? 'Yönetici Düzenle' : 'Yeni Yönetici Ekle' }}
+        </h3>
+        <button type="button" class="modal-close" (click)="closeAdminModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="adminForm">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="fullName">Adı Soyadı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="fullName"
+                formControlName="fullName"
+                class="form-control"
+                [ngClass]="{'is-invalid': adminForm.get('fullName')?.invalid && adminForm.get('fullName')?.touched}"
+                placeholder="Örn: Ahmet Yılmaz"
+              >
+              <div *ngIf="adminForm.get('fullName')?.errors?.required && adminForm.get('fullName')?.touched" class="form-error">
+                Adı soyadı gereklidir.
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="username">Kullanıcı Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="username"
+                formControlName="username"
+                class="form-control"
+                [ngClass]="{'is-invalid': adminForm.get('username')?.invalid && adminForm.get('username')?.touched}"
+                placeholder="Örn: ahmet.yilmaz"
+              >
+              <div *ngIf="adminForm.get('username')?.errors && adminForm.get('username')?.touched" class="form-error">
+                <div *ngIf="adminForm.get('username')?.errors?.required">Kullanıcı adı gereklidir.</div>
+                <div *ngIf="adminForm.get('username')?.errors?.minlength">Kullanıcı adı en az 3 karakter olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="email">E-posta Adresi <span class="required">*</span></label>
+              <input 
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                [ngClass]="{'is-invalid': adminForm.get('email')?.invalid && adminForm.get('email')?.touched}"
+                placeholder="Örn: ahmet.yilmaz@example.com"
+              >
+              <div *ngIf="adminForm.get('email')?.errors && adminForm.get('email')?.touched" class="form-error">
+                <div *ngIf="adminForm.get('email')?.errors?.required">E-posta adresi gereklidir.</div>
+                <div *ngIf="adminForm.get('email')?.errors?.email">Geçerli bir e-posta adresi giriniz.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">
+              Şifre <span class="required" *ngIf="!selectedAdminId">*</span>
+              <span class="hint-text" *ngIf="selectedAdminId">(Değiştirmek istemiyorsanız boş bırakın)</span>
+            </label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                [ngClass]="{'is-invalid': adminForm.get('password')?.invalid && adminForm.get('password')?.touched}"
+                placeholder="En az 6 karakter"
+              >
+              <i class="fas fa-lock input-icon"></i>
+            </div>
+            <div *ngIf="adminForm.get('password')?.errors && adminForm.get('password')?.touched" class="form-error">
+              <div *ngIf="adminForm.get('password')?.errors?.required">Şifre gereklidir.</div>
+              <div *ngIf="adminForm.get('password')?.errors?.minlength">Şifre en az 6 karakter olmalıdır.</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Yetkiler</label>
+            <div class="permissions-container" formArrayName="permissions">
+              <div *ngFor="let option of permissionOptions; let i = index" class="permission-item">
+                <label class="permission-checkbox">
+                  <input 
+                    type="checkbox"
+                    [id]="'permission-' + i"
+                    [formControlName]="i"
+                  >
+                  <span class="checkbox-label">{{ option.name }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              En az bir yetki seçilmelidir. Hiçbir yetki seçilmezse "İçerik Yönetimi" yetkisi varsayılan olarak atanır.
+            </div>
+          </div>
+          
+          <div class="form-group status-toggle">
+            <div class="toggle-header">
+              <span class="toggle-title">Yönetici Durumu</span>
+              <span class="toggle-description">Yönetici hesabı aktif mi?</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" formControlName="isActive">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeAdminModal()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" [disabled]="adminForm.invalid" (click)="saveAdmin()">
+          <i class="fas fa-save"></i> Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Yönetici Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ adminToDelete?.fullName }}</strong> yöneticisini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve yönetici hesabına ait tüm veriler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteAdmin()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

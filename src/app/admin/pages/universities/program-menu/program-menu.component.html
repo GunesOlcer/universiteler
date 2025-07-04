@@ -1,0 +1,76 @@
+<!-- src/app/admin/pages/universities/program-menu/program-menu.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-bars"></i>
+        Program Menü Yönetimi
+      </h1>
+      <p class="page-subtitle">{{ program.name }} - Menüleri yönetin</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs']" [queryParams]="{facultyId: program.facultyId}">
+        <i class="fas fa-arrow-left"></i>
+        Program Listesine Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="menu-structure-container">
+    <div class="menu-items-list">
+      <div *ngFor="let menuItem of menuItems" class="menu-item">
+        <div class="menu-item-content">
+          <span class="menu-item-title">{{ menuItem.title }}</span>
+        </div>
+        <div class="menu-item-actions">
+          <button type="button" class="btn-action btn-edit" title="Düzenle" (click)="editMenuItem(menuItem)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn-action btn-delete" title="Sil" (click)="confirmDeleteMenuItem(menuItem)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="menuItems.length === 0" class="no-menu-items">
+        <p>Bu program için henüz menü öğesi bulunmamaktadır.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Menü Öğesi Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ menuItemToDelete?.title }}</strong> menü öğesini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve menü öğesine ait tüm içerikler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteMenuItem()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

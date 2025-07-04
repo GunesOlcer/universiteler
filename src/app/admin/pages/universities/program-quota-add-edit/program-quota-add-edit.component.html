@@ -1,0 +1,465 @@
+<!-- src/app/admin/pages/universities/program-quota-add-edit/program-quota-add-edit.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-users"></i>
+        {{ isEditMode ? 'Kontenjan Düzenle' : 'Yeni Kontenjan Ekle' }}
+      </h1>
+      <p class="page-subtitle">{{ program.name }} - Kontenjan bilgilerini {{ isEditMode ? 'düzenleyin' : 'ekleyin' }}</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs/quotas', programId]">
+        <i class="fas fa-arrow-left"></i>
+        Kontenjan Listesine Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">
+    <form [formGroup]="quotaForm" (ngSubmit)="saveQuota()">
+      <!-- Temel Bilgiler -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Yıl Bilgisi
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="year">Yıl <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="year"
+                formControlName="year"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.year.errors}"
+                placeholder="Örn: 2023"
+              >
+              <div *ngIf="submitted && f.year.errors" class="form-error">
+                <div *ngIf="f.year.errors.required">Yıl alanı gereklidir.</div>
+                <div *ngIf="f.year.errors.min || f.year.errors.max">Yıl 2000-2100 arasında olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Genel Kontenjan -->
+      <div class="form-card" formGroupName="generalQuota">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-users"></i>
+            Genel Kontenjan
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="generalQuota.quota">Açılan Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="generalQuota.quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && generalQuota.get('quota').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && generalQuota.get('quota').errors" class="form-error">
+                <div *ngIf="generalQuota.get('quota').errors.required">Açılan kontenjan gereklidir.</div>
+                <div *ngIf="generalQuota.get('quota').errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="generalQuota.placed">Yerleşen <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="generalQuota.placed"
+                formControlName="placed"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && generalQuota.get('placed').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && generalQuota.get('placed').errors" class="form-error">
+                <div *ngIf="generalQuota.get('placed').errors.required">Yerleşen sayısı gereklidir.</div>
+                <div *ngIf="generalQuota.get('placed').errors.min">Yerleşen sayısı 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="generalQuota.minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="generalQuota.minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && generalQuota.get('minScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && generalQuota.get('minScore').errors" class="form-error">
+                <div *ngIf="generalQuota.get('minScore').errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="generalQuota.get('minScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="generalQuota.maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="generalQuota.maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && generalQuota.get('maxScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && generalQuota.get('maxScore').errors" class="form-error">
+                <div *ngIf="generalQuota.get('maxScore').errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="generalQuota.get('maxScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Okul 1.'si Kontenjanı -->
+      <div class="form-card" formGroupName="schoolFirstQuota">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-trophy"></i>
+            Okul 1.'si Kontenjanı
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="schoolFirstQuota.quota">Açılan Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="schoolFirstQuota.quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && schoolFirstQuota.get('quota').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && schoolFirstQuota.get('quota').errors" class="form-error">
+                <div *ngIf="schoolFirstQuota.get('quota').errors.required">Açılan kontenjan gereklidir.</div>
+                <div *ngIf="schoolFirstQuota.get('quota').errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="schoolFirstQuota.placed">Yerleşen <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="schoolFirstQuota.placed"
+                formControlName="placed"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && schoolFirstQuota.get('placed').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && schoolFirstQuota.get('placed').errors" class="form-error">
+                <div *ngIf="schoolFirstQuota.get('placed').errors.required">Yerleşen sayısı gereklidir.</div>
+                <div *ngIf="schoolFirstQuota.get('placed').errors.min">Yerleşen sayısı 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="schoolFirstQuota.minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="schoolFirstQuota.minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && schoolFirstQuota.get('minScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && schoolFirstQuota.get('minScore').errors" class="form-error">
+                <div *ngIf="schoolFirstQuota.get('minScore').errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="schoolFirstQuota.get('minScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="schoolFirstQuota.maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="schoolFirstQuota.maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && schoolFirstQuota.get('maxScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && schoolFirstQuota.get('maxScore').errors" class="form-error">
+                <div *ngIf="schoolFirstQuota.get('maxScore').errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="schoolFirstQuota.get('maxScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Depremzede Kontenjanı -->
+      <div class="form-card" formGroupName="earthquakeVictimQuota">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-house-damage"></i>
+            Depremzede Kontenjanı
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="earthquakeVictimQuota.quota">Açılan Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="earthquakeVictimQuota.quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && earthquakeVictimQuota.get('quota').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && earthquakeVictimQuota.get('quota').errors" class="form-error">
+                <div *ngIf="earthquakeVictimQuota.get('quota').errors.required">Açılan kontenjan gereklidir.</div>
+                <div *ngIf="earthquakeVictimQuota.get('quota').errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="earthquakeVictimQuota.placed">Yerleşen <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="earthquakeVictimQuota.placed"
+                formControlName="placed"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && earthquakeVictimQuota.get('placed').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && earthquakeVictimQuota.get('placed').errors" class="form-error">
+                <div *ngIf="earthquakeVictimQuota.get('placed').errors.required">Yerleşen sayısı gereklidir.</div>
+                <div *ngIf="earthquakeVictimQuota.get('placed').errors.min">Yerleşen sayısı 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="earthquakeVictimQuota.minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="earthquakeVictimQuota.minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && earthquakeVictimQuota.get('minScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && earthquakeVictimQuota.get('minScore').errors" class="form-error">
+                <div *ngIf="earthquakeVictimQuota.get('minScore').errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="earthquakeVictimQuota.get('minScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="earthquakeVictimQuota.maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="earthquakeVictimQuota.maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && earthquakeVictimQuota.get('maxScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && earthquakeVictimQuota.get('maxScore').errors" class="form-error">
+                <div *ngIf="earthquakeVictimQuota.get('maxScore').errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="earthquakeVictimQuota.get('maxScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 34 Yaş Üstü Kadın Kontenjanı -->
+      <div class="form-card" formGroupName="womenAbove34Quota">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-female"></i>
+            34 Yaş Üstü Kadın Kontenjanı
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="womenAbove34Quota.quota">Açılan Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="womenAbove34Quota.quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && womenAbove34Quota.get('quota').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && womenAbove34Quota.get('quota').errors" class="form-error">
+                <div *ngIf="womenAbove34Quota.get('quota').errors.required">Açılan kontenjan gereklidir.</div>
+                <div *ngIf="womenAbove34Quota.get('quota').errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="womenAbove34Quota.placed">Yerleşen <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="womenAbove34Quota.placed"
+                formControlName="placed"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && womenAbove34Quota.get('placed').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && womenAbove34Quota.get('placed').errors" class="form-error">
+                <div *ngIf="womenAbove34Quota.get('placed').errors.required">Yerleşen sayısı gereklidir.</div>
+                <div *ngIf="womenAbove34Quota.get('placed').errors.min">Yerleşen sayısı 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="womenAbove34Quota.minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="womenAbove34Quota.minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && womenAbove34Quota.get('minScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && womenAbove34Quota.get('minScore').errors" class="form-error">
+                <div *ngIf="womenAbove34Quota.get('minScore').errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="womenAbove34Quota.get('minScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="womenAbove34Quota.maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="womenAbove34Quota.maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && womenAbove34Quota.get('maxScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && womenAbove34Quota.get('maxScore').errors" class="form-error">
+                <div *ngIf="womenAbove34Quota.get('maxScore').errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="womenAbove34Quota.get('maxScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Şehit / Gazi Yakını Kontenjanı -->
+      <div class="form-card" formGroupName="martyrFamilyQuota">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-flag"></i>
+            Şehit / Gazi Yakını Kontenjanı
+          </h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="martyrFamilyQuota.quota">Açılan Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="martyrFamilyQuota.quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && martyrFamilyQuota.get('quota').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && martyrFamilyQuota.get('quota').errors" class="form-error">
+                <div *ngIf="martyrFamilyQuota.get('quota').errors.required">Açılan kontenjan gereklidir.</div>
+                <div *ngIf="martyrFamilyQuota.get('quota').errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="martyrFamilyQuota.placed">Yerleşen <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="martyrFamilyQuota.placed"
+                formControlName="placed"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && martyrFamilyQuota.get('placed').errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && martyrFamilyQuota.get('placed').errors" class="form-error">
+                <div *ngIf="martyrFamilyQuota.get('placed').errors.required">Yerleşen sayısı gereklidir.</div>
+                <div *ngIf="martyrFamilyQuota.get('placed').errors.min">Yerleşen sayısı 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="martyrFamilyQuota.minScore">En Düşük Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="martyrFamilyQuota.minScore"
+                formControlName="minScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && martyrFamilyQuota.get('minScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && martyrFamilyQuota.get('minScore').errors" class="form-error">
+                <div *ngIf="martyrFamilyQuota.get('minScore').errors.required">En düşük puan gereklidir.</div>
+                <div *ngIf="martyrFamilyQuota.get('minScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="martyrFamilyQuota.maxScore">En Yüksek Puan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="martyrFamilyQuota.maxScore"
+                formControlName="maxScore"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && martyrFamilyQuota.get('maxScore').errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && martyrFamilyQuota.get('maxScore').errors" class="form-error">
+                <div *ngIf="martyrFamilyQuota.get('maxScore').errors.required">En yüksek puan gereklidir.</div>
+                <div *ngIf="martyrFamilyQuota.get('maxScore').errors.min">Puan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" [routerLink]="['/admin/programs/quotas', programId]">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

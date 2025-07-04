@@ -1,0 +1,98 @@
+<!-- src/app/features/countries/country-detail/components/travel-info/travel-info.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-plane"></i>
+      {{ country.name }} Seyahat Bilgileri
+    </h2>
+  </div>
+  
+  <div class="content-card" *ngIf="hasContent()">
+    <div class="content-body">
+      <div class="text-content" [innerHTML]="getContent()"></div>
+    </div>
+  </div>
+
+  <!-- Default Travel Information if no menu content -->
+  <div class="default-info" *ngIf="!menuContent?.content">
+    <div class="info-card">
+      <h3 class="card-title">
+        <i class="fas fa-passport"></i>
+        Vize Gereksinimleri
+      </h3>
+      <div class="visa-info">
+        <div class="visa-item">
+          <h4 class="visa-type">Öğrenci Vizesi</h4>
+          <p class="visa-description">Eğitim amaçlı uzun süreli vize başvurusu</p>
+          <div class="visa-details">
+            <span class="detail-badge">İşlem Süresi: 2-8 hafta</span>
+            <span class="detail-badge">Süre: 1-4 yıl</span>
+          </div>
+        </div>
+        <div class="visa-item">
+          <h4 class="visa-type">Turist Vizesi</h4>
+          <p class="visa-description">Kısa süreli ziyaret vizesi</p>
+          <div class="visa-details">
+            <span class="detail-badge">İşlem Süresi: 1-2 hafta</span>
+            <span class="detail-badge">Süre: 90 gün</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3 class="card-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        Acil Durum Bilgileri
+      </h3>
+      <div class="emergency-grid">
+        <div class="emergency-item">
+          <div class="emergency-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="emergency-info">
+            <h4 class="emergency-title">Acil Yardım</h4>
+            <p class="emergency-number">112</p>
+          </div>
+        </div>
+        <div class="emergency-item">
+          <div class="emergency-icon">
+            <i class="fas fa-hospital"></i>
+          </div>
+          <div class="emergency-info">
+            <h4 class="emergency-title">Sağlık</h4>
+            <p class="emergency-number">144</p>
+          </div>
+        </div>
+        <div class="emergency-item">
+          <div class="emergency-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="emergency-info">
+            <h4 class="emergency-title">Polis</h4>
+            <p class="emergency-number">155</p>
+          </div>
+        </div>
+        <div class="emergency-item">
+          <div class="emergency-icon">
+            <i class="fas fa-fire"></i>
+          </div>
+          <div class="emergency-info">
+            <h4 class="emergency-title">İtfaiye</h4>
+            <p class="emergency-number">110</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="empty-state" *ngIf="!hasContent() && !menuContent">
+    <div class="empty-icon">
+      <i class="fas fa-plane"></i>
+    </div>
+    <h3 class="empty-title">Seyahat Bilgisi Bulunmuyor</h3>
+    <p class="empty-message">
+      {{ country.name }} ülkesi için seyahat bilgisi henüz eklenmemiş.
+    </p>
+  </div>
+</section>

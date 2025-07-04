@@ -1,0 +1,64 @@
+<section class="content-section">
+  <h2 class="section-title">Yakın Üniversiteler</h2>
+  
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Üniversiteler yükleniyor...</p>
+  </div>
+
+  <div class="nearby-unis-container" *ngIf="!isLoading">
+    <div class="info-message">
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="info-content">
+          <h3>Yakın Üniversite Bilgisi</h3>
+          <p>Bu yurt {{ dormitory?.cityName }} şehrinde bulunmaktadır. Aşağıda aynı şehirdeki üniversiteler listelenmektedir.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="distance-info" *ngIf="dormitory?.distanceToCenter">
+      <div class="distance-card">
+        <div class="distance-icon">
+          <i class="fas fa-map-signs"></i>
+        </div>
+        <div class="distance-details">
+          <h4>Şehir Merkezine Uzaklık</h4>
+          <p>{{ dormitory.distanceToCenter }} km</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="nearbyUniversities.length === 0">
+      <i class="fas fa-exclamation-circle"></i>
+      <h3>Üniversite Bilgisi Yok</h3>
+      <p>Bu şehir için henüz üniversite bilgisi eklenmemiş.</p>
+    </div>
+
+    <div class="universities-grid" *ngIf="nearbyUniversities.length > 0">
+      <div class="university-card" *ngFor="let university of nearbyUniversities" [routerLink]="['/universiteler', university.id]">
+        <div class="university-image">
+          <img [src]="getUniversityImageUrl(university)" [alt]="university.name">
+          <div class="image-overlay"></div>
+        </div>
+        <div class="university-details">
+          <div class="type-badge" [ngClass]="getUniversityTypeClass(university.type)">
+            {{ getUniversityTypeName(university.type) }}
+          </div>
+          <h3 class="university-name">{{ university.name }}</h3>
+          <div class="university-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ university.cityName }}</span>
+          </div>
+          <div class="university-info">
+            <div class="info-item" *ngIf="university.studentCount">
+              <i class="fas fa-users"></i>
+              <span>{{ university.studentCount | number }} öğrenci</span>
+            </div>
+            <div class="info-item" *ngIf="university.foundationYear">
+              <i class="fas fa-calendar"></i>
+              <span>{{ university.foundationYear }} yılında kuruldu</span>
+            </div>
+          </div>

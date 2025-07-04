@@ -1,0 +1,177 @@
+<!-- src/app/features/departments/department-detail/department-detail.component.html -->
+<section class="department-detail-page">
+  <!-- Loading State -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Bölüm bilgileri yükleniyor...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="container">
+      <div class="error-content">
+        <div class="error-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h2>Bir Hata Oluştu</h2>
+        <p>{{ error }}</p>
+        <div class="error-actions">
+          <button class="retry-btn" (click)="retry()">
+            <i class="fas fa-redo"></i>
+            Tekrar Dene
+          </button>
+          <a routerLink="/bolumler" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Bölümler Sayfasına Dön
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <ng-container *ngIf="department && !isLoading && !error">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/">
+                <i class="fas fa-home"></i>
+                Ana Sayfa
+              </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/bolumler">Bölümler</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/bolumler']" [queryParams]="{faculty: department.facultyName}">
+                {{ department.facultyName }}
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ department.name }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Department Header -->
+    <div class="department-header">
+      <div class="header-background">
+        <div class="header-overlay"></div>
+        <img *ngIf="department.imagePath" 
+             [src]="getDepartmentImageUrl()" 
+             [alt]="department.name"
+             class="header-bg-image">
+      </div>
+      
+      <div class="container">
+        <div class="header-content">
+          <div class="department-image" *ngIf="department.imagePath">
+            <img [src]="getDepartmentImageUrl()" 
+                 [alt]="department.name"
+                 loading="eager">
+          </div>
+          
+          <div class="department-info">
+            <div class="department-badges">
+              <span class="faculty-badge">{{ department.facultyName }}</span>
+              <span class="university-badge">{{ department.universityName }}</span>
+            </div>
+            
+            <h1 class="department-name">{{ department.name }}</h1>
+            
+            <div class="department-meta">
+              <div class="meta-item" *ngIf="department.averageEducationYears">
+                <i class="fas fa-clock"></i>
+                <span>{{ department.averageEducationYears }} yıl eğitim süresi</span>
+              </div>
+              
+              <div class="meta-item" *ngIf="department.averageSalary">
+                <i class="fas fa-lira-sign"></i>
+                <span>{{ formatSalary(department.averageSalary) }} ortalama maaş</span>
+              </div>
+              
+              <div class="meta-item" *ngIf="department.hasEnglishProgram">
+                <i class="fas fa-language"></i>
+                <span>İngilizce program seçeneği</span>
+              </div>
+            </div>
+            
+            <div class="department-description" *ngIf="department.description">
+              <p>{{ department.description | slice:0:200 }}{{ department.description && department.description.length > 200 ? '...' : '' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="department-content">
+      <div class="container">
+        <div class="content-layout">
+          <!-- Sidebar -->
+          <aside class="sidebar-container">
+            <app-sidebar 
+              [department]="department" 
+              [activeSection]="activeSection"
+              (sectionChange)="onSectionChange($event)">
+            </app-sidebar>
+          </aside>
+
+          <!-- Main Content Area -->
+          <main class="main-content">
+            <div class="content-wrapper">
+              <div [ngSwitch]="activeSection" class="section-content">
+                <app-genel-bilgi 
+                  *ngSwitchCase="'genel-bilgi'" 
+                  [department]="department">
+                </app-genel-bilgi>
+                
+                <app-icerik-mufredat 
+                  *ngSwitchCase="'icerik-mufredat'" 
+                  [department]="department">
+                </app-icerik-mufredat>
+                
+                <app-kim-icin-uygun 
+                  *ngSwitchCase="'kim-icin-uygun'" 
+                  [department]="department">
+                </app-kim-icin-uygun>
+                
+                <app-kim-icin-uygun-degil 
+                  *ngSwitchCase="'kim-icin-uygun-degil'" 
+                  [department]="department">
+                </app-kim-icin-uygun-degil>
+                
+                <app-gerekli-beceriler 
+                  *ngSwitchCase="'gerekli-beceriler'" 
+                  [department]="department">
+                </app-gerekli-beceriler>
+                
+                <app-tavsiyeler 
+                  *ngSwitchCase="'tavsiyeler'" 
+                  [department]="department">
+                </app-tavsiyeler>
+                
+                <app-calisma-hayati 
+                  *ngSwitchCase="'calisma-hayati'" 
+                  [department]="department">
+                </app-calisma-hayati>
+              </div>
+            </div>
+          </main>
+
+          <!-- Related Content Sidebar -->
+          <aside class="related-sidebar">
+            <app-related-content [department]="department"></app-related-content>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

@@ -1,0 +1,40 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">{{ city?.name }} Rehberi</h3>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <ul class="nav-menu">
+      <li class="nav-item" 
+          *ngFor="let item of menuItems"
+          [class.active]="isItemActive(item)"
+          [class.expanded]="isMenuExpanded(item.id)">
+        
+        <a class="nav-link" 
+           [class.has-children]="item.children"
+           (click)="item.children ? toggleMenu(item.id) : selectSection(item.id)">
+          <div class="link-content">
+            <i class="fas" [ngClass]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </div>
+          <i class="fas fa-chevron-down expand-icon" 
+             *ngIf="item.children"
+             [class.rotated]="isMenuExpanded(item.id)"></i>
+        </a>
+        
+        <ul class="sub-menu" 
+            *ngIf="item.children && isMenuExpanded(item.id)"
+            [@slideDown]>
+          <li class="sub-item" 
+              *ngFor="let child of item.children"
+              [class.active]="child.id === activeSection">
+            <a class="sub-link" (click)="selectSection(child.id)">
+              <i class="fas" [ngClass]="child.icon"></i>
+              <span>{{ child.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>

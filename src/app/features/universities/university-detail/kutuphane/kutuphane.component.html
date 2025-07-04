@@ -1,0 +1,268 @@
+<section class="content-section">
+  <h2 class="section-title">Kütüphane</h2>
+  <div class="content-card">
+    <div class="library-info" *ngIf="university">
+      <div class="library-status">
+        <div class="status-message" [class.available]="university.hasLibrary">
+          <i class="fas" [ngClass]="university.hasLibrary ? 'fa-check-circle' : 'fa-times-circle'"></i>
+          <div>
+            <h4>Kütüphane Durumu</h4>
+            <p>Bu üniversitede kütüphane hizmeti {{ university.hasLibrary ? 'bulunmaktadır' : 'hakkında bilgi bulunamamıştır' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="library-features" *ngIf="university.hasLibrary">
+        <h3 class="subsection-title">Kütüphane Hizmetleri</h3>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="feature-content">
+              <h4>Kitap Koleksiyonu</h4>
+              <p>Geniş kapsamlı basılı ve elektronik kitap arşivi</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-newspaper"></i>
+            </div>
+            <div class="feature-content">
+              <h4>Süreli Yayınlar</h4>
+              <p>Ulusal ve uluslararası dergi abonelikleri</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="feature-content">
+              <h4>Veritabanları</h4>
+              <p>Akademik veritabanlarına online erişim</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-laptop"></i>
+            </div>
+            <div class="feature-content">
+              <h4>Bilgisayar İmkanları</h4>
+              <p>İnternet erişimi olan bilgisayar istasyonları</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <div class="feature-content">
+              <h4>WiFi Erişimi</h4>
+              <p>Kütüphane genelinde ücretsiz internet</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="feature-content">
+              <h4>Grup Çalışma Alanları</h4>
+              <p>Proje ve grup çalışmaları için özel alanlar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="study-areas" *ngIf="university.hasLibrary">
+        <h3 class="subsection-title">Çalışma Alanları</h3>
+        <div class="areas-container">
+          <div class="area-card silent">
+            <div class="area-header">
+              <i class="fas fa-volume-mute"></i>
+              <h4>Sessiz Çalışma Alanı</h4>
+            </div>
+            <div class="area-content">
+              <p>Bireysel çalışma için tamamen sessiz ortam</p>
+              <ul>
+                <li>Telefon kullanımı yasak</li>
+                <li>Konuşma yasak</li>
+                <li>Bireysel masa düzeni</li>
+                <li>24 saat erişim</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="area-card group">
+            <div class="area-header">
+              <i class="fas fa-users"></i>
+              <h4>Grup Çalışma Alanı</h4>
+            </div>
+            <div class="area-content">
+              <p>Ekip çalışmaları ve tartışmalar için</p>
+              <ul>
+                <li>Düşük sesle konuşma</li>
+                <li>Beyaz tahta imkanı</li>
+                <li>Projektör ve ekran</li>
+                <li>Rezervasyon sistemi</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="area-card research">
+            <div class="area-header">
+              <i class="fas fa-microscope"></i>
+              <h4>Araştırma Alanı</h4>
+            </div>
+            <div class="area-content">
+              <p>Lisansüstü öğrenciler için özel alan</p>
+              <ul>
+                <li>Özel koleksiyona erişim</li>
+                <li>Kişisel dolaplar</li>
+                <li>Uzun süreli rezervasyon</li>
+                <li>Akademik danışmanlık</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="digital-services" *ngIf="university.hasLibrary">
+        <h3 class="subsection-title">Dijital Hizmetler</h3>
+        <div class="digital-grid">
+          <div class="digital-item">
+            <div class="digital-icon">
+              <i class="fas fa-cloud"></i>
+            </div>
+            <div class="digital-content">
+              <h4>Uzaktan Erişim</h4>
+              <p>VPN ile kampüs dışından veritabanlarına erişim</p>
+            </div>
+          </div>
+
+          <div class="digital-item">
+            <div class="digital-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <div class="digital-content">
+              <h4>Katalog Tarama</h4>
+              <p>Online kütüphane kataloğu arama sistemi</p>
+            </div>
+          </div>
+
+          <div class="digital-item">
+            <div class="digital-icon">
+              <i class="fas fa-bookmark"></i>
+            </div>
+            <div class="digital-content">
+              <h4>Rezervasyon</h4>
+              <p>Kitap rezervasyonu ve uzatma işlemleri</p>
+            </div>
+          </div>
+
+          <div class="digital-item">
+            <div class="digital-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="digital-content">
+              <h4>E-Kitaplar</h4>
+              <p>Dijital kitap koleksiyonu ve PDF erişimi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="library-rules" *ngIf="university.hasLibrary">
+        <h3 class="subsection-title">Kütüphane Kuralları</h3>
+        <div class="rules-container">
+          <div class="rules-section">
+            <h4>Genel Kurallar</h4>
+            <ul>
+              <li>Öğrenci kartı ile giriş zorunludur</li>
+              <li>Yiyecek ve içecek girişi yasaktır</li>
+              <li>Sigara içmek kesinlikle yasaktır</li>
+              <li>Telefon sessiz modda olmalıdır</li>
+              <li>Kişisel eşyalarınızı yanınızdan ayırmayın</li>
+            </ul>
+          </div>
+
+          <div class="rules-section">
+            <h4>Ödünç Alma</h4>
+            <ul>
+              <li>Lisans öğrencisi: 5 kitap, 15 gün</li>
+              <li>Lisansüstü öğrencisi: 10 kitap, 30 gün</li>
+              <li>Geç iade para cezası uygulanır</li>
+              <li>Online uzatma imkanı mevcuttur</li>
+              <li>Kaybolan kitap bedeli tahsil edilir</li>
+            </ul>
+          </div>
+
+          <div class="rules-section">
+            <h4>Çalışma Alanları</h4>
+            <ul>
+              <li>Masalar kişisel eşya ile işgal edilemez</li>
+              <li>Grup çalışma alanları rezervasyon ile kullanılır</li>
+              <li>Sessiz alanda konuşmak yasaktır</li>
+              <li>Temizlik sorumluluğu kullanıcıdadır</li>
+              <li>Teknik sorunlar personele bildirilmelidir</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="opening-hours" *ngIf="university.hasLibrary">
+        <h3 class="subsection-title">Çalışma Saatleri</h3>
+        <div class="hours-table">
+          <div class="hours-row">
+            <span class="day">Pazartesi - Cuma</span>
+            <span class="time">08:00 - 24:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="day">Cumartesi</span>
+            <span class="time">09:00 - 22:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="day">Pazar</span>
+            <span class="time">10:00 - 20:00</span>
+          </div>
+          <div class="hours-row special">
+            <span class="day">Sınav Dönemleri</span>
+            <span class="time">24 Saat Açık</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-library" *ngIf="!university.hasLibrary">
+        <div class="info-message">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <h4>Kütüphane Bilgisi Bulunamadı</h4>
+            <p>Bu üniversite için kütüphane bilgisi bulunamadı. Detaylı bilgi için üniversite ile direkt iletişime geçmenizi öneririz.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-library">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-phone"></i>
+          <div>
+            <h4>Kütüphane Bilgileri</h4>
+            <p>Kütüphane hizmetleri ve detaylı bilgi için üniversitenin kütüphane birimi ile iletişime geçebilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

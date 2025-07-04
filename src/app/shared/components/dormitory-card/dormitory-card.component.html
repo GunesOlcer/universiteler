@@ -1,0 +1,38 @@
+<div class="dormitory-card" [routerLink]="['/yurtlar', dormitory.id]">
+  <div class="card-image">
+    <img [src]="getImageUrl()" [alt]="dormitory.name">
+    <div class="type-badge" [ngClass]="getTypeClass()">
+      {{ dormitory.typeName }}
+    </div>
+    <div class="gender-badge" [ngClass]="getGenderClass()">
+      {{ dormitory.genderName }}
+    </div>
+  </div>
+  <div class="card-content">
+    <h3 class="dormitory-name">{{ dormitory.name }}</h3>
+    <div class="dormitory-location">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>{{ dormitory.cityName }}, {{ dormitory.countryName }}</span>
+    </div>
+    <div class="dormitory-details">
+      <div class="detail-item" *ngIf="dormitory.capacity">
+        <i class="fas fa-bed"></i>
+        <span>{{ dormitory.capacity }} Yatak</span>
+      </div>
+      <div class="detail-item" *ngIf="dormitory.monthlyPrice">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>{{ dormitory.monthlyPrice | currency:'TRY':'symbol':'1.0-0' }}/ay</span>
+      </div>
+    </div>
+    <div class="dormitory-features" *ngIf="dormitory.features && dormitory.features.length > 0">
+      <div class="feature" *ngFor="let feature of dormitory.features.slice(0, 3)">
+        <i class="fas" [ngClass]="getFeatureIcon(feature.icon)"></i>
+        <span>{{ feature.name }}</span>
+      </div>
+      <div class="feature more-features" *ngIf="dormitory.features.length > 3">
+        <i class="fas fa-plus"></i>
+        <span>+{{ dormitory.features.length - 3 }}</span>
+      </div>
+    </div>
+  </div>
+</div>

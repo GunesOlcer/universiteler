@@ -1,0 +1,308 @@
+<div class="content-container">
+  <!-- Page Header -->
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-globe"></i>
+        Ülke Yönetimi
+      </h1>
+      <p class="page-subtitle">Sistemdeki tüm ülkeleri görüntüle, düzenle veya yeni ülke ekle</p>
+    </div>
+    <div class="page-actions">
+      <a routerLink="/admin/countries/add" class="btn-add">
+        <span class="btn-icon"><i class="fas fa-plus"></i></span>
+        <span class="btn-text">Yeni Ülke</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon total">
+        <i class="fas fa-globe"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-value">{{ totalItems }}</h3>
+        <span class="stat-label">Toplam Ülke</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon active">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-value">{{ getActiveCount() }}</h3>
+        <span class="stat-label">Aktif Ülke</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon info">
+        <i class="fas fa-city"></i>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-value">-</h3>
+        <span class="stat-label">Toplam Şehir</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-header">
+      <h2 class="filter-title">
+        <i class="fas fa-filter"></i> Filtreler
+      </h2>
+      <button class="btn-filter-toggle" (click)="filterPanelOpen = !filterPanelOpen">
+        {{ filterPanelOpen ? 'Filtreleri Gizle' : 'Filtreleri Göster' }}
+        <i class="fas" [ngClass]="filterPanelOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+    </div>
+    
+    <div class="filter-body" [class.open]="filterPanelOpen">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="name-filter" class="filter-label">Ülke Adı</label>
+          <div class="input-icon-wrapper">
+            <input 
+              type="text"
+              id="name-filter"
+              [(ngModel)]="filters.searchTerm"
+              placeholder="Ülke adı ara..."
+              class="filter-input"
+              (keyup.enter)="applyFilters()"
+            >
+            <i class="fas fa-search input-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label for="status-filter" class="filter-label">Durum</label>
+          <div class="select-wrapper">
+            <select id="status-filter" [(ngModel)]="filters.status" class="filter-select">
+              <option [value]="undefined">Tümü</option>
+              <option [value]="Status.Active">Aktif</option>
+              <option [value]="Status.Passive">Pasif</option>
+              <option [value]="Status.Pending">Beklemede</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button type="button" class="btn-reset" (click)="resetFilters()">
+          <i class="fas fa-undo"></i> Filtreleri Sıfırla
+        </button>
+        <button type="button" class="btn-apply" (click)="applyFilters()">
+          <i class="fas fa-filter"></i> Filtrele
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countries Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Ülke Listesi
+      </h2>
+      <div class="table-actions">
+        <button class="btn-refresh" (click)="loadCountries()" [disabled]="loading">
+          <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i> Yenile
+        </button>
+        <div class="dropdown" [class.open]="showExportDropdown">
+          <button class="btn-export" (click)="toggleExportDropdown()" [disabled]="exporting">
+            <i class="fas fa-download" *ngIf="!exporting"></i>
+            <i class="fas fa-spinner fa-spin" *ngIf="exporting"></i>
+            {{ exporting ? 'Dışa Aktarılıyor...' : 'Dışa Aktar' }}
+          </button>
+          <div class="dropdown-menu" *ngIf="showExportDropdown">
+            <button 
+              *ngFor="let format of exportFormats" 
+              class="dropdown-item" 
+              (click)="exportData(format.key)">
+              <i [class]="format.icon"></i>
+              {{ format.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="table-wrapper">
+      <!-- Loading Overlay -->
+      <div *ngIf="loading" class="loading-overlay">
+        <div class="loading-content">
+          <div class="spinner"></div>
+          <p class="loading-text">Ülkeler yükleniyor...</p>
+        </div>
+      </div>
+      
+      <table class="data-table country-table">
+        <thead>
+          <tr>
+            <th class="th-name">
+              <div class="th-content">
+                <i class="fas fa-flag"></i>
+                <span>Ülke Adı</span>
+              </div>
+            </th>
+            <th class="th-code">
+              <div class="th-content">
+                <i class="fas fa-code"></i>
+                <span>Ülke Kodu</span>
+              </div>
+            </th>
+            <th class="th-status">
+              <div class="th-content">
+                <i class="fas fa-info-circle"></i>
+                <span>Durum</span>
+              </div>
+            </th>
+            <th class="th-date">
+              <div class="th-content">
+                <i class="fas fa-calendar"></i>
+                <span>Oluşturma Tarihi</span>
+              </div>
+            </th>
+            <th class="th-actions">
+              <div class="th-content">
+                <i class="fas fa-cogs"></i>
+                <span>İşlemler</span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let country of countries; trackBy: trackByCountryId" class="table-row">
+            <td class="td-name">
+              <div class="country-info">
+                <div class="country-flag">
+                  <i class="fas fa-flag"></i>
+                </div>
+                <div class="country-details">
+                  <span class="country-name">{{ country.name }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="td-code">
+              <span class="country-code">{{ country.code }}</span>
+            </td>
+            <td class="td-status">
+              <span class="status-badge" [ngClass]="getStatusClass(country.status)">
+                <i class="fas fa-circle"></i>
+                {{ getStatusName(country.status) }}
+              </span>
+            </td>
+            <td class="td-date">
+              <div class="date-info">
+                <span class="date-text">{{ country.createdDate | date:'dd.MM.yyyy' }}</span>
+                <span class="time-text">{{ country.createdDate | date:'HH:mm' }}</span>
+              </div>
+            </td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <a [routerLink]="['/admin/countries/edit', country.id]" 
+                   class="btn-action btn-edit" 
+                   title="Düzenle">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <button type="button" 
+                        class="btn-action btn-delete" 
+                        title="Sil" 
+                        (click)="confirmDelete(country)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                <button type="button" 
+                        class="btn-action btn-view" 
+                        title="Görüntüle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- No Data Row -->
+          <tr *ngIf="countries.length === 0 && !loading" class="no-data-row">
+            <td colspan="5" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-search"></i>
+                <h3>Veri Bulunamadı</h3>
+                <p>Aradığınız kriterlere uygun ülke bulunamadı.</p>
+                <button class="btn-reset-search" (click)="resetFilters()">
+                  <i class="fas fa-undo"></i>
+                  Filtreleri Sıfırla
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Table Footer with Pagination -->
+    <div class="table-footer" *ngIf="totalItems > 0">
+      <div class="pagination-info">
+        <i class="fas fa-info-circle"></i>
+        <span>
+          Toplam {{ totalItems }} kayıttan 
+          {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalItems) }} 
+          arası gösteriliyor
+        </span>
+      </div>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog" (click)="closeExportDropdown()">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Ülke Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="delete-country-info">
+          <div class="country-preview">
+            <i class="fas fa-flag"></i>
+            <div class="country-details">
+              <h4>{{ countryToDelete?.name }}</h4>
+              <span>{{ countryToDelete?.code }}</span>
+            </div>
+          </div>
+        </div>
+        <p class="delete-message">
+          Bu ülkeyi silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve ülkeye ait tüm veriler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteCountry()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Click outside to close export dropdown -->
+<div class="dropdown-backdrop" *ngIf="showExportDropdown" (click)="closeExportDropdown()"></div>

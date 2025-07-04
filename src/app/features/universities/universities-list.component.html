@@ -1,0 +1,209 @@
+<section class="universities-page">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Üniversiteler</h1>
+      <p class="page-subtitle">
+        Türkiye ve KKTC'deki tüm üniversiteler hakkında bilgi edinin
+      </p>
+    </div>
+  </div>
+
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li *ngFor="let item of breadcrumbPath" class="breadcrumb-item" [ngClass]="{'active': item.active}">
+            <a *ngIf="!item.active" [routerLink]="item.url">{{ item.label }}</a>
+            <span *ngIf="item.active">{{ item.label }}</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <button type="button" class="filter-toggle" (click)="toggleFilters()" *ngIf="isMobile">
+        <i class="fas" [ngClass]="showFilters ? 'fa-times' : 'fa-filter'"></i> 
+        {{ showFilters ? 'Filtreleri Kapat' : 'Filtreleri Göster' }}
+      </button>
+
+      <div class="mobile-filter-overlay" 
+           [class.active]="showFilters" 
+           (click)="closeFilters()" 
+           *ngIf="isMobile"></div>
+
+      <div class="content-wrapper">
+        <div class="search-filter-container" [class.active]="showFilters">
+          <div class="filter-header" *ngIf="isMobile">
+            <h2 class="filter-header-title">Sonuçları Filtrele</h2>
+            <button type="button" class="filter-close-btn" (click)="closeFilters()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="search-section">
+            <label class="section-title" for="uni-search">Üniversite Ara</label>
+            <div class="search-box">
+              <input
+                id="uni-search"
+                type="text"
+                [(ngModel)]="searchTerm"
+                placeholder="Üniversite adı, şehir..."
+                class="search-input"
+                name="search"
+                (keyup.enter)="onSearch()">
+              <button type="button" class="search-button" (click)="onSearch()">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+
+          <label class="section-title">Filtre Seçenekleri</label>
+          <div class="filter-tabs">
+            <button 
+              class="filter-tab" 
+              [class.active]="activeFilter === 'all'"
+              (click)="applyFilter('all')">
+              Tümü
+            </button>
+            <button 
+              class="filter-tab" 
+              [class.active]="activeFilter === 'turkiye'"
+              (click)="applyFilter('turkiye')">
+              Türkiye
+            </button>
+            <button 
+              class="filter-tab" 
+              [class.active]="activeFilter === 'kktc'"
+              (click)="applyFilter('kktc')">
+              KKTC
+            </button>
+          </div>
+
+          <label class="section-title">Sırala:</label>
+          <div class="select-container">
+            <select (change)="onSortChange($event)" [value]="sortValue" class="select-box">
+              <option value="">Seçiniz</option>
+              <option value="asc">İsme Göre (A-Z)</option>
+              <option value="desc">İsme Göre (Z-A)</option>
+            </select>
+          </div>
+
+          <div class="additional-filters">
+            <div class="university-type-filter">
+              <p>Üniversite Türü</p>
+              <div *ngFor="let type of universityTypes">
+                <input 
+                  type="checkbox" 
+                  [id]="'type-' + type"
+                  name="type"
+                  [checked]="selectedTypes.includes(type)"
+                  (change)="toggleTypeFilter(type)">
+                <label [for]="'type-' + type">
+                  {{ type === 'all' ? 'Tümü' : 
+                     type === 'state' ? 'Devlet' : 
+                     type === 'foundation' ? 'Vakıf' : 
+                     type === 'private' ? 'Özel' :
+                     type === 'kktc' ? 'KKTC' : type }}
+                </label>
+              </div>
+            </div>
+
+            <div class="region-filter" *ngIf="activeFilter !== 'kktc'">
+              <p>Bölge Seçin</p>
+              <div *ngFor="let region of regions">
+                <input 
+                  type="checkbox" 
+                  [id]="'region-' + region"
+                  name="region"
+                  [checked]="selectedRegions.includes(region)"
+                  (change)="toggleRegionFilter(region)">
+                <label [for]="'region-' + region">
+                  {{ region === 'marmara' ? 'Marmara' : 
+                     region === 'ege' ? 'Ege' : 
+                     region === 'akdeniz' ? 'Akdeniz' : 
+                     region === 'ic_anadolu' ? 'İç Anadolu' :
+                     region === 'karadeniz' ? 'Karadeniz' :
+                     region === 'dogu_anadolu' ? 'Doğu Anadolu' :
+                     region === 'guneydogu_anadolu' ? 'Güneydoğu Anadolu' : region }}
+                </label>
+              </div>
+            </div>
+
+            <div class="other-options-filter">
+              <p>Şehir</p>
+              <div *ngIf="cities.length === 0" class="empty-cities-message">
+                <p>Seçili bölgelere ait şehir bulunamadı.</p>
+              </div>
+              <div class="cities-scrollable-list">
+                <div class="city-item" *ngFor="let city of cities">
+                  <input 
+                    type="checkbox" 
+                    [id]="'city-' + city"
+                    name="city"
+                    [checked]="selectedCities.includes(city)"
+                    (change)="toggleCityFilter(city)">
+                  <label [for]="'city-' + city">{{ city.charAt(0).toUpperCase() + city.slice(1) }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="other-options-filter">
+              <p>Diğer Seçenekler</p>
+              <div *ngFor="let option of options">
+                <input 
+                  type="checkbox" 
+                  [id]="'option-' + option"
+                  name="option"
+                  [checked]="selectedOptions.includes(option)"
+                  (change)="toggleOptionFilter(option)">
+                <label [for]="'option-' + option">
+                  {{ option === 'research' ? 'Araştırma Üniversitesi' :
+                     option === 'erasmus' ? 'Erasmus+ ve Öğrenci Değişimi' : option }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button class="clear-button" (click)="resetFilters()">
+              Filtreleri Temizle
+            </button>
+            <button class="apply-button" (click)="applyMobileFilters()">
+              Filtreleri Uygula
+            </button>
+          </div>
+        </div>
+
+        <div class="universities-container">
+          <div class="loading-state" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <p>Üniversiteler yükleniyor...</p>
+          </div>
+
+          <div *ngIf="!isLoading">
+            <div class="results-count" *ngIf="filteredUniversities.length > 0">
+              {{ filteredUniversities.length }} üniversite bulundu
+            </div>
+
+            <div class="universities-grid">
+              <app-university-card
+                *ngFor="let university of filteredUniversities"
+                [university]="university">
+              </app-university-card>
+
+              <div class="empty-state" *ngIf="filteredUniversities.length === 0">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Bu kriterlere uygun üniversite bulunamadı.</p>
+                <button class="reset-button" (click)="resetFilters()">
+                  Filtreleri Sıfırla
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

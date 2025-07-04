@@ -1,0 +1,170 @@
+<div class="dashboard-page">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Dashboard verileri yükleniyor...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button (click)="refreshData()" class="btn-retry">
+        <i class="fas fa-redo"></i> Tekrar Dene
+      </button>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading && !error">
+    <!-- Welcome Message -->
+    <div class="welcome-section" *ngIf="currentUser">
+      <h1 class="welcome-title">
+        Hoş geldiniz, {{ currentUser.firstName }} {{ currentUser.lastName }}!
+      </h1>
+      <p class="welcome-subtitle">
+        Yönetim paneline başarıyla giriş yaptınız. İşte sistem durumunuz:
+      </p>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="stats-section">
+      <div class="stat-card users">
+        <div class="icon-box">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats.onlineUsers }}</div>
+          <div class="stat-label">Online Kullanıcılar</div>
+          <div class="stat-growth positive">
+            <i class="fas fa-arrow-up"></i> Anlık
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="icon-box">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats.newMembers }}</div>
+          <div class="stat-label">Yeni Üyeler</div>
+          <div class="stat-growth positive">
+            <i class="fas fa-arrow-up"></i> Son 30 günde
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card universities">
+        <div class="icon-box">
+          <i class="fas fa-university"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats.totalUniversities }}</div>
+          <div class="stat-label">Toplam Üniversite</div>
+        </div>
+      </div>
+      
+      <div class="stat-card dormitories">
+        <div class="icon-box">
+          <i class="fas fa-bed"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats.totalDormitories }}</div>
+          <div class="stat-label">Toplam Yurt</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dashboard Widgets -->
+    <div class="dashboard-widgets">
+      <!-- Recent Users Widget -->
+      <div class="widget">
+        <div class="widget-header">
+          <h2 class="widget-title">
+            <i class="fas fa-user-clock"></i>
+            Son Kayıt Olan Kullanıcılar
+          </h2>
+          <div class="widget-actions">
+            <button class="btn-action" (click)="refreshData()" [disabled]="loading">
+              <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+            </button>
+            <a href="/admin/users" class="widget-link">
+              Tümünü Gör <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="widget-body">
+          <div class="recent-users">
+            <div class="user-item" *ngFor="let user of recentUsers; trackBy: trackByUserId">
+              <div class="user-avatar" [attr.title]="getUserDisplayName(user)">
+                {{ getUserInitials(user) }}
+              </div>
+              <div class="user-info">
+                <div class="user-name">{{ getUserDisplayName(user) }}</div>
+                <div class="user-email">{{ user.email }}</div>
+              </div>
+              <div class="user-date">
+                <i class="far fa-clock"></i>
+                {{ user.createdAt | date:'dd/MM/yyyy HH:mm' }}
+              </div>
+            </div>
+            
+            <div *ngIf="recentUsers.length === 0" class="empty-state">
+              <i class="fas fa-users"></i>
+              <p>Henüz kullanıcı bulunmamaktadır</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Stats Widget -->
+      <div class="widget">
+        <div class="widget-header">
+          <h2 class="widget-title">
+            <i class="fas fa-chart-pie"></i>
+            Hızlı İstatistikler
+          </h2>
+          <div class="widget-actions">
+            <button class="btn-action" (click)="refreshData()">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="widget-body">
+          <div class="quick-stats">
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalMembers | number }}</div>
+              <div class="stat-label">Toplam Üye</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalDepartments | number }}</div>
+              <div class="stat-label">Toplam Bölüm</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalFaculties | number }}</div>
+              <div class="stat-label">Toplam Fakülte</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalCities }}</div>
+              <div class="stat-label">Toplam Şehir</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalArticles }}</div>
+              <div class="stat-label">Toplam Makale</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-value">{{ stats.totalPages }}</div>
+              <div class="stat-label">Toplam Sayfa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,300 @@
+<!-- src/app/admin/pages/universities/program-add-edit/program-add-edit.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-graduation-cap"></i>
+        {{ isEditMode ? 'Program Düzenle' : 'Yeni Program Ekle' }}
+      </h1>
+      <p class="page-subtitle">
+        {{ isEditMode ? 'Program bilgilerini güncelleyin' : 'Sisteme yeni bir program kaydı ekleyin' }}
+      </p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs']" [queryParams]="programForm.get('facultyId')?.value ? {facultyId: programForm.get('facultyId')?.value} : {}">
+        <i class="fas fa-arrow-left"></i>
+        Listeye Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">
+    <form [formGroup]="programForm" (ngSubmit)="saveProgram()">
+      <div class="form-navigation">
+        <div class="nav-item" [class.active]="currentSection === 'basic'" (click)="scrollToSection('basic')">
+          <span class="nav-number">1</span>
+          <span class="nav-text">Temel Bilgiler</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'education'" (click)="scrollToSection('education')">
+          <span class="nav-number">2</span>
+          <span class="nav-text">Eğitim Bilgileri</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'other'" (click)="scrollToSection('other')">
+          <span class="nav-number">3</span>
+          <span class="nav-text">Diğer Bilgiler</span>
+        </div>
+      </div>
+      
+      <!-- Temel Bilgiler -->
+      <div class="form-card" id="section-basic">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Temel Bilgiler
+          </h2>
+          <p class="card-subtitle">Programın temel bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">Program Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.name.errors}"
+                placeholder="Program adını girin"
+              >
+              <div *ngIf="submitted && f.name.errors" class="form-error">
+                <div *ngIf="f.name.errors.required">Program adı gereklidir.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="facultyId">Fakülte / Yüksekokul <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="facultyId"
+                  formControlName="facultyId"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.facultyId.errors}"
+                >
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let faculty of faculties" [value]="faculty.id">{{ faculty.name }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.facultyId.errors" class="form-error">
+                <div *ngIf="f.facultyId.errors.required">Fakülte/Yüksekokul seçimi gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="departmentId">Bölüm <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="departmentId"
+                  formControlName="departmentId"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.departmentId.errors}"
+                >
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.departmentId.errors" class="form-error">
+                <div *ngIf="f.departmentId.errors.required">Bölüm seçimi gereklidir.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Eğitim Bilgileri -->
+      <div class="form-card" id="section-education">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-university"></i>
+            Eğitim Bilgileri
+          </h2>
+          <p class="card-subtitle">Programın eğitim detaylarını girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="language">Eğitim Dili <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="language"
+                  formControlName="language"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.language.errors}"
+                >
+                  <option value="Türkçe">Türkçe</option>
+                  <option value="İngilizce">İngilizce</option>
+                  <option value="Almanca">Almanca</option>
+                  <option value="Fransızca">Fransızca</option>
+                  <option value="Arapça">Arapça</option>
+                  <option value="%30 İngilizce">%30 İngilizce</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.language.errors" class="form-error">
+                <div *ngIf="f.language.errors.required">Eğitim dili gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="educationType">Öğretim Türü <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="educationType"
+                  formControlName="educationType"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.educationType.errors}"
+                >
+                  <option value="Örgün">Örgün</option>
+                  <option value="İkinci Öğretim">İkinci Öğretim</option>
+                  <option value="Uzaktan Eğitim">Uzaktan Eğitim</option>
+                  <option value="Açık Öğretim">Açık Öğretim</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.educationType.errors" class="form-error">
+                <div *ngIf="f.educationType.errors.required">Öğretim türü gereklidir.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="duration">Öğrenim Süresi <span class="required">*</span></label>
+              <div class="input-icon-wrapper">
+                <input 
+                  type="number"
+                  id="duration"
+                  formControlName="duration"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.duration.errors}"
+                  min="1"
+                  max="8"
+                >
+                <span class="input-suffix">Yıl</span>
+              </div>
+              <div *ngIf="submitted && f.duration.errors" class="form-error">
+                <div *ngIf="f.duration.errors.required">Öğrenim süresi gereklidir.</div>
+                <div *ngIf="f.duration.errors.min || f.duration.errors.max">Öğrenim süresi 1-8 yıl arasında olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-4">
+              <label for="scoreType">Puan Türü <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="scoreType"
+                  formControlName="scoreType"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.scoreType.errors}"
+                >
+                  <option value="">Seçiniz</option>
+                  <option value="SAY">SAY</option>
+                  <option value="EA">EA</option>
+                  <option value="SÖZ">SÖZ</option>
+                  <option value="DİL">DİL</option>
+                  <option value="TYT">TYT</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.scoreType.errors" class="form-error">
+                <div *ngIf="f.scoreType.errors.required">Puan türü gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-4">
+              <label for="quota">Genel Kontenjan <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="quota"
+                formControlName="quota"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.quota.errors}"
+                min="0"
+              >
+              <div *ngIf="submitted && f.quota.errors" class="form-error">
+                <div *ngIf="f.quota.errors.required">Genel kontenjan gereklidir.</div>
+                <div *ngIf="f.quota.errors.min">Kontenjan 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="fee">Ücret (TL) <span class="required">*</span></label>
+              <input 
+                type="number"
+                id="fee"
+                formControlName="fee"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.fee.errors}"
+                min="0"
+                step="0.01"
+              >
+              <div *ngIf="submitted && f.fee.errors" class="form-error">
+                <div *ngIf="f.fee.errors.required">Ücret gereklidir.</div>
+                <div *ngIf="f.fee.errors.min">Ücret 0 veya daha büyük olmalıdır.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="specialConditions">Özel Koşullar</label>
+              <textarea 
+                id="specialConditions"
+                formControlName="specialConditions"
+                class="form-control"
+                rows="4"
+                placeholder="Programa ait özel koşulları girin"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Diğer Bilgiler -->
+      <div class="form-card" id="section-other">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-sliders-h"></i>
+            Diğer Bilgiler
+          </h2>
+          <p class="card-subtitle">Program ile ilgili diğer ayarları yapın</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Aktif</span>
+                <span class="toggle-description">Program sitede görünür olsun mu?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isActive">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions (Bottom) -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" [routerLink]="['/admin/programs']" [queryParams]="programForm.get('facultyId')?.value ? {facultyId: programForm.get('facultyId')?.value} : {}">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

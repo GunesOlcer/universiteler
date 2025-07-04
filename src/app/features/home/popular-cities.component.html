@@ -1,0 +1,53 @@
+<section class="cities-section">
+  <div class="container">
+    <div class="section-header centered">
+      <div class="header-text">
+        <h2 class="section-title">Popüler Şehirler</h2>
+        <p class="section-subtitle">En çok üniversite bulunan şehirler</p>
+      </div>
+      
+      <a routerLink="/cities" class="view-all-button">
+        Tüm Şehirleri Keşfet
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+    
+    <div class="cities-container">
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Popüler şehirler yükleniyor...</p>
+      </div>
+      
+      <!-- Error State -->
+      <div class="error-state" *ngIf="error && !isLoading">
+        <div class="error-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="error-title">Bir Hata Oluştu</h3>
+        <p class="error-message">{{ error }}</p>
+        <button class="retry-button" (click)="retryLoad()">
+          <i class="fas fa-redo"></i>
+          Tekrar Dene
+        </button>
+      </div>
+      
+      <!-- Cities Grid -->
+      <div class="cities-grid" *ngIf="!isLoading && !error" #citiesGrid>
+        <app-city-card 
+          *ngFor="let city of cities; trackBy: trackByCity" 
+          [city]="city">
+        </app-city-card>
+        
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="cities.length === 0">
+          <div class="empty-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="empty-title">Şehir Bulunamadı</h3>
+          <p class="empty-message">Henüz popüler şehir bulunamadı.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

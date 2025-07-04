@@ -1,0 +1,107 @@
+<div class="pagination-container" *ngIf="totalPages > 0">
+    <!-- Page Size Selector -->
+    <div class="page-size-selector" *ngIf="showPageSizes && pageSizeOptions?.length">
+      <label for="pageSizeSelect">Sayfa Başına:</label>
+      <div class="select-wrapper">
+        <select id="pageSizeSelect" [value]="currentPageSize" (change)="onPageSizeChange($event)" class="page-size-select">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+        <i class="fas fa-chevron-down select-icon"></i>
+      </div>
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <!-- First Page Button -->
+      <button 
+        type="button" 
+        class="page-button first-page" 
+        [class.disabled]="currentPage === 1"
+        (click)="onPageClick(1)"
+        aria-label="İlk Sayfa"
+        title="İlk Sayfa">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+      
+      <!-- Previous Page Button -->
+      <button 
+        type="button" 
+        class="page-button prev-page" 
+        [class.disabled]="currentPage === 1"
+        (click)="onPageClick(currentPage - 1)"
+        aria-label="Önceki Sayfa"
+        title="Önceki Sayfa">
+        <i class="fas fa-angle-left"></i>
+      </button>
+      
+      <!-- Page Numbers -->
+      <div class="page-numbers">
+        <ng-container *ngFor="let page of visiblePages">
+          <span *ngIf="isEllipsis(page)" class="page-ellipsis">
+            <button type="button" class="page-button jump-button" (click)="toggleJumpToPage()" title="Sayfaya Git">
+              <i class="fas fa-ellipsis-h"></i>
+            </button>
+          </span>
+          <button 
+            *ngIf="!isEllipsis(page)"
+            type="button" 
+            class="page-button page-number" 
+            [class.active]="page === currentPage"
+            (click)="onPageClick(page)">
+            {{ page }}
+          </button>
+        </ng-container>
+      </div>
+      
+      <!-- Next Page Button -->
+      <button 
+        type="button" 
+        class="page-button next-page" 
+        [class.disabled]="currentPage === totalPages"
+        (click)="onPageClick(currentPage + 1)"
+        aria-label="Sonraki Sayfa"
+        title="Sonraki Sayfa">
+        <i class="fas fa-angle-right"></i>
+      </button>
+      
+      <!-- Last Page Button -->
+      <button 
+        type="button" 
+        class="page-button last-page" 
+        [class.disabled]="currentPage === totalPages"
+        (click)="onPageClick(totalPages)"
+        aria-label="Son Sayfa"
+        title="Son Sayfa">
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    </div>
+    
+    <!-- Jump to Page Popup -->
+    <div class="jump-to-page-popup" *ngIf="showJumpToPage">
+      <div class="jump-popup-content">
+        <div class="jump-popup-header">
+          <span>Sayfaya Git</span>
+          <button type="button" class="jump-popup-close" (click)="showJumpToPage = false">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="jump-popup-body">
+          <div class="jump-input-group">
+            <input 
+              type="number" 
+              id="jumpToPageInput"
+              [(ngModel)]="jumpToPageValue" 
+              min="1" 
+              [max]="totalPages"
+              class="jump-input"
+              (keyup)="onJumpInputKeyUp($event)">
+            <span class="jump-total">/ {{ totalPages }}</span>
+          </div>
+          <div class="jump-actions">
+            <button type="button" class="jump-cancel" (click)="showJumpToPage = false">İptal</button>
+            <button type="button" class="jump-go" (click)="jumpToPage()">Git</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

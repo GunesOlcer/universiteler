@@ -1,0 +1,156 @@
+<header class="admin-header" 
+        [class.sidebar-collapsed]="sidebarCollapsed" 
+        role="banner">
+  
+  <!-- Left section with sidebar toggle -->
+  <div class="header-left">
+    <button class="sidebar-toggle-btn" 
+            (click)="toggleSidebar()" 
+            [attr.aria-label]="sidebarCollapsed ? 'Menüyü Genişlet' : 'Menüyü Daralt'"
+            [attr.aria-expanded]="!sidebarCollapsed">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Center section with date/time -->
+  <div class="header-center">
+    <div class="datetime-display">
+      <i class="far fa-clock" aria-hidden="true"></i>
+      <span>{{ currentDateTime }}</span>
+    </div>
+  </div>
+
+  <!-- Right section with controls -->
+  <div class="header-right">
+    <!-- Notifications -->
+    <div class="notification-container">
+      <button class="header-button notification-toggle" 
+              (click)="toggleNotifications()" 
+              [attr.aria-label]="'Bildirimler' + (unreadCount > 0 ? ', ' + unreadCount + ' okunmamış' : '')"
+              [attr.aria-expanded]="showNotifications">
+        <i class="fas fa-bell"></i>
+        <span *ngIf="unreadCount > 0" class="notification-badge">{{ unreadCount }}</span>
+      </button>
+
+      <div class="notification-dropdown" 
+           [class.active]="showNotifications"
+           [attr.aria-hidden]="!showNotifications">
+        <div class="dropdown-header">
+          <h3 class="dropdown-title">Bildirimler</h3>
+          <button class="mark-all-button" 
+                  (click)="markAllAsRead()" 
+                  [class.disabled]="unreadCount === 0"
+                  [disabled]="unreadCount === 0">
+            <i class="fas fa-check-double"></i>
+            <span>Tümünü Okundu İşaretle</span>
+          </button>
+        </div>
+
+        <div class="dropdown-content">
+          <div *ngIf="notifications.length === 0" class="empty-notifications">
+            <i class="far fa-bell-slash"></i>
+            <p>Bildirim bulunmuyor</p>
+          </div>
+
+          <div *ngFor="let notification of notifications" 
+               class="notification-item" 
+               [class.unread]="!notification.read" 
+               (click)="markAsRead(notification)"
+               role="button"
+               tabindex="0"
+               [attr.aria-label]="notification.title + ': ' + notification.text">
+            <div class="notification-icon" [ngClass]="notification.type">
+              <i class="fas" [ngClass]="getNotificationIcon(notification.type)"></i>
+            </div>
+            <div class="notification-content">
+              <h4 class="notification-title">{{ notification.title }}</h4>
+              <p class="notification-text">{{ notification.text }}</p>
+              <span class="notification-time">{{ notification.time }}</span>
+            </div>
+            <div class="notification-actions">
+              <button class="action-button" 
+                      [attr.aria-label]="'İşaretle: ' + notification.title"
+                      (click)="markAsRead(notification); $event.stopPropagation()">
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dropdown-footer">
+          <a href="javascript:void(0)" class="view-all">Tüm Bildirimleri Görüntüle</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fullscreen toggle -->
+    <button class="header-button fullscreen-toggle" 
+            (click)="toggleFullscreen()" 
+            [attr.aria-label]="isFullscreen ? 'Tam Ekrandan Çık' : 'Tam Ekran'"
+            [title]="isFullscreen ? 'Tam Ekrandan Çık' : 'Tam Ekran'">
+      <i class="fas" [ngClass]="isFullscreen ? 'fa-compress' : 'fa-expand'"></i>
+    </button>
+
+    <!-- User menu -->
+    <div class="user-menu-container">
+      <div class="user-avatar-wrapper" 
+           (click)="toggleUserDropdown()"
+           role="button"
+           tabindex="0"
+           [attr.aria-expanded]="showUserDropdown"
+           aria-haspopup="true"
+           aria-label="Kullanıcı Menüsü">
+        <div class="user-info">
+          <span class="user-name">Admin User</span>
+          <span class="user-role">Yönetici</span>
+        </div>
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <i class="fas fa-chevron-down dropdown-arrow" [class.open]="showUserDropdown"></i>
+      </div>
+
+      <div class="user-dropdown" 
+           [class.active]="showUserDropdown"
+           [attr.aria-hidden]="!showUserDropdown">
+        <div class="dropdown-header">
+          <div class="dropdown-user-details">
+            <div class="dropdown-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="dropdown-user-info">
+              <h3 class="dropdown-user-name">Admin User</h3>
+              <span class="dropdown-user-email">admin@example.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dropdown-content">
+          <a href="javascript:void(0)" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item">
+            <i class="fas fa-cog"></i>
+            <span>Ayarlar</span>
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item">
+            <i class="fas fa-lock"></i>
+            <span>Şifre Değiştir</span>
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Yardım</span>
+          </a>
+        </div>
+
+        <div class="dropdown-footer">
+          <button class="logout-button" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Çıkış Yap</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

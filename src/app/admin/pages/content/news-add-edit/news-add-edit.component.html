@@ -1,0 +1,237 @@
+<p>news-add-edit works!</p>
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-newspaper"></i>
+          {{ isEditMode ? 'Haber Düzenle' : 'Yeni Haber Ekle' }}
+        </h1>
+        <p class="page-subtitle">
+          {{ isEditMode ? 'Haber bilgilerini güncelleyin' : 'Yeni bir haber veya duyuru ekleyin' }}
+        </p>
+      </div>
+      
+      <div class="page-actions">
+        <button type="button" class="btn-back" routerLink="/admin/news">
+          <i class="fas fa-arrow-left"></i>
+          Listeye Dön
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <form [formGroup]="newsForm" (ngSubmit)="saveNews()">
+        <!-- Temel Bilgiler -->
+        <div class="form-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-info-circle"></i>
+              Temel Bilgiler
+            </h2>
+            <p class="card-subtitle">Haber veya duyurunun temel bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-row row">
+              <div class="form-group col-md-6">
+                <label for="title">Haber Başlığı <span class="required">*</span></label>
+                <input 
+                  type="text"
+                  id="title"
+                  formControlName="title"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.title.errors}"
+                  (blur)="generateSlug()"
+                  placeholder="Haber başlığını girin"
+                >
+                <div *ngIf="submitted && f.title.errors" class="form-error">
+                  <div *ngIf="f.title.errors.required">Haber başlığı gereklidir.</div>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="slug">Haber URL <span class="required">*</span></label>
+                <div class="input-group">
+                  <div class="input-prefix">/haber/</div>
+                  <input 
+                    type="text"
+                    id="slug"
+                    formControlName="slug"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': submitted && f.slug.errors}"
+                    placeholder="otomatik-olusturulur"
+                  >
+                </div>
+                <div *ngIf="submitted && f.slug.errors" class="form-error">
+                  <div *ngIf="f.slug.errors.required">Haber URL'si gereklidir.</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="subtitle">Alt Başlık</label>
+              <input 
+                type="text"
+                id="subtitle"
+                formControlName="subtitle"
+                class="form-control"
+                placeholder="Alt başlık girin (opsiyonel)"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="content">Haber İçeriği <span class="required">*</span></label>
+              <textarea 
+                id="content"
+                formControlName="content"
+                class="form-control"
+                rows="10"
+                [ngClass]="{'is-invalid': submitted && f.content.errors}"
+                placeholder="Haber içeriğini girin"
+              ></textarea>
+              <div *ngIf="submitted && f.content.errors" class="form-error">
+                <div *ngIf="f.content.errors.required">Haber içeriği gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Haber Ana Fotoğrafı</label>
+              <div class="media-upload-container">
+                <div class="media-preview" *ngIf="mainImagePreview || newsForm.get('mainImageUrl')?.value">
+                  <img [src]="mainImagePreview || newsForm.get('mainImageUrl')?.value" alt="Ana Fotoğraf">
+                  <div class="media-actions">
+                    <button type="button" class="btn-remove-media" (click)="removeMainImage()">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="media-upload" *ngIf="!mainImagePreview && !newsForm.get('mainImageUrl')?.value">
+                  <input 
+                    type="file" 
+                    id="mainImage"
+                    (change)="onMainImageChange($event)"
+                    accept="image/*"
+                    hidden
+                    #mainImageInput
+                  >
+                  <button type="button" class="btn-upload" (click)="mainImageInput.click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Ana Fotoğraf Ekle</span>
+                  </button>
+                  <p class="upload-info">Minimum 1920x1080 ve en fazla 4 MB.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SEO Bilgileri -->
+        <div class="form-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-search"></i>
+              SEO Bilgileri
+            </h2>
+            <p class="card-subtitle">Arama motoru optimizasyonu için SEO bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-group">
+              <label for="seoKeywords">SEO Anahtar Kelimeler</label>
+              <input 
+                type="text"
+                id="seoKeywords"
+                formControlName="seoKeywords"
+                class="form-control"
+                placeholder="Anahtar kelimeleri virgülle ayırarak girin"
+              >
+              <div class="form-hint">Örn: eğitim, haber, öğrenci</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="seoDescription">SEO Haber Açıklaması</label>
+              <textarea 
+                id="seoDescription"
+                formControlName="seoDescription"
+                class="form-control"
+                rows="3"
+                placeholder="Haberin kısa açıklamasını girin"
+              ></textarea>
+              <div class="form-hint">İdeal olarak 150-160 karakter arası</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Haber Ayarları -->
+        <div class="form-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-cogs"></i>
+              Haber Ayarları
+            </h2>
+            <p class="card-subtitle">Haberin görünüm ve öncelik ayarlarını yapın</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-row row">
+              <div class="form-group col-md-4">
+                <label for="type">Haber Tipi <span class="required">*</span></label>
+                <div class="select-wrapper">
+                  <select
+                    id="type"
+                    formControlName="type"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': submitted && f.type.errors}"
+                  >
+                    <option value="news">Haber</option>
+                    <option value="announcement">Duyuru</option>
+                  </select>
+                  <i class="fas fa-chevron-down select-icon"></i>
+                </div>
+                <div *ngIf="submitted && f.type.errors" class="form-error">
+                  <div *ngIf="f.type.errors.required">Haber tipi seçimi gereklidir.</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="toggle-row">
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Haber Aktif</span>
+                  <span class="toggle-description">Haber sitede görünür olsun mu?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isActive">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Önemli Haber</span>
+                  <span class="toggle-description">Bu haber önemli haberlerde gösterilsin mi?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isImportant">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/admin/news">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="submit" class="btn-save" [disabled]="submitting">
+            <i class="fas fa-save"></i>
+            <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+            <span *ngIf="submitting" class="spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

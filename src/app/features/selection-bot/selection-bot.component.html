@@ -1,0 +1,752 @@
+<section class="selection-bot-page">
+  <div class="page-header">
+    <div class="container">
+      <div class="section-header centered">
+        <div class="header-text">
+          <h2 class="section-title">Tercih Robotu</h2>
+          <p class="section-subtitle">En uygun üniversite ve programları bulun</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li *ngFor="let item of breadcrumbItems" class="breadcrumb-item" [class.active]="!item.path">
+            <a *ngIf="item.path" [routerLink]="item.path">{{ item.label }}</a>
+            <span *ngIf="!item.path">{{ item.label }}</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  <div class="page-content">
+    <div class="container">
+      <div class="selection-bot-container">
+        
+        <!-- Loading State -->
+        <div *ngIf="isInitialLoading" class="loading-container">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Veriler yükleniyor...</p>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="errorMessage && !isInitialLoading" class="error-container">
+          <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>{{ errorMessage }}</p>
+            <button type="button" class="btn-primary" (click)="loadInitialData()">
+              <i class="fas fa-redo"></i> Tekrar Dene
+            </button>
+          </div>
+        </div>
+
+        <div class="bot-content" *ngIf="!isInitialLoading && !errorMessage">
+          <div class="results-container" #resultsSection>
+            
+            <!-- Search Loading -->
+            <div *ngIf="isSearching" class="search-loading">
+              <div class="loading-spinner small">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Aranıyor...</span>
+              </div>
+            </div>
+
+            <!-- Results Controls -->
+            <div class="results-controls" *ngIf="getSortedPrograms().length > 0">
+              <div class="sorting-controls">
+                <select (change)="onSortChange($event)" class="form-control" [disabled]="isSearching">
+                  <option value="ranking" [selected]="resultsSorting === 'ranking'">Sıralamaya Göre</option>
+                  <option value="score_desc" [selected]="resultsSorting === 'score_desc'">Puana Göre (Azalan)</option>
+                  <option value="score_asc" [selected]="resultsSorting === 'score_asc'">Puana Göre (Artan)</option>
+                  <option value="name_asc" [selected]="resultsSorting === 'name_asc'">İsme Göre (A-Z)</option>
+                  <option value="name_desc" [selected]="resultsSorting === 'name_desc'">İsme Göre (Z-A)</option>
+                </select>
+                
+                <div class="view-switcher">
+                  <button 
+                    type="button" 
+                    [class.active]="programResultsView === 'table'"
+                    (click)="toggleProgramResultView('table')"
+                    [disabled]="isSearching"
+                    title="Tablo Görünümü">
+                    <i class="fas fa-table"></i>
+                  </button>
+                  <button 
+                    type="button" 
+                    [class.active]="programResultsView === 'cards'"
+                    (click)="toggleProgramResultView('cards')"
+                    [disabled]="isSearching"
+                    title="Kart Görünümü">
+                    <i class="fas fa-th-large"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Comparison Bar -->
+            <div class="comparison-bar" *ngIf="selectedProgramsForComparison.length > 0">
+              <div class="comparison-info">
+                <span class="comparison-count">{{ selectedProgramsForComparison.length }}</span>
+                <span>program seçildi</span>
+              </div>
+              <button type="button" class="btn-primary comparison-btn" (click)="showProgramCompare()">
+                <i class="fas fa-exchange-alt"></i>
+                Programları Karşılaştır
+              </button>
+            </div>
+            
+            <!-- Filters Container -->
+            <div class="filters-container">
+              <div class="filters-header">
+                <h3>
+                  <i class="fas fa-filter"></i>
+                  Program Filtreleri
+                </h3>
+                <button type="button" class="btn-outline" (click)="resetFilters()" [disabled]="isSearching">
+                  <i class="fas fa-undo"></i> Filtreleri Sıfırla
+                </button>
+              </div>
+              
+              <div class="filters-content">
+                <div class="filters-grid">
+                  
+                  <!-- City Filter -->
+                  <div class="filter-item">
+                    <label for="cityFilter">Şehir</label>
+                    <select id="cityFilter" [formControl]="cityFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let city of uniqueCities" [value]="city">{{ city }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- University Type Filter -->
+                  <div class="filter-item">
+                    <label for="universityTypeFilter">Üniversite Türü</label>
+                    <select id="universityTypeFilter" [formControl]="universityTypeFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let type of uniqueUniversityTypes" [value]="type">{{ type }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Scholarship Type Filter -->
+                  <div class="filter-item">
+                    <label for="tuitionTypeFilter">Burs Durumu</label>
+                    <select id="tuitionTypeFilter" [formControl]="tuitionTypeFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let type of uniqueTuitionTypes" [value]="type">{{ type }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Education Type Filter -->
+                  <div class="filter-item">
+                    <label for="educationTypeFilter">Eğitim Türü</label>
+                    <select id="educationTypeFilter" [formControl]="educationTypeFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let type of uniqueEducationTypes" [value]="type">{{ type }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Score Type Filter -->
+                  <div class="filter-item">
+                    <label for="scoreTypeFilter">Puan Türü</label>
+                    <select id="scoreTypeFilter" [formControl]="scoreTypeFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let type of uniqueScoreTypes" [value]="type">{{ type }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- University Filter -->
+                  <div class="filter-item">
+                    <label for="universityFilter">Üniversite</label>
+                    <select id="universityFilter" [formControl]="universityFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let uni of uniqueUniversities" [value]="uni">{{ uni }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Faculty Filter -->
+                  <div class="filter-item">
+                    <label for="facultyFilter">Fakülte/Yüksekokul</label>
+                    <select id="facultyFilter" [formControl]="facultyFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let faculty of uniqueFaculties" [value]="faculty">{{ faculty }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Program Name Filter -->
+                  <div class="filter-item">
+                    <label for="programFilter">Program Adı</label>
+                    <input id="programFilter" 
+                           type="text" 
+                           [formControl]="programFilter" 
+                           class="form-control" 
+                           placeholder="Program Ara..."
+                           [disabled]="isSearching">
+                  </div>
+                  
+                  <!-- Year Filter -->
+                  <div class="filter-item">
+                    <label for="yearFilter">Yıl</label>
+                    <select id="yearFilter" [formControl]="yearFilter" class="form-control" [disabled]="isSearching">
+                      <option value="">Tümü</option>
+                      <option *ngFor="let year of uniqueYears" [value]="year">{{ year }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Quota Filter -->
+                  <div class="filter-item">
+                    <label for="quotaFilter">Kontenjan</label>
+                    <input id="quotaFilter" 
+                           type="number" 
+                           [formControl]="quotaFilter" 
+                           class="form-control" 
+                           placeholder="Kontenjan"
+                           [disabled]="isSearching">
+                  </div>
+                  
+                  <!-- Occupancy Filter -->
+                  <div class="filter-item">
+                    <label for="occupancyFilter">Doluluk</label>
+                    <input id="occupancyFilter" 
+                           type="number" 
+                           [formControl]="occupancyFilter" 
+                           class="form-control" 
+                           placeholder="%"
+                           [disabled]="isSearching">
+                  </div>
+                  
+                  <!-- Placed Filter -->
+                  <div class="filter-item">
+                    <label for="placedFilter">Yerleşen</label>
+                    <input id="placedFilter" 
+                           type="number" 
+                           [formControl]="placedFilter" 
+                           class="form-control" 
+                           placeholder="Yerleşen"
+                           [disabled]="isSearching">
+                  </div>
+                  
+                  <!-- Ranking Filter -->
+                  <div class="filter-item">
+                    <label for="rankingFilter">Sıralama</label>
+                    <input id="rankingFilter" 
+                           type="number" 
+                           [formControl]="rankingFilter" 
+                           class="form-control" 
+                           placeholder="Sıralama"
+                           [disabled]="isSearching">
+                  </div>
+                  
+                  <!-- Score Range Filter -->
+                  <div class="filter-item score-range">
+                    <label>Puan Aralığı</label>
+                    <div class="score-range-inputs">
+                      <input type="number" 
+                             [formControl]="minScoreFilter" 
+                             class="form-control" 
+                             placeholder="Min"
+                             [disabled]="isSearching">
+                      <span>-</span>
+                      <input type="number" 
+                             [formControl]="maxScoreFilter" 
+                             class="form-control" 
+                             placeholder="Max"
+                             [disabled]="isSearching">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Programs Table View -->
+            <div class="programs-table full-width" *ngIf="getSortedPrograms().length > 0 && programResultsView === 'table'">
+              <table class="data-table responsive-table">
+                <thead>
+                  <tr>
+                    <th class="th-compare"></th>
+                    <th class="th-programcode">KOD</th>
+                    <th class="th-city">ŞEHİR</th>
+                    <th class="th-university-type">Ü.TÜR</th>
+                    <th class="th-tuition">BURS</th>
+                    <th class="th-education-type">Ö.TÜR</th>
+                    <th class="th-score-type">P.TÜR</th>
+                    <th class="th-university">ÜNİVERSİTE</th>
+                    <th class="th-faculty">FAKÜLTE/YÜKSEKOKUL</th>
+                    <th class="th-program">PROGRAM</th>
+                    <th class="th-year">YIL</th>
+                    <th class="th-quota">KONT</th>
+                    <th class="th-occupancy">DOL</th>
+                    <th class="th-placed">YER</th>
+                    <th class="th-rank">SIRA</th>
+                    <th class="th-score">PUAN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let program of getSortedPrograms() | paginate: { itemsPerPage: itemsPerPage, currentPage: currentProgramPage, id: 'programPagination' }"
+                      (click)="openProgramDetail(program)" 
+                      style="cursor: pointer;"
+                      [class.loading-row]="isSearching">
+                    <td class="td-compare">
+                      <div class="checkbox-wrapper">
+                        <input 
+                          type="checkbox"
+                          [id]="'compare-prog-' + program.programId"
+                          [checked]="isProgramSelectedForComparison(program)"
+                          [disabled]="(selectedProgramsForComparison.length >= maxProgramComparisonItems && !isProgramSelectedForComparison(program)) || isSearching"
+                          (change)="toggleProgramCompare(program); $event.stopPropagation()">
+                        <label [for]="'compare-prog-' + program.programId" (click)="$event.stopPropagation()"></label>
+                      </div>
+                    </td>
+                    <td class="td-programcode" [title]="program.programCode">{{ program.programCode }}</td>
+                    <td class="td-city" [title]="program.cityName">{{ program.cityName }}</td>
+                    <td class="td-university-type" [title]="getUniversityTypeName(getUniversityById(getUniversityIdByProgramResult(program))?.type || UniversityType.State)">
+                      {{ getUniversityTypeName(getUniversityById(getUniversityIdByProgramResult(program))?.type || UniversityType.State) }}
+                    </td>
+                    <td class="td-tuition">
+                      <span class="tuition-badge" 
+                            [class.tuition-free]="program.scholarshipTypeName === 'Ücretsiz'"
+                            [class.tuition-scholarship]="program.scholarshipTypeName === 'Burslu'"
+                            [class.tuition-discount]="program.scholarshipTypeName.includes('%')"
+                            [class.tuition-paid]="program.scholarshipTypeName === 'Ücretli'"
+                            [title]="program.scholarshipTypeName">
+                        {{ program.scholarshipTypeName }}
+                      </span>
+                    </td>
+                    <td class="td-education-type" [title]="program.educationTypeName">{{ program.educationTypeName.substring(0, 3) }}.</td>
+                    <td class="td-score-type" [title]="getScoreTypeName(program.scoreType)">{{ getScoreTypeName(program.scoreType) }}</td>
+                    <td class="td-university truncate" [title]="program.universityName">{{ program.universityName }}</td>
+                    <td class="td-faculty truncate" [title]="program.facultyName">{{ program.facultyName }}</td>
+                    <td class="td-program truncate" [title]="program.programName">{{ program.programName }}</td>
+                    <td class="td-year">{{ program.year }}</td>
+                    <td class="td-quota">{{ program.quota }}</td>
+                    <td class="td-occupancy">{{ program.filledRate ? program.filledRate.toFixed(1) + '%' : '-' }}</td>
+                    <td class="td-placed">{{ program.enrolled || '-' }}</td>
+                    <td class="td-rank">{{ program.minRanking || '-' }}</td>
+                    <td class="td-score">{{ program.minScore ? program.minScore.toFixed(2) : '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Programs Cards View -->
+            <div class="programs-grid" *ngIf="getSortedPrograms().length > 0 && programResultsView === 'cards'">
+              <div class="program-card" 
+                   *ngFor="let program of getSortedPrograms() | paginate: { itemsPerPage: itemsPerPage, currentPage: currentProgramPage, id: 'programPagination' }"
+                   [class.loading-card]="isSearching">
+                <div class="card-header">
+                  <div class="university-logo">
+                    <img *ngIf="getUniversityById(getUniversityIdByProgramResult(program))?.logoUrl" 
+                         [src]="getUniversityById(getUniversityIdByProgramResult(program))?.logoUrl" 
+                         alt="Logo"
+                         onerror="this.style.display='none'">
+                  </div>
+                  <div class="tuition-type">
+                    <span [class.tuition-free]="program.scholarshipTypeName === 'Ücretsiz'"
+                          [class.tuition-scholarship]="program.scholarshipTypeName === 'Burslu'"
+                          [class.tuition-discount]="program.scholarshipTypeName.includes('%')"
+                          [class.tuition-paid]="program.scholarshipTypeName === 'Ücretli'">
+                      {{ program.scholarshipTypeName }}
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="card-body">
+                  <h3 class="program-name">{{ program.programName }}</h3>
+                  <div class="university-name">{{ program.universityName }}</div>
+                  
+                  <div class="program-details">
+                    <div class="detail-item">
+                      <span class="detail-label">Şehir:</span>
+                      <span class="detail-value">{{ program.cityName }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Tür:</span>
+                      <span class="detail-value">{{ getUniversityTypeName(getUniversityById(getUniversityIdByProgramResult(program))?.type || UniversityType.State) }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Kod:</span>
+                      <span class="detail-value">{{ program.programCode }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Dil:</span>
+                      <span class="detail-value">{{ program.languageCode }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">Kont.:</span>
+                      <span class="detail-value">{{ program.quota }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="score-info">
+                    <div class="base-score">
+                      <span class="score-label">Taban Puan:</span>
+                      <span class="score-value">{{ program.minScore ? program.minScore.toFixed(2) : '-' }}</span>
+                    </div>
+                    <div class="rank-info">
+                      <span class="rank-label">Sıralama:</span>
+                      <span class="rank-value">{{ program.minRanking || '-' }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="trend-info" *ngIf="program.trend">
+                    <div class="trend-indicator" 
+                         [class.trend-up]="program.trend === 'up'"
+                         [class.trend-down]="program.trend === 'down'"
+                         [class.trend-stable]="program.trend === 'stable'">
+                      <i class="fas" 
+                         [class.fa-arrow-up]="program.trend === 'up'"
+                         [class.fa-arrow-down]="program.trend === 'down'"
+                         [class.fa-arrow-right]="program.trend === 'stable'">
+                      </i>
+                      <span>{{ program.trend === 'up' ? 'Artış' : program.trend === 'down' ? 'Azalış' : 'Sabit' }}</span>
+                    </div>
+                  </div>
+
+                  <div class="placement-info" *ngIf="program.isPossiblePlacement">
+                    <div class="placement-badge">
+                      <i class="fas fa-check-circle"></i>
+                      <span>Yerleşme Şansı Var</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card-actions">
+                  <div class="compare-checkbox">
+                    <input 
+                      type="checkbox"
+                      [id]="'compare-prog-card-' + program.programId"
+                      [checked]="isProgramSelectedForComparison(program)"
+                      [disabled]="(selectedProgramsForComparison.length >= maxProgramComparisonItems && !isProgramSelectedForComparison(program)) || isSearching"
+                      (change)="toggleProgramCompare(program)">
+                    <label [for]="'compare-prog-card-' + program.programId">Karşılaştır</label>
+                  </div>
+                  <div class="action-buttons">
+                    <button type="button" 
+                            class="btn btn-outline" 
+                            (click)="openProgramDetail(program)"
+                            [disabled]="isSearching">
+                      <i class="fas fa-info-circle"></i>
+                      Detaylar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="getSortedPrograms().length === 0 && !isSearching">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Kriterlere uygun program bulunamadı.</p>
+              <p class="empty-suggestion">Lütfen filtreleri değiştirip tekrar deneyin.</p>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination-container" *ngIf="getSortedPrograms().length > itemsPerPage">
+              <pagination-controls 
+                (pageChange)="currentProgramPage = $event"
+                previousLabel="Önceki"
+                nextLabel="Sonraki"
+                id="programPagination">
+              </pagination-controls>
+            </div>
+            
+            <!-- Results Actions -->
+            <div class="results-actions" *ngIf="getSortedPrograms().length > 0">
+              <div class="export-share-btns">
+                <div class="dropdown">
+                  <button type="button" class="btn-outline dropdown-toggle" [disabled]="isSearching">
+                    <i class="fas fa-download"></i> Dışa Aktar
+                  </button>
+                  <div class="dropdown-menu">
+                    <a href="javascript:void(0)" (click)="exportResults('excel')">
+                      <i class="fas fa-file-excel"></i> Excel
+                    </a>
+                    <a href="javascript:void(0)" (click)="exportResults('pdf')">
+                      <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                    <a href="javascript:void(0)" (click)="exportResults('csv')">
+                      <i class="fas fa-file-csv"></i> CSV
+                    </a>
+                  </div>
+                </div>
+                
+                <button type="button" class="btn-outline" (click)="shareResults()" [disabled]="isSearching">
+                  <i class="fas fa-share-alt"></i> Paylaş
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Program Detail Modal -->
+  <div class="modal-backdrop" *ngIf="showProgramDetailModal" (click)="closeProgramDetail()"></div>
+  <div class="modal program-detail-modal" *ngIf="showProgramDetailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ selectedProgram?.programName }}</h3>
+        <button type="button" class="modal-close" (click)="closeProgramDetail()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="program-detail" *ngIf="selectedProgram">
+          
+          <!-- Program Header -->
+          <div class="program-header">
+            <div class="university-info">
+              <div class="university-logo">
+                <img [src]="getUniversityById(getUniversityIdByProgramResult(selectedProgram))?.logoUrl || 'assets/images/university-placeholder.png'" 
+                     [alt]="selectedProgram.universityName + ' Logo'"
+                     onerror="this.src='assets/images/university-placeholder.png'">
+              </div>
+              <div class="university-name">{{ selectedProgram.universityName }}</div>
+            </div>
+            <div class="program-badges">
+              <span class="badge badge-lang" 
+                    [class.badge-lang-turkish]="selectedProgram.languageCode === 'TR'" 
+                    [class.badge-lang-english]="selectedProgram.languageCode === 'EN'">
+                {{ selectedProgram.languageCode === 'TR' ? 'Türkçe' : selectedProgram.languageCode === 'EN' ? 'İngilizce' : selectedProgram.languageCode }}
+              </span>
+              <span class="badge" 
+                    [class.badge-free]="selectedProgram.scholarshipTypeName === 'Ücretsiz'"
+                    [class.badge-scholarship]="selectedProgram.scholarshipTypeName === 'Burslu'"
+                    [class.badge-discount]="selectedProgram.scholarshipTypeName.includes('%')"
+                    [class.badge-paid]="selectedProgram.scholarshipTypeName === 'Ücretli'">
+                {{ selectedProgram.scholarshipTypeName }}
+              </span>
+              <span class="badge badge-faculty">{{ selectedProgram.facultyName }}</span>
+            </div>
+          </div>
+          
+          <!-- Program Stats -->
+          <div class="program-stats">
+            <div class="stat-item">
+              <div class="stat-value">{{ selectedProgram.quota }}</div>
+              <div class="stat-label">Kontenjan</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ selectedProgram.minScore ? selectedProgram.minScore.toFixed(2) : '-' }}</div>
+              <div class="stat-label">Taban Puan</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ selectedProgram.minRanking || '-' }}</div>
+              <div class="stat-label">Sıralama</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ selectedProgram.enrolled || '-' }}</div>
+              <div class="stat-label">Yerleşen</div>
+            </div>
+          </div>
+          
+          <!-- Program Details Loading -->
+          <div *ngIf="isLoading" class="loading-details">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Detaylar yükleniyor...</span>
+          </div>
+
+          <!-- Program Details -->
+          <div *ngIf="selectedProgramDetails && !isLoading" class="program-details-section">
+            
+            <!-- Quotas -->
+            <div class="quota-details" *ngIf="selectedProgramDetails.quotas?.length > 0">
+              <h4>Kontenjan Bilgileri</h4>
+              <table class="quota-table">
+                <thead>
+                  <tr>
+                    <th>Yıl</th>
+                    <th>Kontenjan Türü</th>
+                    <th>Kontenjan</th>
+                    <th>Yerleşen</th>
+                    <th>Taban Puan</th>
+                    <th>Tavan Puan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let quota of selectedProgramDetails.quotas">
+                    <td>{{ quota.year }}</td>
+                    <td>{{ quota.quotaTypeName }}</td>
+                    <td>{{ quota.quota }}</td>
+                    <td>{{ quota.enrolled || '-' }}</td>
+                    <td>{{ quota.minScore ? quota.minScore.toFixed(2) : '-' }}</td>
+                    <td>{{ quota.maxScore ? quota.maxScore.toFixed(2) : '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Rankings -->
+            <div class="ranking-details" *ngIf="selectedProgramDetails.rankings?.length > 0">
+              <h4>Sıralama Bilgileri</h4>
+              <table class="ranking-table">
+                <thead>
+                  <tr>
+                    <th>Yıl</th>
+                    <th>Min Sıralama</th>
+                    <th>Max Sıralama</th>
+                    <th>Min Puan</th>
+                    <th>Max Puan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ranking of selectedProgramDetails.rankings">
+                    <td>{{ ranking.year }}</td>
+                    <td>{{ ranking.minRanking || '-' }}</td>
+                    <td>{{ ranking.maxRanking || '-' }}</td>
+                    <td>{{ ranking.minScore ? ranking.minScore.toFixed(2) : '-' }}</td>
+                    <td>{{ ranking.maxScore ? ranking.maxScore.toFixed(2) : '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Program Description -->
+            <div class="program-description" *ngIf="selectedProgramDetails.description">
+              <h4>Program Açıklaması</h4>
+              <p>{{ selectedProgramDetails.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" (click)="closeProgramDetail()">Kapat</button>
+        <button 
+          type="button" 
+          class="btn-primary" 
+          (click)="toggleProgramCompare(selectedProgram); closeProgramDetail()"
+          [disabled]="selectedProgramsForComparison.length >= maxProgramComparisonItems && !isProgramSelectedForComparison(selectedProgram)"
+          *ngIf="selectedProgram">
+          {{ isProgramSelectedForComparison(selectedProgram) ? 'Karşılaştırmadan Çıkar' : 'Karşılaştırmaya Ekle' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Program Comparison Modal -->
+  <div class="modal-backdrop" *ngIf="showProgramCompareModal" (click)="closeProgramCompareModal()"></div>
+  <div class="modal program-compare-modal" *ngIf="showProgramCompareModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Program Karşılaştırma</h3>
+        <button type="button" class="modal-close" (click)="closeProgramCompareModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="comparison-table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th *ngFor="let program of selectedProgramsForComparison">
+                  <div class="comparison-program">
+                    <div class="program-name">{{ program.programName }}</div>
+                    <div class="university-name">{{ program.universityName }}</div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Program Kodu</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.programCode }}</td>
+              </tr>
+              <tr>
+                <td>Şehir</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.cityName }}</td>
+              </tr>
+              <tr>
+                <td>Üniversite</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  <div class="university-info">
+                    <div *ngIf="getUniversityById(getUniversityIdByProgramResult(program))?.logoUrl" class="mini-logo">
+                      <img [src]="getUniversityById(getUniversityIdByProgramResult(program))?.logoUrl" alt="Logo">
+                    </div>
+                    <span>{{ program.universityName }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Tür</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  {{ getUniversityTypeName(getUniversityById(getUniversityIdByProgramResult(program))?.type || UniversityType.State) }}
+                </td>
+              </tr>
+              <tr>
+                <td>Fakülte</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.facultyName }}</td>
+              </tr>
+              <tr>
+                <td>Dil</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.languageCode }}</td>
+              </tr>
+              <tr>
+                <td>Ücret/Burs</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  <span [class.tuition-free]="program.scholarshipTypeName === 'Ücretsiz'"
+                        [class.tuition-scholarship]="program.scholarshipTypeName === 'Burslu'"
+                        [class.tuition-discount]="program.scholarshipTypeName.includes('%')"
+                        [class.tuition-paid]="program.scholarshipTypeName === 'Ücretli'">
+                    {{ program.scholarshipTypeName }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Öğrenim Türü</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.educationTypeName }}</td>
+              </tr>
+              <tr>
+                <td>Puan Türü</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ getScoreTypeName(program.scoreType) }}</td>
+              </tr>
+              <tr>
+                <td>Kontenjan</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.quota }}</td>
+              </tr>
+              <tr>
+                <td>Doluluk</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  {{ program.filledRate ? program.filledRate.toFixed(1) + '%' : '-' }}
+                </td>
+              </tr>
+              <tr>
+                <td>Yerleşen</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.enrolled || '-' }}</td>
+              </tr>
+              <tr>
+                <td>Taban Puan</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  <span class="comparison-score">{{ program.minScore ? program.minScore.toFixed(2) : '-' }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Başarı Sıralaması</td>
+                <td *ngFor="let program of selectedProgramsForComparison">{{ program.minRanking || '-' }}</td>
+              </tr>
+              <tr>
+                <td>Yerleşme Şansı</td>
+                <td *ngFor="let program of selectedProgramsForComparison">
+                  <span [class]="program.isPossiblePlacement ? 'placement-possible' : 'placement-unlikely'">
+                    {{ program.isPossiblePlacement ? 'Var' : 'Düşük' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" (click)="closeProgramCompareModal()">Kapat</button>
+      </div>
+    </div>
+  </div>
+</section>

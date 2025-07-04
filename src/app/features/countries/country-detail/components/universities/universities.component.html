@@ -1,0 +1,70 @@
+<!-- src/app/features/countries/country-detail/components/universities/universities.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-university"></i>
+      {{ country.name }} Üniversiteleri
+    </h2>
+  </div>
+  
+  <!-- API Content -->
+  <div class="content-card" *ngIf="menuContent?.content">
+    <div class="content-body">
+      <div class="text-content" [innerHTML]="getContent()"></div>
+    </div>
+  </div>
+
+  <!-- Universities List from API -->
+  <div class="universities-preview" *ngIf="universities.length > 0">
+    <h3 class="preview-title">Önne Çıkan Üniversiteler</h3>
+    <div class="universities-grid">
+      <div class="university-card" 
+           *ngFor="let university of universities; trackBy: trackByUniversityId"
+           (click)="navigateToUniversityDetail(university)">
+        <div class="university-info">
+          <h4 class="university-name">{{ university.name }}</h4>
+          <p class="university-location">
+            <i class="fas fa-map-marker-alt"></i>
+            {{ university.cityName }}
+          </p>
+          <div class="university-stats">
+            <span class="stat" *ngIf="university.facultyCount">
+              {{ university.facultyCount }} Fakülte
+            </span>
+            <span class="stat" *ngIf="university.departmentCount">
+              {{ university.departmentCount }} Bölüm
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Üniversiteler yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+  
+  <div class="action-section" *ngIf="country.universityCount && country.universityCount > 0">
+    <button class="view-all-button" (click)="navigateToUniversities()">
+      <i class="fas fa-arrow-right"></i>
+      Tüm Üniversiteleri Görüntüle ({{ country.universityCount }})
+    </button>
+  </div>
+  
+  <div class="empty-state" *ngIf="!hasContent() && !isLoading">
+    <div class="empty-icon">
+      <i class="fas fa-university"></i>
+    </div>
+    <h3 class="empty-title">Üniversite Bilgisi Bulunmuyor</h3>
+    <p class="empty-message">
+      {{ country.name }} ülkesi için üniversite bilgisi henüz eklenmemiş.
+    </p>
+  </div>
+</section>

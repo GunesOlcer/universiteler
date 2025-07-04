@@ -1,0 +1,516 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-building"></i>
+        {{ isEditMode ? 'Yurt Düzenle' : 'Yeni Yurt Ekle' }}
+      </h1>
+      <p class="page-subtitle">
+        {{ isEditMode ? 'Yurt bilgilerini güncelleyin' : 'Sisteme yeni bir yurt kaydı ekleyin' }}
+      </p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" routerLink="/admin/dormitories">
+        <i class="fas fa-arrow-left"></i>
+        Listeye Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">      
+    <form [formGroup]="dormitoryForm" (ngSubmit)="saveDormitory()">
+      <div class="form-navigation">
+        <div class="nav-item" [class.active]="currentSection === 'basic'" (click)="scrollToSection('basic')">
+          <span class="nav-number">1</span>
+          <span class="nav-text">Temel Bilgiler</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'features'" (click)="scrollToSection('features')">
+          <span class="nav-number">2</span>
+          <span class="nav-text">Yurt Özellikleri</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'location'" (click)="scrollToSection('location')">
+          <span class="nav-number">3</span>
+          <span class="nav-text">Konum Bilgileri</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'general'" (click)="scrollToSection('general')">
+          <span class="nav-number">4</span>
+          <span class="nav-text">Genel Özellikler</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'contact'" (click)="scrollToSection('contact')">
+          <span class="nav-number">5</span>
+          <span class="nav-text">İletişim Bilgileri</span>
+        </div>
+      </div>
+      
+      <!-- Temel Bilgiler -->
+      <div class="form-card" id="section-basic">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Temel Bilgiler
+          </h2>
+          <p class="card-subtitle">Yurdun temel bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="name">Yurt Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.name.errors}"
+                (blur)="generateSlug()"
+                placeholder="Yurt adını girin"
+              >
+              <div *ngIf="submitted && f.name.errors" class="form-error">
+                <div *ngIf="f.name.errors.required">Yurt adı gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="slug">Yurt URL</label>
+              <div class="input-group">
+                <div class="input-prefix">/yurtlar/detay/</div>
+                <input 
+                  type="text"
+                  id="slug"
+                  formControlName="slug"
+                  class="form-control"
+                  placeholder="otomatik-olusturulur"
+                >
+              </div>
+              <div class="form-hint">URL boş bırakılırsa otomatik oluşturulur</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Yurt Yazısı</label>
+            <textarea 
+              id="description"
+              formControlName="description"
+              class="form-control"
+              rows="6"
+              placeholder="Yurt hakkında detaylı bilgi girin"
+            ></textarea>
+          </div>
+          
+          <div class="form-row row media-row">
+            <div class="form-group col-md-6">
+              <label>Yurt Kapak Fotoğrafı</label>
+              <div class="media-upload-container">
+                <div class="media-preview" *ngIf="coverImagePreview || dormitoryForm.get('coverImageUrl')?.value">
+                  <img [src]="coverImagePreview || dormitoryForm.get('coverImageUrl')?.value" alt="Kapak Fotoğrafı">
+                  <div class="media-actions">
+                    <button type="button" class="btn-remove-media" (click)="removeCoverImage()">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="media-upload" *ngIf="!coverImagePreview && !dormitoryForm.get('coverImageUrl')?.value">
+                  <input 
+                    type="file" 
+                    id="coverImage"
+                    (change)="onCoverImageChange($event)"
+                    accept="image/*"
+                    hidden
+                    #coverImageInput
+                  >
+                  <button type="button" class="btn-upload" (click)="coverImageInput.click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Fotoğraf Ekle</span>
+                  </button>
+                  <p class="upload-info">Minimum 1280x720 ve en fazla 4 MB.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label>Yurt Ufak Fotoğrafı</label>
+              <div class="media-upload-container">
+                <div class="media-preview" *ngIf="thumbnailImagePreview || dormitoryForm.get('thumbnailImageUrl')?.value">
+                  <img [src]="thumbnailImagePreview || dormitoryForm.get('thumbnailImageUrl')?.value" alt="Ufak Fotoğraf">
+                  <div class="media-actions">
+                    <button type="button" class="btn-remove-media" (click)="removeThumbnailImage()">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="media-upload" *ngIf="!thumbnailImagePreview && !dormitoryForm.get('thumbnailImageUrl')?.value">
+                  <input 
+                    type="file" 
+                    id="thumbnailImage"
+                    (change)="onThumbnailImageChange($event)"
+                    accept="image/*"
+                    hidden
+                    #thumbnailImageInput
+                  >
+                  <button type="button" class="btn-upload" (click)="thumbnailImageInput.click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Fotoğraf Ekle</span>
+                  </button>
+                  <p class="upload-info">Minimum 350x266 ve en fazla 4 MB.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Yurt Özellikleri -->
+      <div class="form-card" id="section-features">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-list-check"></i>
+            Yurt Özellikleri
+          </h2>
+          <p class="card-subtitle">Yurdun sahip olduğu özellikleri seçin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="features-container" formGroupName="features">
+            <div *ngFor="let category of featureCategories" class="feature-category">
+              <h3 class="category-title">{{ category.name }}</h3>
+              
+              <div class="feature-items">
+                <div *ngFor="let feature of getFeaturesByCategory(category.id)" class="feature-item">
+                  <label class="toggle-switch-wrapper">
+                    <input 
+                      type="checkbox"
+                      [id]="'feature-' + feature.id"
+                      [formControlName]="feature.id.toString()"
+                    >
+                    <span class="toggle-switch"></span>
+                    <span class="toggle-label">{{ feature.name }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Konum Bilgileri -->
+      <div class="form-card" id="section-location">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-map-marker-alt"></i>
+            Konum Bilgileri
+          </h2>
+          <p class="card-subtitle">Yurdun konum bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row row">
+            <div class="form-group col-md-12">
+              <label for="address">Adres</label>
+              <textarea 
+                id="address"
+                formControlName="address"
+                class="form-control"
+                rows="3"
+                placeholder="Yurdun tam adresini girin"
+              ></textarea>
+              <div class="form-hint">Haritadan tam konum seçimi için koordinat alanlarını kullanabilirsiniz</div>
+            </div>
+          </div>
+          
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="latitude">Enlem (Latitude)</label>
+              <input 
+                type="text"
+                id="latitude"
+                formControlName="latitude"
+                class="form-control"
+                placeholder="Örn: 41.0082"
+              >
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="longitude">Boylam (Longitude)</label>
+              <input 
+                type="text"
+                id="longitude"
+                formControlName="longitude"
+                class="form-control"
+                placeholder="Örn: 28.9784"
+              >
+            </div>
+          </div>
+          
+          <div class="form-row row">
+            <div class="form-group col-md-4">
+              <label for="city">Şehir <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="city"
+                  formControlName="cityId"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.cityId.errors}"
+                >
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.cityId.errors" class="form-error">
+                <div *ngIf="f.cityId.errors.required">Şehir seçimi gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-4">
+              <label for="district">İlçe <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="district"
+                formControlName="district"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.district.errors}"
+                placeholder="İlçe adını girin"
+              >
+              <div *ngIf="submitted && f.district.errors" class="form-error">
+                <div *ngIf="f.district.errors.required">İlçe bilgisi gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-4">
+              <label for="university">Üniversite</label>
+              <div class="select-wrapper">
+                <select 
+                  id="university"
+                  formControlName="universityId"
+                  class="form-control"
+                >
+                  <option value="">Seçiniz (Bağlı değilse boş bırakın)</option>
+                  <option *ngFor="let university of universities" [value]="university.id">{{ university.name }}</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Genel Özellikler -->
+      <div class="form-card" id="section-general">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-cogs"></i>
+            Genel Özellikler
+          </h2>
+          <p class="card-subtitle">Yurdun genel özelliklerini belirtin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="bedCount">Yatak Sayısı</label>
+              <input 
+                type="number"
+                id="bedCount"
+                formControlName="bedCount"
+                class="form-control"
+                min="1"
+                placeholder="Yatak kapasitesini girin"
+              >
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="mealCount">Öğün Sayısı</label>
+              <div class="select-wrapper">
+                <select
+                  id="mealCount"
+                  formControlName="mealCount"
+                  class="form-control"
+                >
+                  <option value="">Seçiniz</option>
+                  <option value="0">Yemek Yok</option>
+                  <option value="1">1 Öğün</option>
+                  <option value="2">2 Öğün</option>
+                  <option value="3">3 Öğün</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="toggle-row">
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">WiFi</span>
+                <span class="toggle-description">Yurtta WiFi var mı?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="hasWifi">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Günlük Temizlik</span>
+                <span class="toggle-description">Yurtta günlük temizlik hizmeti var mı?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="hasDailyCleaning">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="toggle-row">
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Spor Salonu</span>
+                <span class="toggle-description">Yurtta spor salonu var mı?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="hasGym">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Aktif Durum</span>
+                <span class="toggle-description">Yurt sitede görünür olsun mu?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isActive">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="toggle-row">
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Önemli Yurt</span>
+                <span class="toggle-description">Yurt önemli olarak belirtilsin mi?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isImportant">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- İletişim Bilgileri -->
+      <div class="form-card" id="section-contact">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-phone-alt"></i>
+            İletişim Bilgileri
+          </h2>
+          <p class="card-subtitle">Yurt iletişim bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="contactPerson">İletişim Kurulacak Kişi</label>
+              <input 
+                type="text"
+                id="contactPerson"
+                formControlName="contactPerson"
+                class="form-control"
+                placeholder="Kişi adını girin"
+              >
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="contactMobile">Cep Telefonu</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-mobile-alt input-icon"></i>
+                <input 
+                  type="text"
+                  id="contactMobile"
+                  formControlName="contactMobile"
+                  class="form-control"
+                  placeholder="05XX XXX XX XX"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="contactPhone">Sabit Telefon</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-phone input-icon"></i>
+                <input 
+                  type="text"
+                  id="contactPhone"
+                  formControlName="contactPhone"
+                  class="form-control"
+                  placeholder="0XXX XXX XX XX"
+                >
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="whatsapp">WhatsApp Numarası</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-whatsapp input-icon whatsapp-icon"></i>
+                <input 
+                  type="text"
+                  id="whatsapp"
+                  formControlName="whatsapp"
+                  class="form-control"
+                  placeholder="05XX XXX XX XX"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row row">
+            <div class="form-group col-md-6">
+              <label for="contactAddress">İletişim Adresi</label>
+              <textarea 
+                id="contactAddress"
+                formControlName="contactAddress"
+                class="form-control"
+                rows="3"
+                placeholder="İletişim adresini girin"
+              ></textarea>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="website">Web Sitesi</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-globe input-icon"></i>
+                <input 
+                  type="text"
+                  id="website"
+                  formControlName="website"
+                  class="form-control"
+                  placeholder="https://..."
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions (Bottom) -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/dormitories">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

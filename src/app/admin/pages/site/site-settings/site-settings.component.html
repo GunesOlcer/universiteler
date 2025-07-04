@@ -1,0 +1,170 @@
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-cogs"></i>
+          Site Ayarları
+        </h1>
+        <p class="page-subtitle">Site erişim ayarlarını ve izin verilen IP adreslerini yönetin</p>
+      </div>
+    </div>
+    
+    <!-- Site Access Settings Card -->
+    <div class="settings-card">
+      <div class="settings-header">
+        <h2 class="settings-title">
+          <i class="fas fa-globe"></i>
+          Site Erişim Ayarları
+        </h2>
+      </div>
+      
+      <div class="settings-body">
+        <form [formGroup]="siteStatusForm" (ngSubmit)="saveSiteStatus()">
+          <div class="form-group">
+            <label for="siteStatus">Site Durumu</label>
+            <div class="select-wrapper">
+              <select 
+                id="siteStatus"
+                formControlName="siteStatus"
+                class="form-control"
+              >
+                <option value="open">Açık</option>
+                <option value="closed">Kapalı (Bakım Modu)</option>
+              </select>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              Site kapalı olduğunda, sadece yöneticiler ve izin verilen IP adresleri siteye erişebilir.
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-save" [disabled]="isSaving || siteStatusForm.invalid">
+              <i class="fas fa-save"></i>
+              <span *ngIf="!isSaving">Kaydet</span>
+              <span *ngIf="isSaving" class="spinner"></span>
+            </button>
+            
+            <div *ngIf="settingsSaved" class="success-message">
+              <i class="fas fa-check-circle"></i>
+              Ayarlar başarıyla kaydedildi!
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Allowed IP Addresses Card -->
+    <div class="settings-card">
+      <div class="settings-header">
+        <h2 class="settings-title">
+          <i class="fas fa-shield-alt"></i>
+          İzin Verilen IP Adresleri
+        </h2>
+      </div>
+      
+      <div class="settings-body">
+        <div class="info-box">
+          <div class="info-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="info-content">
+            Site kapalı olduğunda bu listedeki IP adresleri siteye erişebilir. Kendi IP adresinizi eklemeyi unutmayın.
+          </div>
+        </div>
+        
+        <div class="ip-list-container">
+          <div *ngIf="allowedIps.length === 0" class="no-data-message ip-empty">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>Henüz izin verilen IP adresi bulunmamaktadır.</p>
+          </div>
+          
+          <ul *ngIf="allowedIps.length > 0" class="ip-list">
+            <li *ngFor="let ip of allowedIps" class="ip-item">
+              <div class="ip-info">
+                <i class="fas fa-laptop"></i>
+                <span class="ip-address">{{ ip }}</span>
+              </div>
+              <button type="button" class="btn-action btn-delete" (click)="confirmDeleteIp(ip)" title="IP Adresini Sil">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="ip-form-container">
+          <h3 class="form-section-title">Yeni IP Adresi Ekle</h3>
+          
+          <form [formGroup]="ipForm" (ngSubmit)="addIpAddress()" class="ip-form">
+            <div class="form-row">
+              <div class="form-group col-ip">
+                <div class="input-icon-wrapper">
+                  <input 
+                    type="text"
+                    id="ipAddress"
+                    formControlName="ipAddress"
+                    class="form-control"
+                    placeholder="Örn: 192.168.1.1"
+                    [ngClass]="{'is-invalid': ipForm.get('ipAddress')?.invalid && ipForm.get('ipAddress')?.touched}"
+                  >
+                  <i class="fas fa-network-wired input-icon"></i>
+                </div>
+                <div *ngIf="ipForm.get('ipAddress')?.errors && ipForm.get('ipAddress')?.touched" class="form-error">
+                  <div *ngIf="ipForm.get('ipAddress')?.errors?.required">IP adresi gereklidir.</div>
+                  <div *ngIf="ipForm.get('ipAddress')?.errors?.pattern">Geçerli bir IP adresi giriniz (Örn: 192.168.1.1).</div>
+                  <div *ngIf="ipForm.get('ipAddress')?.errors?.duplicate">Bu IP adresi zaten eklenmiş.</div>
+                </div>
+              </div>
+              
+              <div class="form-group col-btn">
+                <button type="submit" class="btn-add-ip" [disabled]="ipForm.invalid">
+                  <i class="fas fa-plus"></i> Ekle
+                </button>
+              </div>
+            </div>
+            
+            <div *ngIf="ipAdded" class="success-message">
+              <i class="fas fa-check-circle"></i>
+              IP adresi başarıyla eklendi!
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" *ngIf="showConfirmDialog">
+    <div class="modal-backdrop" (click)="cancelDeleteIp()"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-exclamation-triangle text-danger"></i>
+            IP Adresi Sil
+          </h3>
+          <button type="button" class="modal-close" (click)="cancelDeleteIp()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="delete-message">
+            <strong>{{ ipToDelete }}</strong> IP adresini silmek istediğinizden emin misiniz?
+          </p>
+          <p class="delete-warning">
+            <i class="fas fa-info-circle"></i>
+            Bu işlem geri alınamaz. Bu IP adresi siteden erişim sağlayamayacaktır.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="cancelDeleteIp()">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="button" class="btn-confirm" (click)="deleteIp()">
+            <i class="fas fa-trash-alt"></i> Evet, Sil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

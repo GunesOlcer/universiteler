@@ -1,0 +1,343 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-book"></i>
+        {{ isEditMode ? 'Bölüm Düzenle' : 'Yeni Bölüm Ekle' }}
+      </h1>
+      <p class="page-subtitle">
+        {{ isEditMode ? 'Bölüm bilgilerini güncelleyin' : 'Sisteme yeni bir bölüm kaydı ekleyin' }}
+      </p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" routerLink="/admin/departments">
+        <i class="fas fa-arrow-left"></i>
+        Listeye Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">
+    <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()">
+      <div class="form-navigation">
+        <div class="nav-item" [class.active]="currentSection === 'basic'" (click)="scrollToSection('basic')">
+          <span class="nav-number">1</span>
+          <span class="nav-text">Temel Bilgiler</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'content'" (click)="scrollToSection('content')">
+          <span class="nav-number">2</span>
+          <span class="nav-text">İçerik Bilgileri</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'videos'" (click)="scrollToSection('videos')">
+          <span class="nav-number">3</span>
+          <span class="nav-text">Tanıtım Videoları</span>
+        </div>
+        <div class="nav-item" [class.active]="currentSection === 'status'" (click)="scrollToSection('status')">
+          <span class="nav-number">4</span>
+          <span class="nav-text">Durum Bilgileri</span>
+        </div>
+      </div>
+      
+      <!-- Temel Bilgiler -->
+      <div class="form-card" id="section-basic">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Temel Bilgiler
+          </h2>
+          <p class="card-subtitle">Bölümün temel bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Bölüm Adı <span class="required">*</span></label>
+              <input 
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.name.errors}"
+                (blur)="generateSlug()"
+                placeholder="Bölüm adını girin"
+              >
+              <div *ngIf="submitted && f.name.errors" class="form-error">
+                <div *ngIf="f.name.errors.required">Bölüm adı gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="slug">Bölüm URL</label>
+              <div class="input-group">
+                <div class="input-prefix">/bolumler/detay/</div>
+                <input 
+                  type="text"
+                  id="slug"
+                  formControlName="slug"
+                  class="form-control"
+                  placeholder="bolum-adi-url"
+                >
+              </div>
+              <div class="form-hint">URL boş bırakılırsa otomatik oluşturulur</div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="trainingPeriod">Öğretim Süresi <span class="required">*</span></label>
+              <div class="input-icon-wrapper">
+                <input 
+                  type="number"
+                  id="trainingPeriod"
+                  formControlName="trainingPeriod"
+                  class="form-control"
+                  min="1"
+                  max="10"
+                  [ngClass]="{'is-invalid': submitted && f.trainingPeriod.errors}"
+                >
+                <span class="input-suffix">Yıl</span>
+              </div>
+              <div *ngIf="submitted && f.trainingPeriod.errors" class="form-error">
+                <div *ngIf="f.trainingPeriod.errors.required">Öğretim süresi gereklidir.</div>
+                <div *ngIf="f.trainingPeriod.errors.min || f.trainingPeriod.errors.max">Öğretim süresi 1-10 yıl arasında olmalıdır.</div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="examType">Sınav Tipi <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="examType"
+                  formControlName="examType"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.examType.errors}"
+                >
+                  <option value="sayısal">Sayısal</option>
+                  <option value="sözel">Sözel</option>
+                  <option value="eşit ağırlık">Eşit Ağırlık</option>
+                  <option value="dil">Dil</option>
+                  <option value="tyt">TYT</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f.examType.errors" class="form-error">
+                <div *ngIf="f.examType.errors.required">Sınav tipi gereklidir.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- İçerik Bilgileri -->
+      <div class="form-card" id="section-content">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-file-alt"></i>
+            İçerik Bilgileri
+          </h2>
+          <p class="card-subtitle">Bölümün içerik ve görsel bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-group">
+            <label for="shortDescription">Bölüm Kısa Açıklama</label>
+            <textarea 
+              id="shortDescription"
+              formControlName="shortDescription"
+              class="form-control"
+              rows="2"
+              placeholder="Bölüm kısa açıklamasını girin"
+            ></textarea>
+            <div class="form-hint">Bu açıklama bölüm listeleme sayfalarında gösterilecektir</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Bölüm Yazısı <span class="required">*</span></label>
+            <textarea 
+              id="description"
+              formControlName="description"
+              class="form-control"
+              rows="6"
+              [ngClass]="{'is-invalid': submitted && f.description.errors}"
+              placeholder="Bölüm detaylı açıklamasını girin"
+            ></textarea>
+            <div *ngIf="submitted && f.description.errors" class="form-error">
+              <div *ngIf="f.description.errors.required">Bölüm yazısı gereklidir.</div>
+            </div>
+          </div>
+          
+          <div class="form-row media-row">
+            <div class="form-group col-md-12">
+              <label>Bölüm Ana Fotoğrafı</label>
+              <div class="media-upload-container">
+                <div class="media-preview" *ngIf="mainImagePreview || departmentForm.get('mainImageUrl')?.value">
+                  <img [src]="mainImagePreview || departmentForm.get('mainImageUrl')?.value" alt="Ana Fotoğraf">
+                  <div class="media-actions">
+                    <button type="button" class="btn-remove-media" (click)="removeMainImage()">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="media-upload" *ngIf="!mainImagePreview && !departmentForm.get('mainImageUrl')?.value">
+                  <input 
+                    type="file" 
+                    id="mainImage"
+                    (change)="onMainImageChange($event)"
+                    accept="image/*"
+                    hidden
+                    #mainImageInput
+                  >
+                  <button type="button" class="btn-upload" (click)="mainImageInput.click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Fotoğraf Ekle</span>
+                  </button>
+                  <p class="upload-info">Minimum 1280x720 ve en fazla 4 MB.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tanıtım Videoları -->
+      <div class="form-card" id="section-videos">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-video"></i>
+            Tanıtım Videoları
+          </h2>
+          <p class="card-subtitle">Bölüm ile ilgili tanıtım videoları ekleyin</p>
+        </div>
+        
+        <div class="card-body" formGroupName="videoLinks">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="link1">Tanıtım Videosu 1</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-youtube input-icon"></i>
+                <input 
+                  type="text"
+                  id="link1"
+                  formControlName="link1"
+                  class="form-control"
+                  placeholder="YouTube veya Vimeo video linki"
+                >
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="link2">Tanıtım Videosu 2</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-youtube input-icon"></i>
+                <input 
+                  type="text"
+                  id="link2"
+                  formControlName="link2"
+                  class="form-control"
+                  placeholder="YouTube veya Vimeo video linki"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="link3">Tanıtım Videosu 3</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-youtube input-icon"></i>
+                <input 
+                  type="text"
+                  id="link3"
+                  formControlName="link3"
+                  class="form-control"
+                  placeholder="YouTube veya Vimeo video linki"
+                >
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="link4">Tanıtım Videosu 4</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-youtube input-icon"></i>
+                <input 
+                  type="text"
+                  id="link4"
+                  formControlName="link4"
+                  class="form-control"
+                  placeholder="YouTube veya Vimeo video linki"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="link5">Tanıtım Videosu 5</label>
+              <div class="input-icon-wrapper">
+                <i class="fab fa-youtube input-icon"></i>
+                <input 
+                  type="text"
+                  id="link5"
+                  formControlName="link5"
+                  class="form-control"
+                  placeholder="YouTube veya Vimeo video linki"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Durum Bilgileri -->
+      <div class="form-card" id="section-status">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-sliders-h"></i>
+            Durum Bilgileri
+          </h2>
+          <p class="card-subtitle">Bölüm ile ilgili diğer ayarları yapın</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Aktif</span>
+                <span class="toggle-description">Bölüm sitede görünür olsun mu?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isActive">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-group">
+              <div class="toggle-label">
+                <span class="toggle-title">Önemli Bölüm</span>
+                <span class="toggle-description">Bölüm önemli bölümler listesinde gösterilsin mi?</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isImportant">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions (Bottom) -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/departments">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

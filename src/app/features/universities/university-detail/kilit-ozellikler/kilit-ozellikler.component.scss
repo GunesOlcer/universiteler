@@ -1,0 +1,143 @@
+/* src/app/features/universities/university-detail/kilit-ozellikler/kilit-ozellikler.component.scss */
+.content-section {
+  margin-bottom: 80px;
+  padding-top: 40px;
+  animation: fadeInUp 0.6s ease;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 50px;
+    padding-top: 20px;
+  }
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 32px;
+  position: relative;
+  display: inline-block;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 60px;
+    height: 3px;
+    background-color: #3b82f6;
+    border-radius: 2px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+    text-align: center;
+    width: 100%;
+    
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.content-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #f1f5f9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
+  }
+  
+  .feature-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ebf5ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    i {
+      color: #3b82f6;
+      font-size: 18px;
+    }
+  }
+  
+  .feature-content {
+    flex: 1;
+    
+    p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: 12px;
+    gap: 12px;
+    
+    .feature-icon {
+      width: 30px;
+      height: 30px;
+      
+      i {
+        font-size: 16px;
+      }
+    }
+    
+    .feature-content p {
+      font-size: 14px;
+    }
+  }
+}
+
+.no-data {
+  padding: 30px;
+  text-align: center;
+  background: #f8fafc;
+  border-radius: 10px;
+  
+  p {
+    color: #64748b;
+    margin: 0;
+    font-size: 15px;
+  }
+}

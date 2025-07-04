@@ -1,0 +1,375 @@
+.content-section {
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .subsection-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .campus-life {
+    .life-overview {
+      margin-bottom: 32px;
+
+      .overview-message {
+        display: flex;
+        gap: 16px;
+        padding: 20px;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde047 100%);
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        color: #92400e;
+
+        i {
+          font-size: 32px;
+          color: #d97706;
+          margin-top: 4px;
+        }
+
+        div {
+          h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+
+          p {
+            margin: 0;
+            line-height: 1.5;
+          }
+        }
+      }
+    }
+
+    .life-facilities {
+      margin-bottom: 32px;
+
+      .facilities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+
+        .facility-item {
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          border: 2px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          transition: all 0.3s ease;
+
+          &.available {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+
+            .facility-icon i {
+              color: #10b981;
+            }
+
+            .availability {
+              color: #059669;
+              background-color: rgba(16, 185, 129, 0.1);
+            }
+          }
+
+          &:not(.available) {
+            .facility-icon i {
+              color: #6b7280;
+            }
+
+            .availability {
+              color: #6b7280;
+              background-color: rgba(107, 114, 128, 0.1);
+            }
+          }
+
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+          }
+
+          .facility-icon {
+            margin-bottom: 12px;
+
+            i {
+              font-size: 32px;
+            }
+          }
+
+          .facility-content {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #1e293b;
+              margin-bottom: 8px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #64748b;
+              margin-bottom: 12px;
+              line-height: 1.4;
+            }
+
+            .availability {
+              display: inline-block;
+              padding: 4px 8px;
+              border-radius: 4px;
+              font-size: 12px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .social-activities {
+      margin-bottom: 32px;
+
+      .activities-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+
+        .activity-category {
+          background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+          border: 1px solid #0ea5e9;
+          border-radius: 8px;
+          overflow: hidden;
+
+          .category-header {
+            background-color: #0284c7;
+            color: white;
+            padding: 16px;
+            text-align: center;
+
+            i {
+              font-size: 24px;
+              margin-bottom: 8px;
+              display: block;
+            }
+
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              margin: 0;
+            }
+          }
+
+          .category-content {
+            padding: 16px;
+
+            ul {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+
+              li {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #0c4a6e;
+                margin-bottom: 8px;
+
+                &::before {
+                  content: '\f00c';
+                  font-family: 'Font Awesome 5 Free';
+                  font-weight: 900;
+                  color: #0284c7;
+                  margin-right: 8px;
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .student-services {
+      margin-bottom: 32px;
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+
+        .service-item {
+          display: flex;
+          gap: 16px;
+          padding: 20px;
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+          border: 1px solid #22c55e;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+
+          .service-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: #16a34a;
+            color: white;
+            border-radius: 8px;
+            flex-shrink: 0;
+
+            i {
+              font-size: 24px;
+            }
+          }
+
+          .service-content {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #166534;
+              margin-bottom: 8px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #15803d;
+              margin: 0;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+    }
+
+    .campus-highlights {
+      margin-bottom: 32px;
+
+      .highlights-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+
+        .highlight-item {
+          background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+          border: 1px solid #a5b4fc;
+          border-radius: 8px;
+          padding: 24px;
+          text-align: center;
+
+          .highlight-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 8px;
+          }
+
+          .highlight-content {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #3730a3;
+              margin-bottom: 4px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #4338ca;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .campus-tips {
+      .tips-list {
+        .tip-item {
+          display: flex;
+          gap: 16px;
+          padding: 16px;
+          margin-bottom: 12px;
+          background-color: #fef3c7;
+          border: 1px solid #fbbf24;
+          border-radius: 8px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          i {
+            font-size: 24px;
+            color: #d97706;
+            margin-top: 4px;
+          }
+
+          div {
+            h4 {
+              font-size: 16px;
+              font-weight: 600;
+              color: #92400e;
+              margin-bottom: 4px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #78350f;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content-section {
+    .campus-life {
+      .life-facilities .facilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .social-activities .activities-container {
+        grid-template-columns: 1fr;
+      }
+
+      .student-services .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .campus-highlights .highlights-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    .campus-life {
+      .life-facilities .facilities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .campus-highlights .highlights-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

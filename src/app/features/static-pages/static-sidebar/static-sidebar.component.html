@@ -1,0 +1,23 @@
+<!-- src/app/features/static-pages/static-sidebar/static-sidebar.component.html -->
+<div class="static-sidebar">
+    <h3 class="sidebar-title">Kurumsal Sayfalar</h3>
+    
+    <ul class="sidebar-nav">
+      <li *ngFor="let page of staticPages" 
+          [class.active]="page.path.substring(1) === currentPage">
+        <a [routerLink]="page.path" class="sidebar-link">
+          <i class="fas {{ page.icon }}"></i>
+          <span>{{ page.name }}</span>
+        </a>
+      </li>
+    </ul>
+    
+    <div class="contact-support">
+      <h4>Yardıma mı ihtiyacınız var?</h4>
+      <p>Sorularınız için bizimle iletişime geçebilirsiniz.</p>
+      <a routerLink="/iletisim" class="support-button">
+        <i class="fas fa-headset"></i>
+        <span>Destek Al</span>
+      </a>
+    </div>
+  </div>

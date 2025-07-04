@@ -1,0 +1,198 @@
+<section class="cities-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Şehirler</h1>
+      <p class="page-subtitle">Türkiye ve KKTC'deki üniversite şehirleri hakkında detaylı bilgi edinin</p>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li *ngFor="let item of breadcrumbPath" 
+              class="breadcrumb-item" 
+              [ngClass]="{'active': item.active}">
+            <a *ngIf="!item.active" [routerLink]="item.url">{{ item.label }}</a>
+            <span *ngIf="item.active">{{ item.label }}</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-content">
+      <!-- Mobile Filter Toggle -->
+      <button type="button" 
+              class="filter-toggle" 
+              (click)="toggleFilters()" 
+              *ngIf="isMobile"
+              [class.active]="showFilters">
+        <i class="fas" [ngClass]="showFilters ? 'fa-times' : 'fa-filter'"></i>
+        {{ showFilters ? 'Filtreleri Kapat' : 'Filtreleri Göster' }}
+      </button>
+
+      <!-- Mobile Overlay -->
+      <div class="mobile-filter-overlay" 
+           [class.active]="showFilters && isMobile" 
+           (click)="closeFilters()"></div>
+
+      <!-- Filter Container -->
+      <div class="search-filter-container" [class.active]="showFilters">
+        <!-- Mobile Filter Header -->
+        <div class="filter-header" *ngIf="isMobile">
+          <h2 class="filter-header-title">Sonuçları Filtrele</h2>
+          <button type="button" class="filter-close-btn" (click)="closeFilters()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+          <label class="section-title" for="city-search">Şehir Ara</label>
+          <div class="search-box">
+            <input 
+              id="city-search"
+              type="text" 
+              [value]="filterState.searchTerm"
+              (input)="onSearchInput($event)"
+              placeholder="Şehir adı..." 
+              class="search-input"
+              name="search">
+            <button type="button" class="search-button">
+              <i class="fas" [ngClass]="isSearching ? 'fa-spinner fa-spin' : 'fa-search'"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Country Filter -->
+        <div class="filter-section">
+          <label class="section-title">Ülke</label>
+          <div class="filter-tabs">
+            <button 
+              class="filter-tab" 
+              [class.active]="filterState.activeCountry === 'all'"
+              (click)="onCountryFilterChange('all')">
+              Tümü
+            </button>
+            <button 
+              class="filter-tab" 
+              [class.active]="filterState.activeCountry === 'turkiye'"
+              (click)="onCountryFilterChange('turkiye')">
+              Türkiye
+            </button>
+            <button 
+              class="filter-tab" 
+              [class.active]="filterState.activeCountry === 'kktc'"
+              (click)="onCountryFilterChange('kktc')">
+              KKTC
+            </button>
+          </div>
+        </div>
+
+        <!-- Sorting -->
+        <div class="filter-section">
+          <label class="section-title" for="sorting">Sırala</label>
+          <select id="sorting" 
+                  name="sorting" 
+                  class="select-box" 
+                  [(ngModel)]="filterState.sorting" 
+                  (change)="onSortingChange()">
+            <option *ngFor="let option of sortingOptions" 
+                    [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Region Filter -->
+        <div class="filter-section">
+          <label class="section-title">Bölgeler</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item" *ngFor="let region of regions">
+              <input 
+                type="checkbox" 
+                [id]="'region-' + region"
+                [checked]="isRegionSelected(region)"
+                (change)="onRegionChange(region, $event.target.checked)">
+              <label [for]="'region-' + region">{{ getRegionName(region) }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Filter -->
+        <div class="filter-section">
+          <label class="section-title">Özellikler</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item" *ngFor="let feature of features">
+              <input 
+                type="checkbox" 
+                [id]="'feature-' + feature.key"
+                [checked]="isFeatureSelected(feature.key)"
+                (change)="onFeatureChange(feature.key, $event.target.checked)">
+              <label [for]="'feature-' + feature.key">{{ feature.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="filter-actions">
+          <button class="clear-button" (click)="resetFilters()">
+            <i class="fas fa-eraser"></i>
+            Filtreleri Temizle
+          </button>
+          <button class="apply-button" (click)="applyMobileFilters()" *ngIf="isMobile">
+            <i class="fas fa-check"></i>
+            Uygula
+          </button>
+        </div>
+      </div>
+
+      <!-- Cities Container -->
+      <div class="cities-container">
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Şehirler yükleniyor...</p>
+        </div>
+
+        <!-- Results -->
+        <div class="cities-content" *ngIf="!isLoading">
+          <!-- Results Count -->
+          <div class="results-header" *ngIf="filteredCities.length > 0">
+            <div class="results-count">
+              <strong>{{ filteredCities.length }}</strong> şehir bulundu
+            </div>
+          </div>
+
+          <!-- Cities Grid -->
+          <div class="cities-grid" *ngIf="filteredCities.length > 0">
+            <app-city-card 
+              *ngFor="let city of filteredCities; trackBy: trackByCity" 
+              [city]="city">
+            </app-city-card>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="filteredCities.length === 0">
+            <div class="empty-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 class="empty-title">Şehir Bulunamadı</h3>
+            <p class="empty-message">
+              Arama kriterlerinize uygun şehir bulunamadı. 
+              Filtreleri değiştirerek tekrar deneyin.
+            </p>
+            <button class="reset-button" (click)="resetFilters()">
+              <i class="fas fa-redo"></i>
+              Filtreleri Sıfırla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+<section class="content-section">
+  <h2 class="section-title">Kilit Özellikler</h2>
+  <div class="content-card">
+    <div class="features-list">
+      <div class="feature-item" *ngFor="let feature of features">
+        <div class="feature-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="feature-content">
+          <p>{{ feature }}</p>
+        </div>
+      </div>
+      <div class="no-data" *ngIf="features.length === 0">
+        <p>Kilit özellik bilgisi bulunamadı.</p>
+      </div>
+    </div>
+  </div>
+</section>

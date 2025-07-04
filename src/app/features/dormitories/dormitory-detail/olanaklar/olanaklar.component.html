@@ -1,0 +1,40 @@
+<section class="content-section">
+  <h2 class="section-title">Olanaklar</h2>
+  
+  <div class="features-section" *ngIf="dormitory?.features && dormitory.features.length > 0">
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of dormitory.features">
+        <div class="feature-icon">
+          <i class="fas" [ngClass]="getFeatureIcon(feature.icon)"></i>
+        </div>
+        <div class="feature-content">
+          <h3 class="feature-title">{{ feature.name }}</h3>
+          <p class="feature-category">{{ feature.categoryName }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-features" *ngIf="!dormitory?.features || dormitory.features.length === 0">
+    <div class="empty-state">
+      <i class="fas fa-info-circle"></i>
+      <h3>Özellik Bilgisi Yok</h3>
+      <p>Bu yurt için henüz özellik bilgisi eklenmemiş.</p>
+    </div>
+  </div>
+
+  <div class="rooms-section" *ngIf="dormitory?.roomTypes">
+    <h3 class="subsection-title">Oda Tipleri</h3>
+    <div class="room-types-info">
+      <div class="room-info-card">
+        <div class="room-icon">
+          <i class="fas fa-bed"></i>
+        </div>
+        <div class="room-details">
+          <h4 class="room-title">Mevcut Oda Tipleri</h4>
+          <p class="room-description">{{ dormitory.roomTypes }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

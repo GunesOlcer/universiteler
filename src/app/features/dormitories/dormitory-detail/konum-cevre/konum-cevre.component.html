@@ -1,0 +1,138 @@
+<section class="content-section">
+  <h2 class="section-title">Konum ve Çevre</h2>
+  
+  <div class="location-info" *ngIf="dormitory?.address">
+    <div class="address-section">
+      <h3 class="subsection-title">Adres Bilgisi</h3>
+      <div class="address-card">
+        <div class="address-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="address-details">
+          <h4>{{ dormitory.name }}</h4>
+          <p>{{ dormitory.address }}</p>
+          <div class="city-info">
+            <span>{{ dormitory.cityName }}, {{ dormitory.countryName }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="map-placeholder">
+      <div class="map-icon">
+        <i class="fas fa-map-marked-alt"></i>
+      </div>
+      <h3>Harita Görüntüsü</h3>
+      <p>Harita entegrasyonu yakında eklenecektir.</p>
+    </div>
+  </div>
+
+  <div class="distance-info" *ngIf="dormitory?.distanceToCenter">
+    <h3 class="subsection-title">Mesafe Bilgileri</h3>
+    <div class="distance-grid">
+      <div class="distance-card">
+        <div class="distance-icon">
+          <i class="fas fa-city"></i>
+        </div>
+        <div class="distance-details">
+          <h4>Şehir Merkezi</h4>
+          <p>{{ dormitory.distanceToCenter }} km uzaklıkta</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="surroundings-section">
+    <h3 class="subsection-title">Çevredeki Genel Bilgiler</h3>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="info-content">
+          <h4>Alışveriş</h4>
+          <p>Yakınlarda market, alışveriş merkezi ve çeşitli mağazalar bulunabilir.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <div class="info-content">
+          <h4>Yeme İçme</h4>
+          <p>Çevrede restoran, kafe ve fast food zincirleri yer alabilir.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-bus"></i>
+        </div>
+        <div class="info-content">
+          <h4>Ulaşım</h4>
+          <p>Toplu taşıma durakları ve ulaşım noktaları yakında bulunabilir.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">
+          <i class="fas fa-hospital"></i>
+        </div>
+        <div class="info-content">
+          <h4>Sağlık</h4>
+          <p>Hastane, eczane ve sağlık merkezleri çevrede yer alabilir.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="transportation-section">
+    <h3 class="subsection-title">Genel Ulaşım Bilgileri</h3>
+    <div class="transport-grid">
+      <div class="transport-card">
+        <div class="transport-icon">
+          <i class="fas fa-bus"></i>
+        </div>
+        <div class="transport-details">
+          <h4>Toplu Taşıma</h4>
+          <p>Otobüs ve diğer toplu taşıma araçları ile şehir içi ulaşım sağlanabilir.</p>
+        </div>
+      </div>
+
+      <div class="transport-card">
+        <div class="transport-icon">
+          <i class="fas fa-subway"></i>
+        </div>
+        <div class="transport-details">
+          <h4>Metro/Tramvay</h4>
+          <p>Şehirde metro veya tramvay sistemi mevcut ise bu araçlar kullanılabilir.</p>
+        </div>
+      </div>
+
+      <div class="transport-card">
+        <div class="transport-icon">
+          <i class="fas fa-taxi"></i>
+        </div>
+        <div class="transport-details">
+          <h4>Taksi/Özel Araç</h4>
+          <p>Taksi hizmetleri ve özel araç ile ulaşım mümkündür.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-section">
+    <div class="note-card">
+      <div class="note-icon">
+        <i class="fas fa-info-circle"></i>
+      </div>
+      <div class="note-content">
+        <h4>Bilgi Notu</h4>
+        <p>Çevre ve ulaşım bilgileri genel bilgiler olup, güncel durumu için lütfen yurt yönetimi ile iletişime geçiniz.</p>
+      </div>
+    </div>
+  </div>
+</section>

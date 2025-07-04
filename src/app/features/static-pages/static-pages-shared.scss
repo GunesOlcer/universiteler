@@ -1,0 +1,26 @@
+/* src/app/features/static-pages/static-pages-shared.scss */
+.static-page-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  .static-sidebar-container {
+    flex: 0 0 280px;
+    width: 280px;
+  }
+  
+  .static-content-container {
+    flex: 1;
+  }
+  
+  @media (max-width: 992px) {
+    .static-page-layout {
+      flex-direction: column;
+    }
+    
+    .static-sidebar-container {
+      width: 100%;
+    }
+  }

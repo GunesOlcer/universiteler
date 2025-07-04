@@ -1,0 +1,111 @@
+<!-- src/app/features/static-pages/terms/terms.component.html -->
+<section class="terms-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Kullanım Koşulları</h1>
+        <p class="page-subtitle">Sitemizi kullanırken bilmeniz gereken tüm şartlar ve koşullar</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active">Kullanım Koşulları</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="page-content">
+      <div class="container">
+        <div class="static-page-layout">
+          <!-- Sidebar with navigation -->
+          <div class="static-sidebar-container">
+            <app-static-sidebar currentPage="kullanim-kosullari"></app-static-sidebar>
+          </div>
+          
+          <!-- Main content -->
+          <div class="static-content-container">
+            <div class="terms-container">
+              <div class="terms-intro">
+                <p>Bu web sitesini ("Site") ziyaret ederek ve kullanarak, bu Kullanım Koşullarını ve sitede belirtilen diğer politikaları kabul etmiş olursunuz. Site, üniversiteler.net tarafından işletilmektedir. Bu belge, Site'nin kullanım koşullarını ve Site üzerinden sunulan hizmetlerin şartlarını içerir. Lütfen bu koşulları dikkatlice okuyunuz.</p>
+              </div>
+              
+              <div class="terms-section">
+                <h2>1. Genel Koşullar</h2>
+                <p>Site, üniversiteler ve yüksek öğrenimle ilgili bilgi sağlama amacı güder. Site içeriği, kullanıcılara rehberlik etmek ve eğitimle ilgili genel bilgiler sunmak için tasarlanmıştır. Site, sürekli olarak güncellenmekte olup, bu bilgilerin doğruluğunu ve güncelliğini sağlamak için makul çaba sarf edilmektedir. Ancak, Site üzerinde sunulan bilgilerin doğruluğunu garanti etmez ve bilgilerin kullanımından doğabilecek zararlardan sorumlu tutulamaz.</p>
+                
+                <p>Site içeriği ve sunulan hizmetler, kullanıcıların eğitimle ilgili bilgi edinmesine yardımcı olmak amacıyla özen gösterilerek hazırlanmıştır. Kullanıcıların karşılaştığı bilgiler, özellikle üniversite başvuruları, akademik programlar, burslar ve eğitim olanakları gibi konularda fikir vermek üzere düzenlenmiştir. Ancak, bu bilgilerin kullanımı tamamen kullanıcının sorumluluğundadır ve herhangi bir kararda tek başına dayanak oluşturmamalıdır.</p>
+              </div>
+              
+              <!-- Rest of the sections -->
+              <div class="terms-section">
+                <h2>2. Fikri Mülkiyet Hakları</h2>
+                <p>Site ve Site içeriği, telif hakkı, ticari marka, patent, ticari sır ve diğer mülkiyet hakları da dahil olmak üzere, ulusal ve uluslararası fikri mülkiyet yasaları tarafından korunmaktadır. Site üzerinde yer alan tüm metinler, grafikler, logolar, resimler, ses dosyaları, animasyonlar, videolar ve diğer materyallerin telif hakları üniversiteler.net veya lisans verenlerine aittir. Bu materyaller, yalnızca kişisel ve ticari olmayan amaçlar için kullanılabilir ve herhangi bir şekilde çoğaltılamaz, yayımlanamaz, aktarılamaz, dağıtılamaz, değiştirilemez veya başka bir şekilde kullanılamaz.</p>
+              </div>
+          
+          <div class="terms-section">
+            <h2>3. Sorumluluk Reddi</h2>
+            <p>Site içeriği yalnızca bilgilendirme amaçlıdır ve resmi tavsiye veya görüş olarak kabul edilmemelidir. İçeriklerde yer alan bilgilerin doğruluğu için sürekli kontrol sağlanmaktadır; ancak zamanla değişebilecek bilgiler, hatalar veya eksiklikler içerebilir. Dolayısıyla, içerikte yer alan bilgilerin güncel ve doğru olduğundan emin olmak için resmi ve güvenilir kaynaklara başvurmanız önerilir.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>4. Bağlantılar (Linkler)</h2>
+            <p>Site, kullanıcıların erişimine sunulan diğer harici sitelere bağlantılar içerebilir. Bu bağlantılar, kullanıcıların kolaylığı için sağlanmıştır. Bağlantı verilen sitelerin içeriği, güvenilirliği veya güvenliği üniversiteler.net tarafından kontrol edilmemekte veya onaylanmamaktadır. Bu sitelerin kullanılmasından doğabilecek herhangi bir zarar veya kayıptan üniversiteler.net sorumlu tutulamaz.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>5. Site Kullanımı</h2>
+            <p>Site'nin kullanımı sadece kişisel ve ticari olmayan amaçlarla sınırlıdır. Site üzerinde yer alan bilgilerin ticari amaçlarla kullanılması, yayılması veya üçüncü taraflarla paylaşılması kesinlikle yasaktır. Kullanıcılar, Site'yi yalnızca yasal amaçlar için kullanmayı kabul ederler. İllegal, hileli veya zarar verici amaçlarla Site'nin kullanımı yasaktır.</p>
+            
+            <p>Kullanıcılar, Site üzerinde sunulan içerik ve hizmetlerin kullanımında dikkatli ve özenli davranmalıdır. Bu içerik ve hizmetlerin yanlış veya uygun olmayan kullanımı sonucunda doğabilecek her türlü zarar, kayıp veya başka türlü olumsuzluklardan kullanıcılar kendileri sorumludur.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>6. Kullanıcı Sorumlulukları</h2>
+            <p>Kullanıcılar, Site'yi kullanırken, tüm yerel, ulusal ve uluslararası yasalara uygun davranmayı kabul eder. Kullanıcılar, Site üzerinde yasa dışı, zararlı, tehditkar, taciz edici, iftira niteliğinde veya herhangi bir şekilde zarar verebilecek içerik yayımlamamayı taahhüt eder. Ayrıca, kullanıcılar, Site üzerinden elde edilen bilgileri yanıltıcı, aldatıcı veya haksız ticari pratiklerde kullanmamayı kabul ederler.</p>
+            
+            <p>Kullanıcıların, Site üzerinde paylaştığı içeriklerin doğruluk ve yasallığından kendileri sorumludur. Üçüncü şahısların haklarını ihlal edecek veya yasa dışı faaliyetlere teşvik edecek hiçbir içerik paylaşılmamalıdır. üniversiteler.net, bu tür içeriklerin farkına vardığında, ilgili içerikleri derhal kaldırma ve gerekli hukuki işlemleri başlatma hakkını saklı tutar.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>7. Değişiklikler</h2>
+            <p>üniversiteler.net, bu Kullanım Koşullarını ve Site üzerinde yer alan diğer politikaları herhangi bir zamanda önceden haber vermeksizin değiştirebilir. Bu tür değişiklikler, web sitemizde yayımlandığı anda yürürlüğe girer ve kullanıcıların devam eden site kullanımı, bu değişiklikleri kabul ettiği anlamına gelir. Kullanıcıların, bu değişiklikleri düzenli olarak gözden geçirmeleri ve Site kullanımını bu değişikliklere uygun olarak ayarlamaları önerilir.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>8. Gizlilik</h2>
+            <p>Kullanıcıların gizliliği, üniversiteler.net için önemlidir. Kullanıcılar tarafından sağlanan kişisel bilgiler, sitemizin Gizlilik Politikası'na uygun olarak işlenecektir. Gizlilik politikamız, kullanıcı bilgilerinin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar. Kullanıcılar, gizlilik politikamızı gözden geçirerek, kişisel bilgilerinin nasıl kullanılacağını anlamalıdır.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>9. Tazminat</h2>
+            <p>Kullanıcılar, Site'nin kullanımından doğabilecek veya bu kullanımla ilgili üçüncü şahıslarca üniversiteler.net aleyhine yapılan her türlü iddia, zarar, kayıp, maliyet ve talepten üniversiteler.net'i ve onun yöneticilerini, çalışanlarını ve acentelerini tazmin etmeyi kabul eder. Bu, kullanıcının Site'yi kullanımı sırasında üçüncü şahısların haklarının ihlali veya kullanıcının yasa dışı faaliyetlerine bağlı olarak ortaya çıkabilecek her türlü hukuki sorumluluğu kapsar.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>10. Sorumluluk Reddi</h2>
+            <p>üniversiteler.net olarak, internet sitemizde sunulan bilgilerin doğruluğunu ve güncelliğini sağlamak için büyük bir özen göstermekteyiz. Ancak, içeriklerimizde zaman zaman hatalar veya eksiklikler bulunabilir. Bu nedenle, sitemizde yer alan bilgilerin kesinliği ve tamlığı konusunda garanti vermemekteyiz.</p>
+            
+            <p>Sitemizi ziyaret eden kullanıcıların, karar verme süreçlerinde sitemizde sunulan bilgilerin doğruluğunu teyit etmeleri önemlidir. Bu doğrultuda, tercih aşamasına gelmiş üniversite adaylarına ve ebeveynlerine, karar vermeden önce resmi kanallar ve doğrudan ilgili eğitim kurumları üzerinden bilgi edinmelerini tavsiye ederiz.</p>
+            
+            <p>Sitemizde yer alan bilgiler, genellikle üniversitelerin resmi web siteleri, katalogları, broşürleri ve diğer kaynaklardan derlenmiştir. Ancak, üniversiteler zaman zaman programlarında, kabul koşullarında, burs ve ücretlerde ya da bunların dışında kalan birtakım içeriklerde değişiklikler yapabilirler. Bu nedenle, en güncel ve doğru bilgiler için doğrudan üniversitelerin resmi web siteleri ve iletişim kanalları kullanılmalıdır.</p>
+            
+            <p>üniversiteler.net, sitemizde sunulan bilgilerin kullanımı sonucu doğabilecek herhangi bir zarar veya kayıptan dolayı sorumluluk kabul etmez. Kullanıcılarımız, sitemizi ziyaret ederek bu sorumluluk reddi beyanını kabul etmiş sayılırlar.</p>
+          </div>
+          
+          <div class="terms-section">
+            <h2>11. Çeşitli</h2>
+            <p>Bu Kullanım Koşulları, üniversiteler.net ile kullanıcılar arasında Site'nin kullanımı ile ilgili tam anlaşmayı teşkil eder ve kullanıcılar tarafından Site ile ilgili olarak yapılmış olan önceki tüm anlaşmaların yerini alır. Eğer bu koşullardan herhangi biri geçersiz, yasa dışı veya herhangi bir nedenle uygulanamaz hale gelirse, bu durum kalan hükümlerin geçerliliği veya uygulanabilirliğini etkilemez.</p>
+          </div>
+          
+          <div class="terms-conclusion">
+            <p>Bu metin, üniversiteler.net web sitesinin kullanımına yönelik hüküm ve koşulları detaylı bir şekilde açıklamakta olup, kullanıcıların siteyi kullanırken bilmesi gereken tüm ana başlıkları içermektedir. Bu koşullar, kullanıcılar ve site arasında karşılıklı anlaşmalar olarak işlev görür ve kullanıcıların siteyi kullanımı bu koşullara tabidir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

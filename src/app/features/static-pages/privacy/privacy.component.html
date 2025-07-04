@@ -1,0 +1,124 @@
+<!-- src/app/features/static-pages/privacy/privacy.component.html -->
+<section class="privacy-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Gizlilik Politikası</h1>
+        <p class="page-subtitle">Kişisel bilgilerinizin nasıl işlendiği hakkında bilgi</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active">Gizlilik Politikası</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="page-content">
+      <div class="container">
+        <div class="static-page-layout">
+          <!-- Sidebar with navigation -->
+          <div class="static-sidebar-container">
+            <app-static-sidebar currentPage="gizlilik-politikasi"></app-static-sidebar>
+          </div>
+          
+          <!-- Main content -->
+          <div class="static-content-container">
+            <div class="privacy-container">
+              <div class="privacy-intro">
+                <p>Bu Gizlilik Politikası, üniversiteler.net ("Site") tarafından toplanan, kullanılan ve paylaşılan kişisel bilgilerin nasıl işlendiğini açıklar. Bu politika, Site'yi ziyaret eden veya Site üzerinden hizmetlerimizi kullanan herkes için geçerlidir. Site'yi kullanarak bu Gizlilik Politikasını kabul etmiş olursunuz. Lütfen bu politikayı dikkatle okuyunuz.</p>
+              </div>
+              
+              <div class="privacy-section">
+                <h2>1. Bilgi Toplama</h2>
+                <p>Site, kullanıcılarımıza daha iyi hizmet verebilmek için çeşitli yollarla bilgi toplar. Toplanan bilgiler, kullanıcıların Site'yi nasıl kullandığına, hangi sayfaların ziyaret edildiğine ve hangi hizmetlerin kullanıldığına dair bilgileri içerebilir. Ayrıca, kullanıcıların cihazlarının teknik özellikleri ve internet bağlantı bilgileri gibi teknik bilgiler de toplanabilir. Toplanan bilgiler şunları içerebilir:</p>
+                
+                <ul>
+                  <li><strong>Kişisel Kimlik Bilgileri:</strong> Ad, soyad, e-posta adresi, telefon numarası gibi doğrudan kullanıcıyı tanımlayabilecek bilgiler.</li>
+                  <li><strong>Demografik Bilgiler:</strong> Yaş, cinsiyet, meslek, eğitim düzeyi gibi genel bilgiler.</li>
+                  <li><strong>Konum Bilgileri:</strong> Gerçek zamanlı konum bilgileri dahil olmak üzere, kullanıcının cihazının coğrafi konumu.</li>
+                  <li><strong>Çerezler ve Takip Teknolojileri:</strong> Kullanıcıların Site'yi nasıl kullandıklarını anlamak için çerezler, işaretçiler ve benzeri teknolojiler kullanılır.</li>
+                </ul>
+              </div>
+              
+              <!-- Rest of the content sections -->
+              <div class="privacy-section">
+                <h2>2. Bilgi Kullanımı</h2>
+                <p>Toplanan bilgiler, kullanıcı deneyimini iyileştirmek, Site içeriğini ve hizmetlerimizi kullanıcıların ilgi ve ihtiyaçlarına göre uyarlamak, teknik sorunları çözmek ve yeni hizmetler geliştirmek amacıyla kullanılır. Ayrıca, kullanıcılarla iletişim kurmak, pazarlama ve promosyon teklifleri sunmak için de kullanılır. Bilgi kullanımı şu amaçlarla gerçekleştirilir:</p>
+                
+                <ul>
+                  <li><strong>Kullanıcı Deneyimini İyileştirme:</strong> Kullanıcıların Site üzerindeki etkileşimlerini analiz ederek, kullanıcı deneyimini sürekli olarak iyileştirmek.</li>
+                  <li><strong>Pazarlama ve Promosyonlar:</strong> Kullanıcılara ilgi alanlarına ve önceki etkileşimlerine göre özelleştirilmiş reklamlar ve promosyonlar sunmak.</li>
+                  <li><strong>İletişim:</strong> Kullanıcılarla etkili bir şekilde iletişim kurmak için bilgileri kullanma, örneğin, bilgilendirme e-postaları, kullanıcı desteği veya bilgi güncellemeleri göndermek.</li>
+                  <li><strong>Hukuki Yükümlülükler:</strong> Yasal gerekliliklere uygun davranmak ve hukuki taleplere yanıt vermek.</li>
+                </ul>
+              </div>
+              
+              <div class="privacy-section">
+                <h2>3. Bilgi Paylaşımı</h2>
+                <p>Toplanan kişisel bilgiler, yalnızca yasalara uygun olarak ve kullanıcıların açık rızasıyla üçüncü taraflarla paylaşılır. Bilgiler, şu durumlarda paylaşılabilir:</p>
+                
+                <ul>
+                  <li><strong>Hizmet Sağlayıcılarla:</strong> Site'nin işletilmesi, pazarlama faaliyetleri, veri analizi veya teknik destek sağlamak amacıyla hizmet veren üçüncü taraf şirketler ile paylaşılabilir.</li>
+                  <li><strong>Yasal Talepler:</strong> Yasal süreçler gereği, mahkeme emri veya hukuki işlemler çerçevesinde bilgilerin paylaşılması gerekebilir.</li>
+                  <li><strong>İş Ortakları:</strong> Kullanıcıların ilgisini çekebilecek ürün veya hizmetler hakkında bilgi sağlamak için iş ortakları ile paylaşılabilir.</li>
+                </ul>
+              </div>
+          
+          <div class="privacy-section">
+            <h2>4. Çerezler ve Benzeri Teknolojiler</h2>
+            <p>Site, kullanıcı deneyimini iyileştirmek ve Site'nin nasıl kullanıldığını anlamak için çerezler ve benzeri takip teknolojilerini kullanır. Kullanıcılar, tarayıcı ayarları üzerinden çerezleri yönetebilir ve gerekirse engelleyebilir. Ancak, çerezleri devre dışı bırakmak, Site'nin bazı işlevlerinin düzgün çalışmamasına neden olabilir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>5. Bilgi Güvenliği</h2>
+            <p>üniversiteler.net, toplanan bilgilerin güvenliğini sağlamak için uygun teknik ve organizasyonel önlemler alır. Bu önlemler, bilgilerin yetkisiz erişim, kayıp, zarar veya diğer risklere karşı korunmasını amaçlar. Ancak, internet üzerinden yapılan veri iletiminin tamamen güvenli olmadığını ve her türlü riski tamamen ortadan kaldıramayacağımızı unutmamak önemlidir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>6. Kullanıcı Hakları</h2>
+            <p>Kullanıcılar, kendileriyle ilgili toplanan bilgiler üzerinde çeşitli haklara sahiptir. Bu haklar arasında bilgi erişimi, bilgilerin düzeltilmesi, bilgilerin silinmesi ve işlenmesine itiraz etme hakkı bulunmaktadır. Kullanıcılar, bu haklarını kullanmak için üniversiteler.net ile iletişime geçebilir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>7. Veri Saklama</h2>
+            <p>üniversiteler.net, toplanan kişisel bilgileri, yalnızca ilgili bilgilerin toplama amacına hizmet ettiği sürece ve yasal yükümlülüklerimize uygun olarak saklar. Veri saklama süremiz, bilgilerin türüne, toplama amacına ve yasal gerekliliklere bağlı olarak değişiklik gösterir. Bilgiler artık gerekli olmadığında veya kullanıcının silinme talebi üzerine, bu bilgiler güvenli bir şekilde imha edilir veya anonim hale getirilir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>8. Uluslararası Veri Transferleri</h2>
+            <p>Site global bir kullanıcı tabanına sahip olduğundan, kullanıcı bilgileri, farklı yargı bölgelerindeki sunucularda saklanabilir ve işlenebilir. Bu durum, kullanıcı bilgilerinin, kullanıcının bulunduğu ülkeden farklı veri koruma yasalarına sahip ülkelere transfer edilmesi anlamına gelebilir. üniversiteler.net, uluslararası veri transferlerinde, bilgilerin korunmasını sağlamak için gerekli tüm yasal ve güvenlik önlemlerini alır.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>9. Çocukların Gizliliği</h2>
+            <p>Site, 13 yaşın altındaki çocuklardan bilinçli olarak kişisel bilgi toplamaz. Eğer bir ebeveyn veya yasal vasi, çocuğunun Siteye kişisel bilgilerini sağladığını fark ederse, lütfen bu durumu üniversiteler.net ile iletişime geçerek bildirin. Böyle bir durumda, ilgili bilgiler en kısa sürede sistemlerimizden silinecektir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>10. Üçüncü Parti Siteler</h2>
+            <p>Site, zaman zaman üçüncü parti web sitelerine bağlantılar içerebilir. Bu bağlantılar kullanıcıların bilgi edinmesi amacıyla sağlanmıştır. Üçüncü parti sitelerin gizlilik uygulamaları, üniversiteler.net'in kontrolü dışındadır ve bu sitelerin gizlilik politikaları, üniversiteler.net tarafından sağlanan bu Gizlilik Politikası'ndan farklı olabilir. Kullanıcılar, herhangi bir üçüncü parti sitesini ziyaret etmeden önce, o sitenin gizlilik politikasını dikkatlice incelemelidir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>11. Gizlilik Politikası Değişiklikleri</h2>
+            <p>üniversiteler.net zaman zaman bu Gizlilik Politikasında değişiklik yapabilir. Bu tür değişiklikler, Site üzerinde ilan edildiği anda yürürlüğe girer. Kullanıcıların, bu değişiklikleri düzenli olarak kontrol etmeleri ve Site'nin kullanımını bu değişikliklere uygun olarak sürdürmeleri önerilir.</p>
+          </div>
+          
+          <div class="privacy-section">
+            <h2>12. İletişim</h2>
+            <p>Eğer bu Gizlilik Politikası hakkında herhangi bir sorunuz veya endişeniz varsa, veya kişisel bilgileriniz üzerindeki haklarınızı kullanmak istiyorsanız, üniversiteler.net ile iletişime geçebilirsiniz. İletişim bilgileri Site üzerinde mevcuttur.</p>
+          </div>
+          
+          <div class="privacy-conclusion">
+            <p>Bu genişletilmiş Gizlilik Politikası, kullanıcıların bilgilerinin nasıl toplandığını, kullanıldığını, paylaşıldığını ve korunduğunu kapsamlı bir şekilde açıklar ve kullanıcıların bilinçli bir şekilde Site'yi kullanmalarını sağlar. Bu politika, kullanıcıların gizlilik haklarını korumaya yönelik önlemleri detaylı bir şekilde ortaya koyar ve üniversiteler.net'in bu konudaki şeffaflığını ve sorumluluğunu vurgular.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

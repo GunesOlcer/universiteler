@@ -1,0 +1,128 @@
+<!-- src/app/features/static-pages/cookie-policy/cookie-policy.component.html -->
+<section class="cookie-policy-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Çerez Politikası</h1>
+        <p class="page-subtitle">Sitemizde kullanılan çerezler ve gizliliğinizin korunması hakkında bilgi</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active">Çerez Politikası</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="page-content">
+      <div class="container">
+        <div class="static-page-layout">
+          <!-- Sidebar with navigation -->
+          <div class="static-sidebar-container">
+            <app-static-sidebar currentPage="cerez-politikasi"></app-static-sidebar>
+          </div>
+          
+          <!-- Main content -->
+          <div class="static-content-container">
+            <div class="cookie-policy-container">
+              <div class="cookie-policy-intro">
+                <p>Bu Çerez Politikası, üniversiteler.net ("Site") tarafından kullanılan çerezler ve benzeri takip teknolojileri hakkında bilgi sağlar. Site'yi kullanarak bu Çerez Politikasını kabul etmiş olursunuz. Bu politikayı dikkatle okumanızı öneririz.</p>
+              </div>
+              
+              <div class="cookie-policy-section">
+                <h2>1. Çerez Nedir?</h2>
+                <p>Çerezler, ziyaret ettiğiniz web siteleri tarafından tarayıcınıza veya cihazınıza gönderilen küçük metin dosyalarıdır. Bu dosyalar, kullanıcıların site deneyimini kişiselleştirmek ve site performansını analiz etmek amacıyla kullanılır. Çerezler, siteyi ziyaret ettiğinizde sizi tanımak için kullanılan benzersiz tanımlayıcılar içerir.</p>
+              </div>
+              
+              <!-- Rest of the sections -->
+              <div class="cookie-policy-section">
+                <h2>2. Çerezlerin Kullanımı</h2>
+                <p>Site, çeşitli çerezler kullanarak ziyaretçi deneyimini iyileştirmeyi amaçlar. Bu çerezler, kullanıcı tercihlerini hatırlamak, site içi etkileşimleri analiz etmek ve özelleştirilmiş içerik ve reklamlar sunmak için kullanılır. Çerezler şu amaçlarla kullanılır:</p>
+                
+                <ul>
+                  <li><strong>Performans Çerezleri:</strong> Site performansını artırmak ve kullanıcı deneyimini iyileştirmek için kullanılır.</li>
+                  <li><strong>Analitik Çerezler:</strong> Kullanıcıların siteyi nasıl kullandıklarını anlamak için kullanılır, bu sayede site içeriği ve yapısı iyileştirilir.</li>
+                  <li><strong>Fonksiyonel Çerezler:</strong> Kullanıcıların site tercihlerini hatırlamak ve daha kişiselleştirilmiş bir deneyim sunmak için kullanılır.</li>
+                  <li><strong>Reklam Çerezleri:</strong> Kullanıcıların ilgi alanlarına göre özelleştirilmiş reklamlar sunmak için kullanılır.</li>
+                </ul>
+              </div>
+          
+          <div class="cookie-policy-section">
+            <h2>3. Çerez Tipleri</h2>
+            <p>Site, birkaç tip çerez kullanır. Bunlar:</p>
+            
+            <ul>
+              <li><strong>Oturum Çerezleri:</strong> Bu çerezler, kullanıcıların bir oturum boyunca siteyi nasıl kullandıklarını izlemek için kullanılır ve tarayıcı kapatıldığında silinir.</li>
+              <li><strong>Kalıcı Çerezler:</strong> Bu çerezler, kullanıcıları tekrar ziyaret ettiklerinde tanımak için kullanılır ve belirli bir süre sonra otomatik olarak silinir.</li>
+              <li><strong>Üçüncü Taraf Çerezleri:</strong> Bu çerezler, reklam ağları gibi dış hizmetler tarafından kullanılır ve bu hizmetlerin kullanıcıları tanıması için izin verir.</li>
+            </ul>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>4. Çerez Tercihleri</h2>
+            <p>Kullanıcılar, tarayıcı ayarları aracılığıyla çerezleri kontrol edebilir ve gerektiğinde engelleyebilir. Çerez ayarlarınızı nasıl yöneteceğiniz, kullanılan tarayıcıya göre değişiklik gösterir. Çerezleri engellemek, Site'nin bazı özelliklerinin düzgün çalışmamasına neden olabilir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>5. Çerezlerin Yönetimi</h2>
+            <p>Çerez tercihlerinizi yönetmek için, tarayıcınızın "Yardım" menüsüne bakabilir veya çerezlerle ilgili web sitelerinden daha fazla bilgi edinebilirsiniz. Çerezlerin engellenmesi, Site'nin performansını etkileyebilir ve kullanıcı deneyiminizi azaltabilir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>6. Güvenlik ve Gizlilik</h2>
+            <p>Çerezler, kullanıcıların güvenliğini ve gizliliğini sağlamak için tasarlanmıştır. Çerezler aracılığıyla toplanan bilgiler, güvenlik önlemleriyle korunur. Ancak, çerezlerin kötüye kullanımını önlemek için kullanıcıların çerez tercihlerini dikkatli bir şekilde yönetmeleri önemlidir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>7. Üçüncü Taraf Çerezleri</h2>
+            <p>Site, bazı durumlarda üçüncü taraf hizmetleri kullanabilir. Bu hizmetler, kendi çerezlerini kullanabilir ve bu çerezler, üniversiteler.net'in kontrolü dışındadır. Üçüncü taraf çerezlerinin kullanımı, ilgili üçüncü tarafın gizlilik ve çerez politikalarına tabidir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>8. Performans İzleme</h2>
+            <p>Site, çerezler aracılığıyla elde edilen verileri kullanarak performans analizi yapar. Bu, ziyaretçi sayısı, sayfa görüntüleme sayısı, site içi navigasyon yolları ve diğer önemli metrikler dahil olmak üzere çeşitli kullanıcı etkileşimlerini izlemeyi içerir. Bu bilgiler, Site'nin kullanıcı ihtiyaçlarına daha iyi hizmet vermek için sürekli olarak iyileştirilmesine yardımcı olur.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>9. Kişiselleştirilmiş İçerik</h2>
+            <p>Çerezler, kullanıcılara daha alakalı, kişiselleştirilmiş içerik sunmak için kullanılır. Kullanıcıların geçmiş site etkileşimleri ve tercihleri, ilgi alanlarına daha uygun içeriklerin ve reklamların sunulmasına olanak tanır. Bu, kullanıcı deneyimini zenginleştirir ve Site'nin kullanım sıklığını artırabilir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>10. Reklam Çerezleri</h2>
+            <p>Site, reklam verenlerle işbirliği yapabilir. Bu ortaklar, kullanıcıların ilgi alanlarına göre özelleştirilmiş reklamları hedeflemek için kendi çerezlerini kullanabilirler. Bu çerezler, kullanıcıların reklamlara olan ilgisini ve etkileşimini ölçmek için de kullanılabilir. Kullanıcılar, reklam çerezlerini tarayıcı ayarlarından yönetebilir ve gerektiğinde bu tür çerezleri reddedebilirler.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>11. Sosyal Medya Çerezleri</h2>
+            <p>Site, sosyal medya platformlarını entegre edebilir. Bu platformlar, kendi çerezlerini kullanarak kullanıcıların sosyal medya üzerindeki etkileşimlerini izleyebilir. Sosyal medya çerezleri, kullanıcıların sosyal medya içeriklerini kolayca paylaşmalarını sağlar ve sosyal medya platformlarının kullanıcı deneyimini iyileştirmelerine yardımcı olur.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>12. Çerez Politikası Güncellemeleri</h2>
+            <p>üniversiteler.net zaman zaman bu Çerez Politikasını güncelleyebilir. Politikada yapılan değişiklikler, Site üzerinde yayınlandığı anda yürürlüğe girer. Kullanıcıların, bu değişiklikleri düzenli olarak kontrol etmeleri ve Site'nin kullanımını bu değişikliklere uygun olarak sürdürmeleri önerilir.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>13. Çerezlerle İlgili Sorunlar ve Şikayetler</h2>
+            <p>Eğer çerez kullanımıyla ilgili herhangi bir sorunuz veya şikayetiniz varsa, üniversiteler.net ile iletişime geçebilirsiniz. Site, kullanıcıların çerez tercihlerine saygı duyar ve bu konuda destek sağlamaya hazırdır.</p>
+          </div>
+          
+          <div class="cookie-policy-section">
+            <h2>14. İletişim Bilgileri</h2>
+            <p>Çerezler veya bu Çerez Politikası hakkında sorularınız varsa, lütfen sitede bulunan iletişim sayfası üzerinden bizimle iletişime geçin:</p>
+            <p><a [routerLink]="['/iletisim']" class="contact-link">İletişim Sayfası</a></p>
+          </div>
+          
+          <div class="cookie-policy-conclusion">
+            <p>Bu Çerez Politikası, üniversiteler.net kullanıcılarına Site üzerindeki çerez kullanımını anlamaları ve yönetmeleri için kapsamlı bir rehber sağlar. Kullanıcıların bu politikayı dikkatlice incelemeleri ve gerektiğinde çerez tercihlerini ayarlamaları önerilir. Bu politika, Site'nin şeffaflığı ve kullanıcı odaklı yaklaşımını yansıtarak, kullanıcıların güvenini artırır ve Site deneyimlerini iyileştirir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

@@ -1,0 +1,57 @@
+<!-- src/app/features/home/hero-section.component.html -->
+<section class="hero-section">
+    <div class="hero-background">
+      <div class="overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+      <h1 class="hero-title">Hayalindeki Üniversiteyi Keşfet</h1>
+      <p class="hero-subtitle">
+        Türkiye ve KKTC'deki tüm üniversiteler, bölümler, şehirler ve yurtlar hakkında kapsamlı bilgiler.
+      </p>
+      
+      <div class="search-box">
+        <div class="search-tabs">
+          <button
+            *ngFor="let option of searchOptions"
+            class="search-tab"
+            [class.active]="searchType === option.value"
+            (click)="setSearchType(option.value)">
+            {{ option.label }}
+          </button>
+        </div>
+        
+        <div class="search-form">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm"
+            [placeholder]="currentSearchOption?.placeholder || 'Ara...'" 
+            class="search-input" 
+            (keyup.enter)="onSearch()">
+          
+          <button type="button" class="search-button" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">270+</span>
+          <span class="stat-label">Üniversite</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4.500+</span>
+          <span class="stat-label">Bölüm</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">81</span>
+          <span class="stat-label">Şehir</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">1.500+</span>
+          <span class="stat-label">Yurt</span>
+        </div>
+      </div>
+    </div>
+  </section>

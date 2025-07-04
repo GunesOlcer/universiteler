@@ -1,0 +1,11 @@
+<section class="content-section" *ngIf="menuContent">
+  <h2 class="section-title">{{ menuContent.title }}</h2>
+  <div class="content-card">
+    <div class="menu-content">
+      <div class="enhanced-formatting" [innerHTML]="getFormattedContent()"></div>
+      <div *ngIf="!menuContent.content" class="no-content">
+        <p>Bu bölüm için içerik bulunmamaktadır.</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,240 @@
+<section class="article-detail-page">
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Makale yükleniyor...</p>
+  </div>
+  
+  <ng-container *ngIf="!isLoading">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/">Anasayfa</a></li>
+          <li class="breadcrumb-item"><a routerLink="/makaleler">Makaleler</a></li>
+          <li class="breadcrumb-item" *ngIf="article">
+            <a [routerLink]="['/makaleler']" [queryParams]="{ category: getCategoryKey() }">
+              {{ getCategoryDisplayName() }}
+            </a>
+          </li>
+          <li class="breadcrumb-item active" *ngIf="article">{{ article.title }}</li>
+          <li class="breadcrumb-item active" *ngIf="!article">Makale Detayı</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Article Not Found -->
+    <div class="article-not-found" *ngIf="!article && errorMessage">
+      <div class="container">
+        <div class="not-found-content">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Makale Bulunamadı</h2>
+          <p>{{ errorMessage }}</p>
+          <div class="action-buttons">
+            <a routerLink="/makaleler" class="back-button">
+              <i class="fas fa-arrow-left"></i>
+              Makaleler Sayfasına Dön
+            </a>
+            <button class="retry-button" (click)="loadArticle()">
+              <i class="fas fa-redo"></i>
+              Tekrar Dene
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article Content -->
+    <ng-container *ngIf="article">
+      <!-- Article Hero -->
+      <div class="article-hero">
+        <div class="container">
+          <div class="article-hero-header">
+            <a routerLink="/makaleler" class="back-link">
+              <i class="fas fa-arrow-left"></i>
+              <span>Makalelere Dön</span>
+            </a>
+            <div class="hero-actions">
+              <div class="category-badge" [ngClass]="getCategoryKey()">
+                <i class="fas fa-bookmark category-icon"></i>
+                <span>{{ getCategoryDisplayName() }}</span>
+              </div>
+              <div class="share-dropdown">
+                <button class="share-toggle" (click)="toggleShare()">
+                  <i class="fas fa-share-alt"></i>
+                  <span>Paylaş</span>
+                </button>
+                <div class="share-menu" [class.show]="showShareMenu">
+                  <a [href]="getShareUrl('facebook')" target="_blank" class="share-item facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                  </a>
+                  <a [href]="getShareUrl('twitter')" target="_blank" class="share-item twitter">
+                    <i class="fab fa-twitter"></i>
+                    Twitter
+                  </a>
+                  <a [href]="getShareUrl('linkedin')" target="_blank" class="share-item linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                    LinkedIn
+                  </a>
+                  <a [href]="getShareUrl('whatsapp')" target="_blank" class="share-item whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                  </a>
+                  <button class="share-item copy" (click)="copyUrl()">
+                    <i class="fas fa-copy"></i>
+                    Linki Kopyala
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <h1 class="article-title">{{ article.title }}</h1>
+          
+          <div class="article-meta">
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span>{{ article.author }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <span>{{ article.publishDate | date:'dd.MM.yyyy' }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-clock"></i>
+              <span>{{ article.readingTime }} dk okuma</span>
+            </div>
+            <div class="meta-item" *ngIf="article.updatedDate">
+              <i class="fas fa-edit"></i>
+              <span>{{ article.updatedDate | date:'dd.MM.yyyy' }} tarihinde güncellendi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Content -->
+      <div class="article-content">
+        <div class="container">
+          <div class="content-grid">
+            <div class="main-content">
+              <!-- Article Image -->
+              <div class="article-image" *ngIf="getImageUrl()">
+                <img [src]="getImageUrl()" [alt]="article.title" loading="lazy">
+              </div>
+              
+              <!-- Article Text -->
+              <div class="article-text">
+                <div class="article-summary">
+                  <p>{{ article.summary }}</p>
+                </div>
+                
+                <div class="article-body" [innerHTML]="getFormattedContent()">
+                </div>
+              </div>
+              
+              <!-- Article Tags -->
+              <div class="article-tags" *ngIf="article.tags && article.tags.length > 0">
+                <h4>Etiketler</h4>
+                <div class="tags-list">
+                  <a 
+                    *ngFor="let tag of article.tags" 
+                    class="tag"
+                    [routerLink]="['/makaleler']" 
+                    [queryParams]="{ search: tag }">
+                    <i class="fas fa-tag"></i>
+                    <span>{{ tag }}</span>
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Article Actions -->
+              <div class="article-actions">
+                <div class="action-buttons">
+                  <button class="action-btn like-btn" (click)="toggleLike()">
+                    <i class="fas fa-heart" [class.liked]="isLiked"></i>
+                    <span>Beğen</span>
+                  </button>
+                  <button class="action-btn bookmark-btn" (click)="toggleBookmark()">
+                    <i class="fas fa-bookmark" [class.bookmarked]="isBookmarked"></i>
+                    <span>Kaydet</span>
+                  </button>
+                  <button class="action-btn share-btn" (click)="toggleShare()">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Paylaş</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="sidebar">
+              <!-- Author Box -->
+              <div class="sidebar-box author-box">
+                <div class="author-image">
+                  <img src="assets/images/authors/default.jpg" [alt]="article.author + ' Avatar'">
+                </div>
+                <h3 class="author-name">{{ article.author }}</h3>
+                <p class="author-bio">
+                  Üniversite rehberi ve eğitim konularında makaleler yazan deneyimli bir eğitim danışmanı.
+                </p>
+                <div class="author-stats">
+                  <div class="stat">
+                    <span class="stat-number">{{ getAuthorArticleCount() }}</span>
+                    <span class="stat-label">Makale</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Related Articles -->
+              <div class="sidebar-box related-articles" *ngIf="relatedArticles.length > 0">
+                <h3 class="sidebar-title">
+                  <i class="fas fa-newspaper"></i>
+                  İlgili Makaleler
+                </h3>
+                <div class="related-list">
+                  <a 
+                    *ngFor="let relatedArticle of relatedArticles" 
+                    [routerLink]="['/makaleler', relatedArticle.id]" 
+                    class="related-item">
+                    <div class="related-image">
+                      <img [src]="articleService.getImageUrl(relatedArticle.imagePath)" [alt]="relatedArticle.title">
+                    </div>
+                    <div class="related-info">
+                      <h4 class="related-title">{{ relatedArticle.title }}</h4>
+                      <p class="related-meta">
+                        <span class="related-author">{{ relatedArticle.author }}</span>
+                        <span class="related-date">{{ relatedArticle.publishDate | date:'dd.MM.yyyy' }}</span>
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Latest Articles -->
+              <div class="sidebar-box latest-articles" *ngIf="latestArticles.length > 0">
+                <h3 class="sidebar-title">
+                  <i class="fas fa-clock"></i>
+                  En Son Makaleler
+                </h3>
+                <div class="latest-list">
+                  <a 
+                    *ngFor="let latestArticle of latestArticles" 
+                    [routerLink]="['/makaleler', latestArticle.id]" 
+                    class="latest-item">
+                    <div class="latest-info">
+                      <h4 class="latest-title">{{ latestArticle.title }}</h4>
+                      <p class="latest-meta">
+                        <span class="latest-date">{{ latestArticle.publishDate | date:'dd.MM.yyyy' }}</span>
+                        <span class="latest-reading-time">{{ latestArticle.readingTime }} dk</span>
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>

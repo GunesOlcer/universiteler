@@ -1,0 +1,145 @@
+<!-- UPDATED: src/app/features/departments/department-detail/content/icerik-mufredat/icerik-mufredat.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-book"></i>
+      İçerik ve Müfredat
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümünün ders programı ve müfredat bilgileri</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Müfredat bilgileri yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Introduction -->
+    <div class="intro-card">
+      <div class="intro-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="intro-content">
+        <h3>Müfredat Hakkında</h3>
+        <p>{{ department?.name }} programının müfredatı ve ders içerikleri hakkında bilgiler.</p>
+      </div>
+    </div>
+
+    <!-- Notice Box -->
+    <div class="notice-box">
+      <div class="notice-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="notice-content">
+        <h4>Önemli Not</h4>
+        <p>Müfredat bilgileri genel olarak verilmiştir ve üniversiteden üniversiteye farklılık gösterebilir. Kesin bilgi için ilgili üniversitenin web sitesini ziyaret ediniz.</p>
+      </div>
+    </div>
+
+    <!-- Specific Curriculum Content -->
+    <div class="content-card" *ngIf="curriculumContent">
+      <h3 class="content-title">
+        <i class="fas fa-book-open"></i>
+        {{ curriculumContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(curriculumContent.content)"></div>
+    </div>
+
+    <!-- All Curriculum Menus -->
+    <div class="curriculum-grid" *ngIf="departmentMenus.length > 0">
+      <div class="curriculum-card" *ngFor="let menu of departmentMenus">
+        <div class="curriculum-header">
+          <div class="curriculum-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h4 class="curriculum-title">{{ menu.title }}</h4>
+          <span class="curriculum-order">{{ menu.order }}</span>
+        </div>
+        <div class="curriculum-content" [innerHTML]="formatContent(menu.content)"></div>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!curriculumContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Müfredat Bilgisi
+        </h3>
+        <div class="general-curriculum">
+          <p>{{ department?.name }} bölümü için detaylı müfredat bilgileri henüz sisteme eklenmemiştir.</p>
+          
+          <div class="curriculum-features">
+            <h4>Genel Müfredat Özellikleri</h4>
+            <div class="features-grid">
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div class="feature-content">
+                  <h5>Teorik Dersler</h5>
+                  <p>Temel ve ileri düzey teorik bilgiler</p>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-flask"></i>
+                </div>
+                <div class="feature-content">
+                  <h5>Pratik Uygulamalar</h5>
+                  <p>Laboratuvar ve uygulama dersleri</p>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="feature-content">
+                  <h5>Proje Çalışmaları</h5>
+                  <p>Gerçek dünya problemleri üzerine projeler</p>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="feature-content">
+                  <h5>Staj İmkanları</h5>
+                  <p>Sektör deneyimi kazanma fırsatları</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-note">
+            <div class="note-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="note-content">
+              <h4>Detaylı Bilgi İçin</h4>
+              <p>Müfredat ile ilgili ayrıntılı ve güncel bilgiler için lütfen ilgili üniversitenin akademik birimleriyle iletişime geçiniz.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

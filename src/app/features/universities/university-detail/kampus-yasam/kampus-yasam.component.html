@@ -1,0 +1,195 @@
+<section class="content-section">
+  <h2 class="section-title">Kampüs Yaşamı</h2>
+  <div class="content-card">
+    <div class="campus-life" *ngIf="university">
+      <div class="life-overview">
+        <div class="overview-message">
+          <i class="fas fa-heart"></i>
+          <div>
+            <h4>Kampüs Yaşamı</h4>
+            <p>{{ university.name }} kampüsünde dinamik ve renkli bir öğrenci yaşamı sizi bekliyor. Akademik gelişimin yanı sıra sosyal ve kültürel aktivitelerle dolu bir deneyim yaşayın.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="life-facilities">
+        <h3 class="subsection-title">Yaşam Alanları</h3>
+        <div class="facilities-grid">
+          <div class="facility-item" [class.available]="university.hasLibrary">
+            <div class="facility-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Kütüphane</h4>
+              <p>Sessiz çalışma alanları ve geniş kitap koleksiyonu</p>
+              <div class="availability">
+                {{ university.hasLibrary ? 'Mevcut' : 'Bilgi bulunamadı' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="facility-item" [class.available]="university.hasSportsFacility">
+            <div class="facility-icon">
+              <i class="fas fa-dumbbell"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Spor Tesisleri</h4>
+              <p>Fitness merkezi, spor salonları ve açık alan aktiviteleri</p>
+              <div class="availability">
+                {{ university.hasSportsFacility ? 'Mevcut' : 'Bilgi bulunamadı' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="facility-item" [class.available]="university.hasDormitory">
+            <div class="facility-icon">
+              <i class="fas fa-bed"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Yurtlar</h4>
+              <p>Güvenli ve konforlu konaklama imkanları</p>
+              <div class="availability">
+                {{ university.hasDormitory ? 'Mevcut' : 'Bilgi bulunamadı' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="facility-item available">
+            <div class="facility-icon">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Yemek Hizmetleri</h4>
+              <p>Kafeterya ve yemekhanelerde çeşitli menü seçenekleri</p>
+              <div class="availability">Genellikle mevcut</div>
+            </div>
+          </div>
+
+          <div class="facility-item available">
+            <div class="facility-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <div class="facility-content">
+              <h4>İnternet Erişimi</h4>
+              <p>Kampüs genelinde ücretsiz WiFi hizmeti</p>
+              <div class="availability">Genellikle mevcut</div>
+            </div>
+          </div>
+
+          <div class="facility-item available">
+            <div class="facility-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <div class="facility-content">
+              <h4>Ulaşım</h4>
+              <p>Kampüs servis hizmetleri ve toplu taşıma</p>
+              <div class="availability">Genellikle mevcut</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="student-services">
+        <h3 class="subsection-title">Öğrenci Hizmetleri</h3>
+        <div class="services-grid">
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="service-content">
+              <h4>Sağlık Hizmetleri</h4>
+              <p>Kampüs sağlık merkezi ve acil müdahale</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="service-content">
+              <h4>Psikolojik Danışma</h4>
+              <p>Öğrenci danışmanlık ve rehberlik hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="service-content">
+              <h4>Bankacılık</h4>
+              <p>ATM ve banka şubeleri kampüs içinde</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="service-content">
+              <h4>Alışveriş</h4>
+              <p>Kitap mağazası ve temel ihtiyaç marketleri</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-print"></i>
+            </div>
+            <div class="service-content">
+              <h4>Fotokopi ve Baskı</h4>
+              <p>Akademik materyal hazırlama hizmetleri</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="service-content">
+              <h4>Güvenlik</h4>
+              <p>24 saat kampüs güvenlik hizmeti</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="campus-tips">
+        <h3 class="subsection-title">Kampüs Yaşamı İpuçları</h3>
+        <div class="tips-list">
+          <div class="tip-item">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+              <h4>Aktif Olun</h4>
+              <p>Kulüplere katılın ve sosyal etkinliklere katılım sağlayın</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <i class="fas fa-balance-scale"></i>
+            <div>
+              <h4>Denge Kurun</h4>
+              <p>Akademik çalışma ve sosyal yaşam arasında denge kurun</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <i class="fas fa-handshake"></i>
+            <div>
+              <h4>Network Kurun</h4>
+              <p>Farklı bölümlerden arkadaşlıklar edinin</p>
+            </div>
+          </div>
+
+          <div class="tip-item">
+            <i class="fas fa-clock"></i>
+            <div>
+              <h4>Zamanı Yönetin</h4>
+              <p>Etkinlikler için zaman planlama yapın</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,86 @@
+<!-- src/app/features/countries/country-detail/components/cities/cities.component.html -->
+<div class="cities-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-city"></i>
+      {{ country.name }} Şehirleri
+    </h2>
+    <p class="section-subtitle">{{ country.name }} ülkesindeki başlıca şehirler</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Şehirler yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Cities Grid -->
+  <div class="cities-grid" *ngIf="!isLoading && !error && cities.length > 0">
+    <div class="city-card" 
+         *ngFor="let city of cities; trackBy: trackByCityId"
+         [routerLink]="['/sehirler', city.id]">
+      <div class="card-image" *ngIf="city.imageUrl">
+        <img [src]="city.imageUrl" [alt]="city.name" loading="lazy">
+        <div class="card-overlay">
+          <h3 class="city-name">{{ city.name }}</h3>
+        </div>
+      </div>
+      
+      <div class="card-image placeholder" *ngIf="!city.imageUrl">
+        <div class="placeholder-icon">
+          <i class="fas fa-city"></i>
+        </div>
+        <div class="card-overlay">
+          <h3 class="city-name">{{ city.name }}</h3>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="city-stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ city.universityCount }}</span>
+            <span class="stat-label">Üniversite</span>
+          </div>
+          <div class="stat-item" *ngIf="city.studentPopulation">
+            <span class="stat-value">{{ (city.studentPopulation / 1000).toFixed(0) }}K+</span>
+            <span class="stat-label">Öğrenci</span>
+          </div>
+          <div class="stat-item" *ngIf="city.population">
+            <span class="stat-value">{{ (city.population / 1000000).toFixed(1) }}M</span>
+            <span class="stat-label">Nüfus</span>
+          </div>
+        </div>
+
+        <div class="city-features" *ngIf="city.hasAirport || city.hasTrainStation || city.hasHighSpeedTrain">
+          <div class="feature" *ngIf="city.hasAirport">
+            <i class="fas fa-plane"></i>
+            <span>Havalimanı</span>
+          </div>
+          <div class="feature" *ngIf="city.hasTrainStation">
+            <i class="fas fa-train"></i>
+            <span>Tren</span>
+          </div>
+          <div class="feature" *ngIf="city.hasHighSpeedTrain">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Hızlı Tren</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && !error && cities.length === 0">
+    <div class="empty-icon">
+      <i class="fas fa-city"></i>
+    </div>
+    <h3 class="empty-title">Şehir Bulunamadı</h3>
+    <p class="empty-message">{{ country.name }} için henüz şehir bilgisi bulunmuyor.</p>
+  </div>
+</div>

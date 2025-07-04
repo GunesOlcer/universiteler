@@ -1,0 +1,201 @@
+<section class="contact-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">İletişim</h1>
+        <p class="page-subtitle">Üniversite Rehberi ekibiyle iletişime geçin</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı - Navbar'ın hemen altında -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li *ngFor="let item of breadcrumbPath" class="breadcrumb-item" [ngClass]="{'active': item.active}">
+              <a *ngIf="!item.active" [routerLink]="item.url">{{ item.label }}</a>
+              <span *ngIf="item.active">{{ item.label }}</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="page-content">
+        <div class="contact-form-container">
+          <h2 class="section-title">Bize Yazın</h2>
+          
+          <!-- Başarı mesajı -->
+          <div class="success-message" *ngIf="formSuccess">
+            <i class="fas fa-check-circle"></i>
+            <p>Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.</p>
+          </div>
+          
+          <!-- Hata mesajı -->
+          <div class="error-message" *ngIf="formError">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Mesajınız gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+          </div>
+          
+          <!-- İletişim Formu -->
+          <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()" *ngIf="!formSuccess">
+            <div class="form-group">
+              <label for="name">Ad Soyad <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name" 
+                [ngClass]="{'is-invalid': formSubmitted && f.name.errors}"
+                placeholder="Adınız ve soyadınız">
+              <div class="invalid-feedback" *ngIf="formSubmitted && f.name.errors">
+                <span *ngIf="f.name.errors.required">Ad soyad alanı zorunludur</span>
+                <span *ngIf="f.name.errors.minlength">Ad soyad en az 3 karakter olmalıdır</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">E-posta <span class="required">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                [ngClass]="{'is-invalid': formSubmitted && f.email.errors}"
+                placeholder="örnek: bilgi@universiteler.net">
+              <div class="invalid-feedback" *ngIf="formSubmitted && f.email.errors">
+                <span *ngIf="f.email.errors.required">E-posta alanı zorunludur</span>
+                <span *ngIf="f.email.errors.email">Geçerli bir e-posta adresi giriniz</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Telefon</label>
+              <div class="phone-input-wrapper">
+                <div class="phone-input-container" [ngClass]="{'is-invalid': formSubmitted && f.phone.errors}">
+                  <div class="country-code">
+                    <span class="country-flag">TR</span>
+                    <span class="code">+90</span>
+                  </div>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    maxlength="12" 
+                    formControlName="phone"
+                    [ngClass]="{'is-invalid': formSubmitted && f.phone.errors}"
+                    placeholder="5XX XXX XX XX"
+                    (input)="formatPhoneNumber($event)">
+                </div>
+              </div>
+              <div class="invalid-feedback" *ngIf="formSubmitted && f.phone.errors">
+                <span *ngIf="f.phone.errors.pattern">Geçerli bir telefon numarası giriniz (10 haneli)</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Konu <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="subject" 
+                formControlName="subject" 
+                [ngClass]="{'is-invalid': formSubmitted && f.subject.errors}"
+                placeholder="Mesajınızın konusu">
+              <div class="invalid-feedback" *ngIf="formSubmitted && f.subject.errors">
+                <span *ngIf="f.subject.errors.required">Konu alanı zorunludur</span>
+                <span *ngIf="f.subject.errors.minlength">Konu en az 5 karakter olmalıdır</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Mesaj <span class="required">*</span></label>
+              <textarea 
+                id="message" 
+                formControlName="message" 
+                rows="5" 
+                [ngClass]="{'is-invalid': formSubmitted && f.message.errors}"
+                placeholder="Mesajınızı yazın"></textarea>
+              <div class="invalid-feedback" *ngIf="formSubmitted && f.message.errors">
+                <span *ngIf="f.message.errors.required">Mesaj alanı zorunludur</span>
+                <span *ngIf="f.message.errors.minlength">Mesaj en az 20 karakter olmalıdır</span>
+              </div>
+            </div>
+            
+            <div class="form-footer">
+              <p class="required-info"><span class="required">*</span> Zorunlu alanlar</p>
+              <button type="submit" class="submit-button" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Gönder</span>
+                <span *ngIf="isLoading" class="spinner-container">
+                  <span class="spinner-border"></span>
+                  <span>Gönderiliyor...</span>
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="contact-info-container">
+          <h2 class="section-title">İletişim Bilgileri</h2>
+          
+          <div class="contact-card">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="contact-text">
+                <h3>Adres</h3>
+                <p>Örnek Mahallesi, Üniversite Caddesi No:123<br>Şişli/İstanbul</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <i class="fas fa-phone-alt"></i>
+              <div class="contact-text">
+                <h3>Telefon</h3>
+                <p>+90 (212) 123 45 67</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div class="contact-text">
+                <h3>E-posta</h3>
+                <p>bilgi@universiteler.net</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <div class="contact-text">
+                <h3>Çalışma Saatleri</h3>
+                <p>Hafta içi: 09:00 - 18:00<br>Hafta sonu: Kapalı</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="social-media-card">
+            <h3>Sosyal Medya</h3>
+            <div class="social-links">
+              <a href="#" class="social-link" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link" title="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link" title="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link" title="YouTube">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="map-container">
+            <div class="map-placeholder">
+              <i class="fas fa-map-marked-alt"></i>
+              <p>Harita burada görüntülenecektir</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

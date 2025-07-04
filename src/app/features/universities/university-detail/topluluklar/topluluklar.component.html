@@ -1,0 +1,236 @@
+<section class="content-section">
+  <h2 class="section-title">Topluluklar ve Kulüpler</h2>
+  <div class="content-card">
+    <div class="clubs-info" *ngIf="university">
+      <div class="clubs-overview">
+        <div class="overview-message">
+          <i class="fas fa-users"></i>
+          <div>
+            <h4>Öğrenci Topluluklarına Katılın</h4>
+            <p>{{ university.name }}'de aktif öğrenci yaşamının bir parçası olun. Farklı ilgi alanlarınıza uygun kulüp ve topluluklar bulabilirsiniz.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="club-categories">
+        <h3 class="subsection-title">Kulüp Kategorileri</h3>
+        <div class="categories-grid">
+          <div class="category-item" *ngFor="let category of getClubCategories()">
+            <div class="category-header">
+              <div class="category-icon">
+                <i [class]="category.icon"></i>
+              </div>
+              <h4>{{ category.category }}</h4>
+            </div>
+            <div class="category-content">
+              <ul>
+                <li *ngFor="let club of category.clubs">{{ club }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="club-benefits">
+        <h3 class="subsection-title">Kulüp Üyeliği Faydaları</h3>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Networking</h4>
+              <p>Benzer ilgi alanlarına sahip arkadaşlarla tanışma</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Beceri Geliştirme</h4>
+              <p>Liderlik ve organizasyon becerilerini geliştirme</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Etkinlik Düzenleme</h4>
+              <p>Konferans, seminer ve sosyal etkinlikler organize etme</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-certificate"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Sertifika ve Deneyim</h4>
+              <p>CV'nizi güçlendirecek deneyimler kazanma</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Uluslararası Bağlantılar</h4>
+              <p>Diğer üniversitelerle işbirliği fırsatları</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="benefit-content">
+              <h4>Yaratıcılık</h4>
+              <p>Yaratıcı projelerde yer alma ve fikirlerini hayata geçirme</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="membership-process">
+        <h3 class="subsection-title">Üyelik Süreci</h3>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Keşfet</h4>
+              <p>İlginizi çeken kulüpleri araştırın ve toplantılarına katılın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Başvuru</h4>
+              <p>Kulüp yöneticileriyle iletişime geçin ve üyelik başvurusu yapın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Katılım</h4>
+              <p>Düzenli toplantılara katılın ve etkinliklerde aktif rol alın</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Katkı</h4>
+              <p>Projeler geliştirin ve kulübün gelişimine katkıda bulunun</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leadership-opportunities">
+        <h3 class="subsection-title">Liderlik Fırsatları</h3>
+        <div class="leadership-cards">
+          <div class="leadership-card">
+            <div class="card-icon">
+              <i class="fas fa-crown"></i>
+            </div>
+            <div class="card-content">
+              <h4>Kulüp Başkanlığı</h4>
+              <p>Kulübü yönetme ve strateji belirleme sorumluluğu</p>
+            </div>
+          </div>
+
+          <div class="leadership-card">
+            <div class="card-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="card-content">
+              <h4>Etkinlik Koordinatörlüğü</h4>
+              <p>Büyük etkinlikleri organize etme ve yönetme</p>
+            </div>
+          </div>
+
+          <div class="leadership-card">
+            <div class="card-icon">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="card-content">
+              <h4>Halkla İlişkiler</h4>
+              <p>Kulübün tanıtımını yapma ve iletişim kurma</p>
+            </div>
+          </div>
+
+          <div class="leadership-card">
+            <div class="card-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="card-content">
+              <h4>Saymanlık</h4>
+              <p>Kulüp bütçesini yönetme ve finansal planlama</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-stories">
+        <h3 class="subsection-title">Başarı Hikayeleri</h3>
+        <div class="stories-container">
+          <div class="story-item">
+            <div class="story-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="story-content">
+              <h4>Ulusal Yarışma Birinciliği</h4>
+              <p>Bilgisayar Mühendisliği Kulübü, ulusal yazılım yarışmasında birincilik elde etti.</p>
+            </div>
+          </div>
+
+          <div class="story-item">
+            <div class="story-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="story-content">
+              <h4>Sosyal Sorumluluk Projesi</h4>
+              <p>Çevre Kulübü, şehirde 1000 ağaç dikme kampanyası düzenledi.</p>
+            </div>
+          </div>
+
+          <div class="story-item">
+            <div class="story-icon">
+              <i class="fas fa-music"></i>
+            </div>
+            <div class="story-content">
+              <h4>Kültür Festivali</h4>
+              <p>Sanat kulüpleri işbirliğiyle düzenlenen festival 5000 kişiyi ağırladı.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-clubs">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <h4>Kulüp Bilgileri</h4>
+            <p>Aktif kulüpler ve başvuru koşulları hakkında detaylı bilgi için öğrenci işleri biriminden bilgi alabilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

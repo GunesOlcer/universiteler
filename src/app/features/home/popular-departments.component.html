@@ -1,0 +1,64 @@
+<!-- src/app/features/home/popular-departments/popular-departments.component.html -->
+<section class="popular-departments-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="header-content">
+        <h2 class="section-title">Popüler Bölümler</h2>
+        <p class="section-subtitle">En çok tercih edilen ve araştırılan üniversite bölümleri</p>
+      </div>
+      
+      <a routerLink="/bolumler" class="view-all-button">
+        <span>Tüm Bölümleri Keşfet</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+    
+    <div class="departments-container">
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="loading-content">
+          <div class="spinner"></div>
+          <p>Popüler bölümler yükleniyor...</p>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" *ngIf="error && !isLoading">
+        <div class="error-content">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Bir Hata Oluştu</h3>
+          <p>{{ error }}</p>
+          <button class="retry-btn" (click)="retry()">
+            <i class="fas fa-redo"></i>
+            Tekrar Dene
+          </button>
+        </div>
+      </div>
+      
+      <!-- Departments Grid -->
+      <div class="departments-grid" *ngIf="!isLoading && !error && departments.length > 0">
+        <div class="department-wrapper" 
+             *ngFor="let department of departments; trackBy: trackByFn">
+          <app-department-card [department]="department"></app-department-card>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!isLoading && !error && departments.length === 0">
+        <div class="empty-content">
+          <div class="empty-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3>Henüz Popüler Bölüm Bulunamadı</h3>
+          <p>Şu anda popüler bölüm verisi bulunmamaktadır.</p>
+          <a routerLink="/bolumler" class="browse-all-btn">
+            <i class="fas fa-search"></i>
+            Tüm Bölümleri Gözat
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

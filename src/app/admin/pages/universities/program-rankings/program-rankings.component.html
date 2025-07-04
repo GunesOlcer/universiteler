@@ -1,0 +1,108 @@
+<!-- src/app/admin/pages/universities/program-rankings/program-rankings.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-trophy"></i>
+        Program Başarı Sıraları
+      </h1>
+      <p class="page-subtitle">{{ program.name }} - Başarı sıralamaları</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs']" [queryParams]="{facultyId: program.facultyId}">
+        <i class="fas fa-arrow-left"></i>
+        Program Listesine Dön
+      </button>
+      
+      <!-- Başarı Sırası Ekleme Butonu -->
+      <button type="button" class="btn-add" (click)="addRanking()">
+        <i class="fas fa-plus"></i>
+        Yeni Başarı Sırası
+      </button>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Başarı Sıralaması Listesi
+      </h2>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table rankings-table">
+        <thead>
+          <tr>
+            <th class="th-year">Yıl</th>
+            <th class="th-rank">Başarı Sırası</th>
+            <th class="th-min-score">En Küçük Puan</th>
+            <th class="th-max-score">En Yüksek Puan</th>
+            <th class="th-actions">İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ranking of rankings">
+            <td class="td-year">{{ ranking.year }}</td>
+            <td class="td-rank">{{ ranking.rank }}</td>
+            <td class="td-min-score">{{ ranking.minScore }}</td>
+            <td class="td-max-score">{{ ranking.maxScore }}</td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button type="button" class="btn-action btn-edit" title="Düzenle" (click)="editRanking(ranking)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn-action btn-delete" title="Sil" (click)="confirmDeleteRanking(ranking)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="rankings.length === 0">
+            <td colspan="5" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-info-circle"></i>
+                <p>Bu program için henüz başarı sıralaması bilgisi bulunmamaktadır.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Başarı Sırası Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ rankingToDelete?.year }}</strong> yılına ait başarı sırası bilgisini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve başarı sırası bilgisi tamamen silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteRanking()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

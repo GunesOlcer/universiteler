@@ -1,0 +1,110 @@
+<section class="content-section">
+  <h2 class="section-title">Uluslararası İlişkiler</h2>
+  <div class="content-card">
+    <div class="international-relations" *ngIf="university">
+      <div class="international-status">
+        <div class="status-message" [class.available]="university.hasInternationalPrograms">
+          <i class="fas" [ngClass]="university.hasInternationalPrograms ? 'fa-globe' : 'fa-info-circle'"></i>
+          <div>
+            <h4>Uluslararası Program Durumu</h4>
+            <p>Bu üniversitede uluslararası programlar {{ university.hasInternationalPrograms ? 'aktif olarak yürütülmektedir' : 'hakkında detaylı bilgi için üniversite ile iletişime geçiniz' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="support-services" *ngIf="university.hasInternationalPrograms">
+        <h3 class="subsection-title">Destek Hizmetleri</h3>
+        <div class="services-grid">
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="service-content">
+              <h4>Akademik Danışmanlık</h4>
+              <p>Ders seçimi ve kredi transferi rehberliği</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-passport"></i>
+            </div>
+            <div class="service-content">
+              <h4>Vize İşlemleri</h4>
+              <p>Vize başvuru sürecinde profesyonel destek</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <div class="service-content">
+              <h4>Konaklama Desteği</h4>
+              <p>Yurt dışında barınma seçenekleri rehberliği</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="service-content">
+              <h4>Dil Desteği</h4>
+              <p>Gidilecek ülke dili öğrenme fırsatları</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="service-content">
+              <h4>Psikososyal Destek</h4>
+              <p>Kültür şoku ve adaptasyon desteği</p>
+            </div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="service-content">
+              <h4>Mezun Ağı</h4>
+              <p>Gidilecek şehirdeki mezunlarla bağlantı</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-international" *ngIf="!university.hasInternationalPrograms">
+        <div class="info-message">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <h4>Uluslararası Program Bilgisi</h4>
+            <p>Bu üniversite için uluslararası program bilgisi bulunamadı. Güncel bilgiler için üniversitenin Uluslararası İlişkiler Ofisi ile iletişime geçmenizi öneririz.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-international">
+        <h3 class="subsection-title">İletişim</h3>
+        <div class="contact-card">
+          <i class="fas fa-globe-americas"></i>
+          <div>
+            <h4>Uluslararası İlişkiler Ofisi</h4>
+            <p>Uluslararası programlar, başvuru koşulları ve detaylı bilgi için Uluslararası İlişkiler Ofisi ile iletişime geçebilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,102 @@
+<section class="dormitory-detail-page">
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="dormitory-not-found" *ngIf="!dormitory">
+      <div class="container-full">
+        <div class="not-found-content">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Yurt Bulunamadı</h2>
+          <p>Aradığınız yurt sistemde bulunamadı veya kaldırılmış olabilir.</p>
+          <a routerLink="/yurtlar" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Yurtlar Sayfasına Dön
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="dormitory">
+      <!-- Breadcrumb Navigation -->
+      <div class="breadcrumb-container">
+        <div class="container-full">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/">Ana Sayfa</a></li>
+            <li class="breadcrumb-item"><a routerLink="/yurtlar">Yurtlar</a></li>
+            <li class="breadcrumb-item active">{{ dormitory.name }}</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Dormitory Header -->
+      <div class="dormitory-header-container">
+        <div class="container-full">
+          <div class="dormitory-header">
+            <div class="dormitory-image">
+              <img [src]="getImageUrl()" [alt]="dormitory.name">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="dormitory-info">
+              <div class="type-badge" [ngClass]="dormitory.type">
+                {{ dormitory.typeName }}
+              </div>
+              <div class="gender-badge" [ngClass]="dormitory.gender">
+                {{ dormitory.genderName }}
+              </div>
+              <h1 class="dormitory-name">{{ dormitory.name }}</h1>
+              <div class="dormitory-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ dormitory.cityName }}, {{ dormitory.countryName }}</span>
+              </div>
+              <div class="dormitory-meta">
+                <div class="meta-item" *ngIf="dormitory.capacity">
+                  <i class="fas fa-users"></i>
+                  <span>{{ dormitory.capacity }} kişilik kapasite</span>
+                </div>
+                <div class="meta-item" *ngIf="dormitory.distanceToCenter">
+                  <i class="fas fa-map-signs"></i>
+                  <span>Merkeze {{ dormitory.distanceToCenter }} km</span>
+                </div>
+                <div class="meta-item" *ngIf="dormitory.monthlyPrice">
+                  <i class="fas fa-money-bill-wave"></i>
+                  <span>{{ dormitory.monthlyPrice | currency:'TRY':'symbol':'1.0-0' }}/ay</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="dormitory-content">
+        <div class="container-full">
+          <div class="content-wrapper">
+            <!-- Sidebar Component -->
+            <div class="sidebar-container">
+              <app-sidebar 
+                [dormitory]="dormitory" 
+                [activeSection]="activeSection"
+                (sectionChange)="onSectionChange($event)">
+              </app-sidebar>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content-container">
+              <div class="main-content">
+                <div [ngSwitch]="activeSection">
+                  <app-genel-bilgi *ngSwitchCase="'genel-bilgi'" [dormitory]="dormitory"></app-genel-bilgi>
+                  <app-olanaklar *ngSwitchCase="'olanaklar'" [dormitory]="dormitory"></app-olanaklar>
+                  <app-yakin-universiteler *ngSwitchCase="'yakin-universiteler'" [dormitory]="dormitory"></app-yakin-universiteler>
+                  <app-konum-cevre *ngSwitchCase="'konum-cevre'" [dormitory]="dormitory"></app-konum-cevre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>

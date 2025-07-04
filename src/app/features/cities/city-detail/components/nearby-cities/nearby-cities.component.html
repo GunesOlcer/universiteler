@@ -1,0 +1,56 @@
+<div class="nearby-cities">
+  <div class="nearby-header">
+    <h3 class="nearby-title">
+      <i class="fas fa-map-marked-alt"></i>
+      Yakındaki Şehirler
+    </h3>
+  </div>
+  
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+  
+  <div class="nearby-list" *ngIf="!isLoading && nearbyCities.length > 0">
+    <div class="nearby-city-item" 
+         *ngFor="let nearbyCity of nearbyCities" 
+         [routerLink]="['/cities', nearbyCity.id]">
+      <div class="nearby-image-container">
+        <img [src]="nearbyCity.imageUrl || '/assets/images/cities/default-city.jpg'" 
+             [alt]="nearbyCity.name" 
+             class="nearby-image"
+             loading="lazy">
+        <div class="nearby-image-overlay"></div>
+      </div>
+      <div class="nearby-info">
+        <h4 class="nearby-name">{{ nearbyCity.name }}</h4>
+        <p class="nearby-location">
+          <i class="fas fa-map-marker-alt"></i>
+          {{ nearbyCity.regionName || nearbyCity.countryName }}
+        </p>
+        <div class="nearby-stats">
+          <div class="stat-badge" *ngIf="nearbyCity.universityCount">
+            <i class="fas fa-university"></i>
+            {{ nearbyCity.universityCount }} Üniversite
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="no-nearby" *ngIf="!isLoading && nearbyCities.length === 0">
+    <div class="no-nearby-icon">
+      <i class="fas fa-search"></i>
+    </div>
+    <p>Bu bölgede başka şehir bulunamadı.</p>
+  </div>
+  
+  <div class="view-all-section" *ngIf="nearbyCities.length > 0 && city?.region">
+    <a routerLink="/cities" 
+       [queryParams]="{regions: city?.region}" 
+       class="view-all-link">
+      <span>{{ city?.regionName }} bölgesi şehirleri</span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</div>

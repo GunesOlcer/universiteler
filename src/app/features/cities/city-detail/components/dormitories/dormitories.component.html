@@ -1,0 +1,31 @@
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-bed"></i>
+      Yurtlar
+    </h2>
+  </div>
+  
+  <div class="content-card" *ngIf="hasContent()">
+    <div class="content-body">
+      <div class="text-content" [innerHTML]="getContent()"></div>
+    </div>
+  </div>
+  
+  <div class="action-section">
+    <button class="view-all-button" (click)="navigateToDormitories()">
+      <i class="fas fa-arrow-right"></i>
+      Yurtları Görüntüle
+    </button>
+  </div>
+  
+  <div class="empty-state" *ngIf="!hasContent()">
+    <div class="empty-icon">
+      <i class="fas fa-bed"></i>
+    </div>
+    <h3 class="empty-title">Yurt Bilgisi Bulunmuyor</h3>
+    <p class="empty-message">
+      {{ city?.name }} şehri için yurt bilgisi henüz eklenmemiş.
+    </p>
+  </div>
+</section>

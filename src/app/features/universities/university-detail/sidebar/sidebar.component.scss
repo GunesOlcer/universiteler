@@ -1,0 +1,117 @@
+.sidebar {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+
+  .sidebar-nav {
+    padding: 20px 0;
+
+    .nav-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .nav-item {
+        border-bottom: 1px solid #f1f5f9;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .nav-link {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 20px;
+          color: #64748b;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #2563eb;
+            background-color: #f8fafc;
+          }
+
+          &.active {
+            color: #2563eb;
+            background-color: #eff6ff;
+            border-right: 3px solid #2563eb;
+          }
+
+          &.expandable {
+            i {
+              font-size: 12px;
+              transition: transform 0.2s ease;
+            }
+          }
+        }
+
+        &.expanded {
+          .nav-link.expandable i {
+            transform: rotate(0deg);
+          }
+        }
+
+        .sub-menu {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          background-color: #f8fafc;
+
+          li {
+            a {
+              display: block;
+              padding: 10px 20px 10px 40px;
+              color: #64748b;
+              text-decoration: none;
+              font-size: 13px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                color: #2563eb;
+                background-color: #f1f5f9;
+              }
+
+              &.active {
+                color: #2563eb;
+                background-color: #e0f2fe;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+
+        &.active {
+          .nav-link {
+            color: #2563eb;
+            background-color: #eff6ff;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    border-radius: 0;
+
+    &.mobile-open {
+      left: 0;
+    }
+  }
+}

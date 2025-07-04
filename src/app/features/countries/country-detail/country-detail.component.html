@@ -1,0 +1,160 @@
+<!-- src/app/features/countries/country-detail/country-detail.component.html -->
+<section class="country-detail-page">
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="container">
+      <div class="error-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Bir Hata Oluştu</h2>
+        <p>{{ error }}</p>
+        <a routerLink="/ulkeler" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Ülkeler Sayfasına Dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Country Not Found -->
+  <div class="country-not-found" *ngIf="!country && !isLoading && !error">
+    <div class="container">
+      <div class="not-found-content">
+        <i class="fas fa-globe"></i>
+        <h2>Ülke Bulunamadı</h2>
+        <p>Aradığınız ülke sistemde bulunamadı veya kaldırılmış olabilir.</p>
+        <a routerLink="/ulkeler" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          Ülkeler Sayfasına Dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <ng-container *ngIf="country && !isLoading && !error">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/">Ana Sayfa</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/ulkeler">Ülkeler</a>
+          </li>
+          <li class="breadcrumb-item active">{{ country.name }}</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Country Header -->
+    <div class="country-header-container">
+      <div class="container">
+        <div class="country-header">
+          <div class="country-flag-section">
+            <div class="country-flag">
+              <i class="fas fa-flag"></i>
+            </div>
+          </div>
+          
+          <div class="country-info">
+            <div class="country-badges">
+              <div class="country-code-badge">
+                <i class="fas fa-code"></i>
+                {{ country.code }}
+              </div>
+            </div>
+            
+            <h1 class="country-name">{{ country.name }}</h1>
+            
+            <div class="country-description" *ngIf="country.description">
+              <p>{{ country.description }}</p>
+            </div>
+            
+            <div class="country-stats">
+              <div class="stat-item" *ngIf="country.cityCount">
+                <div class="stat-icon">
+                  <i class="fas fa-city"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">{{ country.cityCount }}</span>
+                  <span class="stat-label">Şehir</span>
+                </div>
+              </div>
+              
+              <div class="stat-item" *ngIf="country.universityCount">
+                <div class="stat-icon">
+                  <i class="fas fa-university"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">{{ country.universityCount }}</span>
+                  <span class="stat-label">Üniversite</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="country-content">
+      <div class="container">
+        <div class="content-wrapper">
+          <!-- Sidebar Component -->
+          <div class="sidebar-container">
+            <app-country-sidebar 
+              [country]="country" 
+              [activeSection]="activeSection"
+              (sectionChange)="onSectionChange($event)">
+            </app-country-sidebar>
+          </div>
+
+          <!-- Main Content -->
+          <div class="main-content-container">
+            <div class="main-content">
+              <!-- Dynamic Components -->
+              <div [ngSwitch]="activeSection">
+                <app-country-general-info 
+                  *ngSwitchCase="'general-info'" 
+                  [country]="country">
+                </app-country-general-info>
+                
+                <app-country-cities 
+                  *ngSwitchCase="'cities'" 
+                  [country]="country">
+                </app-country-cities>
+                
+                <app-country-universities 
+                  *ngSwitchCase="'universities'" 
+                  [country]="country">
+                </app-country-universities>
+                
+                <app-country-education-system 
+                  *ngSwitchCase="'education-system'" 
+                  [country]="country">
+                </app-country-education-system>
+                
+                <app-country-culture 
+                  *ngSwitchCase="'culture'" 
+                  [country]="country">
+                </app-country-culture>
+                
+                <app-country-travel-info 
+                  *ngSwitchCase="'travel-info'" 
+                  [country]="country">
+                </app-country-travel-info>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

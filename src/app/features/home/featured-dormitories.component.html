@@ -1,0 +1,35 @@
+<!-- src/app/features/home/featured-dormitories.component.html -->
+<section class="dormitories-section">
+  <div class="container">
+    <div class="section-header centered">
+      <div class="header-text">
+        <h2 class="section-title">Öne Çıkan Yurtlar</h2>
+        <p class="section-subtitle">Kaliteli ve uygun fiyatlı öğrenci yurtları</p>
+      </div>
+      
+      <a routerLink="/yurtlar" class="view-all-button">
+        Tüm Yurtları Keşfet
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+    
+    <div class="dormitories-container">
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Yurtlar yükleniyor...</p>
+      </div>
+      
+      <div class="dormitories-grid" *ngIf="!isLoading" #dormitoriesGrid>
+        <app-dormitory-card 
+          *ngFor="let dormitory of dormitories" 
+          [dormitory]="dormitory">
+        </app-dormitory-card>
+        
+        <div class="empty-state" *ngIf="dormitories.length === 0">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Henüz yurt bulunamadı.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

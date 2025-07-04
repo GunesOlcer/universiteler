@@ -1,0 +1,57 @@
+<section class="content-section">
+  <h2 class="section-title">Kampüs Bilgileri</h2>
+  <div class="content-card">
+    <div class="campus-location" *ngIf="university">
+      <h3 class="subsection-title">Konum</h3>
+      <div class="location-info">
+        <div class="location-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ university.cityName }}, {{ university.countryName }}</span>
+        </div>
+        <div class="location-item" *ngIf="university.address">
+          <i class="fas fa-home"></i>
+          <div class="formatted-content" [innerHTML]="getFormattedAddress()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="campus-features" *ngIf="university">
+      <h3 class="subsection-title">Kampüs Olanakları</h3>
+      <div class="features-grid">
+        <div class="feature-card" [class.available]="university.hasLibrary">
+          <div class="feature-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Kütüphane</h4>
+            <p>{{ university.hasLibrary ? 'Modern kütüphane imkanları mevcut' : 'Kütüphane bilgisi bulunamadı' }}</p>
+          </div>
+        </div>
+
+        <div class="feature-card" [class.available]="university.hasSportsFacility">
+          <div class="feature-icon">
+            <i class="fas fa-running"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Spor Tesisleri</h4>
+            <p>{{ university.hasSportsFacility ? 'Çeşitli spor imkanları sunulmaktadır' : 'Spor tesisi bilgisi bulunamadı' }}</p>
+          </div>
+        </div>
+
+        <div class="feature-card" [class.available]="university.hasDormitory">
+          <div class="feature-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Yurt İmkanları</h4>
+            <p>{{ university.hasDormitory ? 'Öğrenci yurdu mevcuttur' : 'Yurt bilgisi bulunamadı' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="!university?.address && !university">
+      <p>Kampüs bilgisi bulunamadı.</p>
+    </div>
+  </div>
+</section>

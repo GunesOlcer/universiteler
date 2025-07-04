@@ -1,0 +1,127 @@
+<!-- src/app/admin/pages/universities/program-quotas/program-quotas.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-users"></i>
+        Program Kontenjan Listesi
+      </h1>
+      <p class="page-subtitle">{{ program.name }} - Kontenjanlara ait bilgileri yönetin</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/programs']" [queryParams]="{facultyId: program.facultyId}">
+        <i class="fas fa-arrow-left"></i>
+        Program Listesine Dön
+      </button>
+      <button type="button" class="btn-add" (click)="addQuota()">
+        <i class="fas fa-plus"></i>
+        Kontenjan Ekle
+      </button>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Kontenjan Listesi
+      </h2>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table quota-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="th-year">Yıl</th>
+            <th colspan="2" class="th-general">Genel Kont.</th>
+            <th colspan="2" class="th-schoolFirst">Okul 1.'si Kont.</th>
+            <th colspan="2" class="th-earthquake">Depremzede Kont.</th>
+            <th colspan="2" class="th-women">34 Yaş Üstü Kadın Kont.</th>
+            <th colspan="2" class="th-martyr">Şehit / Gazi Yakını Kont.</th>
+            <th rowspan="2" class="th-actions">İşlem</th>
+          </tr>
+          <tr>
+            <th class="th-quota">Kont.</th>
+            <th class="th-score">Puan</th>
+            <th class="th-quota">Kont.</th>
+            <th class="th-score">Puan</th>
+            <th class="th-quota">Kont.</th>
+            <th class="th-score">Puan</th>
+            <th class="th-quota">Kont.</th>
+            <th class="th-score">Puan</th>
+            <th class="th-quota">Kont.</th>
+            <th class="th-score">Puan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let quota of quotas">
+            <td class="td-year">{{ quota.year }}</td>
+            <td class="td-quota">{{ quota.generalQuota.quota }} / {{ quota.generalQuota.placed }}</td>
+            <td class="td-score">{{ quota.generalQuota.minScore }} - {{ quota.generalQuota.maxScore }}</td>
+            <td class="td-quota">{{ quota.schoolFirstQuota.quota }} / {{ quota.schoolFirstQuota.placed }}</td>
+            <td class="td-score">{{ quota.schoolFirstQuota.minScore }} - {{ quota.schoolFirstQuota.maxScore }}</td>
+            <td class="td-quota">{{ quota.earthquakeVictimQuota.quota }} / {{ quota.earthquakeVictimQuota.placed }}</td>
+            <td class="td-score">{{ quota.earthquakeVictimQuota.minScore }} - {{ quota.earthquakeVictimQuota.maxScore }}</td>
+            <td class="td-quota">{{ quota.womenAbove34Quota.quota }} / {{ quota.womenAbove34Quota.placed }}</td>
+            <td class="td-score">{{ quota.womenAbove34Quota.minScore }} - {{ quota.womenAbove34Quota.maxScore }}</td>
+            <td class="td-quota">{{ quota.martyrFamilyQuota.quota }} / {{ quota.martyrFamilyQuota.placed }}</td>
+            <td class="td-score">{{ quota.martyrFamilyQuota.minScore }} - {{ quota.martyrFamilyQuota.maxScore }}</td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button type="button" class="btn-action btn-edit" title="Düzenle" (click)="editQuota(quota)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn-action btn-delete" title="Sil" (click)="confirmDeleteQuota(quota)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="quotas.length === 0">
+            <td colspan="12" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-info-circle"></i>
+                <p>Bu program için henüz kontenjan bilgisi bulunmamaktadır.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Kontenjan Bilgisi Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ quotaToDelete?.year }}</strong> yılına ait kontenjan bilgisini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve tüm kontenjan bilgileri silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteQuota()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

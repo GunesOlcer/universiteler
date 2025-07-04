@@ -1,0 +1,127 @@
+<!-- src/app/features/static-pages/about/about.component.html -->
+<section class="about-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Hakkımızda</h1>
+        <p class="page-subtitle">üniversiteler.net'in hikayesi ve misyonu</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active">Hakkımızda</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="page-content">
+      <div class="container">
+        <div class="static-page-layout">
+          <!-- Sidebar with navigation -->
+          <div class="static-sidebar-container">
+            <app-static-sidebar currentPage="hakkimizda"></app-static-sidebar>
+          </div>
+          
+          <!-- Main content -->
+          <div class="static-content-container">
+            <div class="about-container">
+              <!-- Giriş Bölümü -->
+              <div class="about-intro">
+                <h2>Biz Kimiz?</h2>
+                <p>üniversiteler.net, Türkiye ve Kuzey Kıbrıs'ta bulunan üniversiteler, bu üniversitelerin yer aldığı şehirler, ilgili yükseköğretim programları ve öğrenci yurtları hakkında kapsamlı bilgi sunan bir eğitim platformudur. Özellikle yükseköğretime adım atmaya hazırlanan öğrencilere, mevcut eğitimlerini değiştirmek isteyenlere veya farklı bir alanda ilerlemek isteyen mezunlara rehberlik ederiz.</p>
+              </div>
+              
+              <!-- İki sütunlu bölüm (Misyon ve Vizyon) -->
+              <div class="about-two-columns">
+                <div class="about-column">
+                  <div class="about-card">
+                    <div class="card-icon">
+                      <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Misyonumuz</h3>
+                    <p>Yükseköğretime geçiş yapacak öğrenciler başta olmak üzere, eğitim yolculuklarına yeni bir yön vermek isteyen herkes için güvenilir ve doğru bilgiler sağlamak. Kullanıcılarımıza, tercih edebilecekleri eğitim kurumları ve programlar hakkında detaylı bilgiler sunarak, onların bilinçli kararlar almasını desteklemek.</p>
+                  </div>
+                </div>
+                
+                <div class="about-column">
+                  <div class="about-card">
+                    <div class="card-icon">
+                      <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Vizyonumuz</h3>
+                    <p>Kapsamlı bilgi sunarak ve eğitim alanındaki yenilikleri takip ederek Türkiye ve Kuzey Kıbrıs'ta lider bir eğitim platformu olmak. Öğrencilere ve mezunlara, eğitim seçimleri konusunda en iyi kararları verebilmeleri için gerekli araçları ve bilgileri sunmayı amaçlıyoruz.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Hikayemiz Bölümü -->
+              <div class="about-story">
+                <h2>Hikayemiz</h2>
+                <p>Uzun bir hazırlık sürecinin ardından hayata geçirdiğimiz Üniversiteler.net, eğitim alanında bir ihtiyacı karşılamak amacıyla kuruldu. Kuruluşumuz, eğitim sektöründeki bilgi eksikliğini giderme ve öğrencilerin daha bilinçli tercihler yapmalarına yardımcı olma misyonu ile şekillendi. Başlangıcından itibaren coşku ve profesyonellikle sarıldığımız bu yolda, her geçen gün büyüyerek daha fazla öğrenciye ulaşmanın gururunu yaşıyoruz.</p>
+              </div>
+              
+              <!-- Değerlerimiz Bölümü -->
+              <div class="about-values">
+                <h2>Değerlerimiz</h2>
+                <div class="values-grid">
+                  <div class="value-item">
+                    <div class="value-icon">
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4>Şeffaflık</h4>
+                    <p>Kullanıcılarımıza dürüst ve açık bir şekilde bilgi sunmayı taahhüt ediyoruz.</p>
+                  </div>
+                  
+                  <div class="value-item">
+                    <div class="value-icon">
+                      <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>Dürüstlük</h4>
+                    <p>Her zaman doğru ve güncel bilgiler paylaşarak güveninizi kazanmak istiyoruz.</p>
+                  </div>
+                  
+                  <div class="value-item">
+                    <div class="value-icon">
+                      <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Yenilikçilik</h4>
+                    <p>Eğitim alanındaki en son gelişmeleri takip ederek, kullanıcılarımıza yenilikçi çözümler sunuyoruz.</p>
+                  </div>
+                  
+                  <div class="value-item">
+                    <div class="value-icon">
+                      <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Erişilebilirlik</h4>
+                    <p>Herkesin doğru bilgiye kolayca ulaşabilmesini sağlamak için çalışıyoruz.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Neden Biz Bölümü -->
+              <div class="about-why-us">
+                <h2>Neden Biz?</h2>
+                <p>üniversiteler.net, sadece bilgi sağlamakla kalmaz, aynı zamanda öğrencilerin ve mezunların karar verme süreçlerine aktif olarak katkıda bulunur. Güncel verilerle desteklenen içeriklerimiz ve kullanıcı dostu arayüzümüz, eğitim seçimlerinizde size rehberlik etmek için buradadır.</p>
+              </div>
+              
+              <!-- Geleceğe Bakış Bölümü -->
+              <div class="about-future">
+                <h2>Geleceğe Bakış</h2>
+                <p>Gelecekte, platformumuzun özelliklerini daha da genişleterek daha fazla öğrenciye ulaşmayı ve onların eğitim yolculuklarında yanlarında olmayı hedefliyoruz. Yenilikçi teknolojiler ve kişiselleştirilmiş öğrenme deneyimleri sunarak, eğitim alanında dönüştürücü bir güç olmaya devam edeceğiz.</p>
+              </div>
+              
+              <!-- İletişim CTA Bölümü -->
+              <div class="about-contact-cta">
+                <h3>Daha Fazla Bilgi İçin</h3>
+                <p>Sorularınız veya geri bildirimleriniz için bizimle iletişime geçebilirsiniz.</p>
+                <a [routerLink]="['/iletisim']" class="contact-button">İletişime Geç</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

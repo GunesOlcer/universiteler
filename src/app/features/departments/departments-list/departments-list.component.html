@@ -1,0 +1,158 @@
+<!-- src/app/features/departments/departments-list/departments-list.component.html -->
+<section class="departments-page">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/']">
+              <i class="fas fa-home"></i>
+              Ana Sayfa
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Bölümler</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Üniversite Bölümleri</h1>
+      <p class="page-subtitle">Türkiye ve KKTC'deki tüm üniversite bölümleri hakkında detaylı bilgi edinin</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="page-content">
+    <div class="container">
+      <!-- Filters Section -->
+      <div class="filters-section">
+        <div class="filters-container">
+          <!-- Search Box -->
+          <div class="search-box">
+            <div class="search-input-container">
+              <i class="fas fa-search search-icon"></i>
+              <input 
+                type="text" 
+                [value]="searchTerm"
+                (input)="onSearchChange($event.target.value)"
+                placeholder="Bölüm, fakülte veya üniversite adı..." 
+                class="search-input"
+                [disabled]="isLoading">
+              <button 
+                type="button" 
+                class="clear-search" 
+                *ngIf="searchTerm"
+                (click)="onSearchChange('')">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Dropdowns -->
+          <div class="filter-dropdowns">
+            <select 
+              [(ngModel)]="selectedFaculty" 
+              (ngModelChange)="onFacultyChange($event)"
+              class="filter-select"
+              [disabled]="isLoading">
+              <option value="">Tüm Fakülteler</option>
+              <option *ngFor="let faculty of faculties" [value]="faculty">
+                {{ faculty }}
+              </option>
+            </select>
+
+            <select 
+              [(ngModel)]="selectedUniversity" 
+              (ngModelChange)="onUniversityChange($event)"
+              class="filter-select"
+              [disabled]="isLoading">
+              <option value="">Tüm Üniversiteler</option>
+              <option *ngFor="let university of universities" [value]="university">
+                {{ university }}
+              </option>
+            </select>
+
+            <select 
+              [(ngModel)]="statusFilter" 
+              (ngModelChange)="onStatusChange($event)"
+              class="filter-select"
+              [disabled]="isLoading">
+              <option [ngValue]="null">Tüm Durumlar</option>
+              <option [ngValue]="1">Aktif</option>
+              <option [ngValue]="2">Pasif</option>
+              <option [ngValue]="3">Beklemede</option>
+            </select>
+          </div>
+
+          <!-- Clear Filters Button -->
+          <button 
+            type="button" 
+            class="clear-filters-btn"
+            (click)="clearFilters()"
+            [disabled]="isLoading"
+            *ngIf="searchTerm || selectedFaculty || selectedUniversity || statusFilter !== null">
+            <i class="fas fa-times-circle"></i>
+            Filtreleri Temizle
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-section">
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Bölümler yükleniyor...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-state" *ngIf="error && !isLoading">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Bir Hata Oluştu</h3>
+          <p>{{ error }}</p>
+          <button class="retry-btn" (click)="retry()">
+            <i class="fas fa-redo"></i>
+            Tekrar Dene
+          </button>
+        </div>
+
+        <!-- Results -->
+        <div *ngIf="!isLoading && !error">
+          <!-- Results Count -->
+          <div class="results-header" *ngIf="filteredDepartments.length > 0">
+            <div class="results-count">
+              <strong>{{ filteredDepartments.length }}</strong> bölüm bulundu
+            </div>
+          </div>
+
+          <!-- Departments Grid -->
+          <div class="departments-grid" *ngIf="filteredDepartments.length > 0">
+            <app-department-card 
+              *ngFor="let department of filteredDepartments; trackBy: trackByFn" 
+              [department]="department">
+            </app-department-card>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="filteredDepartments.length === 0">
+            <div class="empty-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3>Aradığınız Kriterlerde Bölüm Bulunamadı</h3>
+            <p>Lütfen arama kriterlerinizi değiştirerek tekrar deneyin.</p>
+            <button class="clear-filters-btn" (click)="clearFilters()">
+              <i class="fas fa-filter"></i>
+              Filtreleri Temizle
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

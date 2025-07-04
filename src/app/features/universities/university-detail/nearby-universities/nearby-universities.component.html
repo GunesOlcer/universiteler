@@ -1,0 +1,40 @@
+<div class="nearby-universities">
+  <h3 class="nearby-title">Yakındaki Üniversiteler</h3>
+  
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+
+  <div class="nearby-list" *ngIf="!isLoading">
+    <div class="nearby-university-item" 
+         *ngFor="let nearbyUniversity of nearbyUniversities" 
+         [routerLink]="['/universiteler', nearbyUniversity.id]">
+      <div class="nearby-image-container">
+        <img [src]="getImageUrl(nearbyUniversity)" 
+             [alt]="nearbyUniversity.name" 
+             class="nearby-image">
+        <div class="nearby-image-overlay"></div>
+      </div>
+      <div class="nearby-info">
+        <h4 class="nearby-name">{{ nearbyUniversity.name }}</h4>
+        <p class="nearby-location">{{ nearbyUniversity.cityName }}</p>
+        <div class="nearby-badge" [ngClass]="'type-' + nearbyUniversity.type">
+          {{ getTypeLabel(nearbyUniversity.type) }}
+        </div>
+      </div>
+    </div>
+
+    <div class="no-nearby" *ngIf="nearbyUniversities.length === 0">
+      <p>Bu bölgede başka üniversite bulunamadı.</p>
+    </div>
+  </div>
+
+  <a *ngIf="nearbyUniversities.length > 0 && university" 
+     routerLink="/universiteler" 
+     [queryParams]="{cityId: university.cityId}" 
+     class="view-all-link">
+    <span>{{ university.cityName }} üniversiteleri</span>
+    <i class="fas fa-arrow-right"></i>
+  </a>
+</div>

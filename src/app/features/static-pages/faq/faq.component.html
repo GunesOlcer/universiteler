@@ -1,0 +1,64 @@
+<!-- src/app/features/static-pages/faq/faq.component.html -->
+<section class="faq-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Sıkça Sorulan Sorular</h1>
+        <p class="page-subtitle">Üniversite Rehberi hakkında merak ettiğiniz tüm sorular</p>
+      </div>
+    </div>
+    
+    <!-- Breadcrumb yapısı -->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active">Sıkça Sorulan Sorular</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="page-content">
+      <div class="container">
+        <div class="static-page-layout">
+          <!-- Sidebar with navigation -->
+          <div class="static-sidebar-container">
+            <app-static-sidebar currentPage="sss"></app-static-sidebar>
+          </div>
+          
+          <!-- Main content -->
+          <div class="static-content-container">
+            <div class="faq-container">
+              <!-- Her kategori için -->
+              <div class="faq-category" *ngFor="let category of faqCategories">
+                <h2 class="category-title">{{ category.title }}</h2>
+                
+                <!-- Kategorideki her soru için -->
+                <div class="faq-items">
+                  <div class="faq-item" *ngFor="let question of category.questions; let i = index">
+                    <div 
+                      class="faq-question" 
+                      [class.expanded]="isQuestionExpanded(category.title, i)"
+                      (click)="toggleQuestion(category.title, i)">
+                      <h3>{{ question.question }}</h3>
+                      <div class="toggle-icon">
+                        <i class="fas" [ngClass]="isQuestionExpanded(category.title, i) ? 'fa-minus' : 'fa-plus'"></i>
+                      </div>
+                    </div>
+                    <div class="faq-answer" [class.expanded]="isQuestionExpanded(category.title, i)">
+                      <p>{{ question.answer }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="contact-info">
+              <h3>Sorunuzu bulamadınız mı?</h3>
+              <p>Lütfen bizimle iletişime geçin, size yardımcı olmaktan memnuniyet duyarız!</p>
+              <a [routerLink]="['/iletisim']" class="contact-button">İletişime Geç</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

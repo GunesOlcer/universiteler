@@ -1,0 +1,219 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-users"></i>
+        Online Kullanıcılar
+      </h1>
+      <p class="page-subtitle">Şu anda siteyi aktif olarak kullanan ziyaretçi ve üyeler</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-refresh" (click)="refreshUsers()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+        {{ isLoading ? 'Yükleniyor...' : 'Yenile' }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Stats Cards -->
+  <div class="stats-row row">
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-user-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ onlineUsers.length }}</h3>
+          <span class="stat-label">Online Kullanıcı</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon time-icon">
+          <i class="fas fa-history"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value time-value">{{ lastRefreshed | date:'HH:mm:ss' }}</h3>
+          <span class="stat-label">Son Güncelleme: {{ lastRefreshed | date:'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon update-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">30 sn</h3>
+          <span class="stat-label">Otomatik Güncelleme</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <div class="toggle-group">
+      <h2 class="toggle-title">
+        <i class="fas fa-eye"></i> Görünüm Seçenekleri
+      </h2>
+      <div class="toggle-buttons">
+        <button type="button" class="toggle-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')">
+          <i class="fas fa-th-large"></i> Kart Görünümü
+        </button>
+        <button type="button" class="toggle-btn" [class.active]="viewMode === 'table'" (click)="setViewMode('table')">
+          <i class="fas fa-list"></i> Liste Görünümü
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Grid View -->
+  <div class="users-grid row" *ngIf="viewMode === 'grid'">
+    <div *ngFor="let user of onlineUsers" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4">
+      <div class="user-card">
+        <span class="user-status"></span>
+        <div class="user-header">
+          <div class="user-avatar">
+            {{ getInitials(user.firstName, user.lastName) }}
+          </div>
+          <div class="user-info">
+            <h4 class="user-name">{{ user.firstName }} {{ user.lastName }}</h4>
+            <div class="user-email">
+              <i class="fas fa-envelope"></i> {{ user.email }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="user-body">
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">IP Adresi</div>
+              <div class="info-value">{{ user.ipAddress }}</div>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Şu Anki Sayfa</div>
+              <div class="info-value url-value">{{ user.currentUrl }}</div>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Giriş Zamanı</div>
+              <div class="info-value">{{ user.loginTime | date:'HH:mm:ss' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- No Users Message (Grid) -->
+    <div *ngIf="onlineUsers.length === 0 && !isLoading" class="col-12">
+      <div class="no-data-message grid-message">
+        <i class="fas fa-user-slash"></i>
+        <p>Şu anda online kullanıcı bulunmamaktadır.</p>
+      </div>
+    </div>
+    
+    <!-- Loading State (Grid) -->
+    <div *ngIf="isLoading" class="col-12">
+      <div class="loading-message grid-message">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Kullanıcılar yükleniyor...</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Table View -->
+  <div class="table-container" *ngIf="viewMode === 'table'">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-user-friends"></i> Online Kullanıcı Listesi
+      </h2>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table users-table">
+        <thead>
+          <tr>
+            <th class="th-status">Durum</th>
+            <th class="th-name">Adı Soyadı</th>
+            <th class="th-email">E-posta</th>
+            <th class="th-ip">IP Adresi</th>
+            <th class="th-page">Şu Anki Sayfa</th>
+            <th class="th-time">Giriş Zamanı</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of onlineUsers">
+            <td class="td-status">
+              <span class="status-indicator"></span>
+            </td>
+            <td class="td-name">
+              <div class="user-name-cell">
+                <div class="user-avatar-small">
+                  {{ getInitials(user.firstName, user.lastName) }}
+                </div>
+                <span>{{ user.firstName }} {{ user.lastName }}</span>
+              </div>
+            </td>
+            <td class="td-email">{{ user.email }}</td>
+            <td class="td-ip">
+              <span class="ip-badge">{{ user.ipAddress }}</span>
+            </td>
+            <td class="td-page">
+              <span class="page-url" [title]="user.currentUrl">{{ user.currentUrl }}</span>
+            </td>
+            <td class="td-time">{{ user.loginTime | date:'HH:mm:ss' }}</td>
+          </tr>
+          
+          <!-- No Users Message (Table) -->
+          <tr *ngIf="onlineUsers.length === 0 && !isLoading">
+            <td colspan="6" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-user-slash"></i>
+                <p>Şu anda online kullanıcı bulunmamaktadır.</p>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Loading State (Table) -->
+          <tr *ngIf="isLoading">
+            <td colspan="6" class="loading-data">
+              <div class="loading-message">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Kullanıcılar yükleniyor...</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Info Message -->
+  <div class="info-box">
+    <div class="info-icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="info-content">
+      Bu liste otomatik olarak her 30 saniyede bir güncellenir. Son güncelleme zamanı: {{ lastRefreshed | date:'dd.MM.yyyy HH:mm:ss' }}
+    </div>
+  </div>
+</div>

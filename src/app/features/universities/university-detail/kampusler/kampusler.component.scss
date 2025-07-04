@@ -1,0 +1,129 @@
+.content-section {
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .subsection-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .campus-location {
+    margin-bottom: 32px;
+
+    .location-info {
+      .location-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        i {
+          color: #2563eb;
+          margin-top: 2px;
+          font-size: 16px;
+        }
+
+        span {
+          color: #374151;
+          font-size: 16px;
+        }
+
+        .formatted-content {
+          color: #374151;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  .campus-features {
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+
+      .feature-card {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+        transition: all 0.3s ease;
+
+        &.available {
+          border-color: #10b981;
+          background-color: #f0fdf4;
+
+          .feature-icon i {
+            color: #10b981;
+          }
+        }
+
+        &:not(.available) {
+          border-color: #d1d5db;
+          background-color: #f9fafb;
+
+          .feature-icon i {
+            color: #6b7280;
+          }
+        }
+
+        .feature-icon {
+          text-align: center;
+          margin-bottom: 12px;
+
+          i {
+            font-size: 32px;
+          }
+        }
+
+        .feature-content {
+          text-align: center;
+
+          h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+          }
+
+          p {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.4;
+          }
+        }
+      }
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+    font-style: italic;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-section {
+    .campus-features .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

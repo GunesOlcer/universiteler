@@ -1,0 +1,225 @@
+/* src/app/features/universities/university-detail/genel-bilgi/genel-bilgi.component.scss */
+.content-section {
+  margin-bottom: 80px;
+  padding-top: 40px;
+  animation: fadeInUp 0.6s ease;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 50px;
+    padding-top: 20px;
+  }
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 32px;
+  position: relative;
+  display: inline-block;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 60px;
+    height: 3px;
+    background-color: #3b82f6;
+    border-radius: 2px;
+    animation: appear 0.5s ease;
+  }
+  
+  @keyframes appear {
+    from { width: 0; }
+    to { width: 60px; }
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+    text-align: center;
+    width: 100%;
+    
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.subsection-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 40px 0 20px;
+  position: relative;
+  padding-left: 16px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 20px;
+    background-color: #3b82f6;
+    border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 22px;
+    text-align: center;
+    padding-left: 0;
+    
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.university-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+  }
+  
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+    
+    i {
+      color: white;
+      font-size: 20px;
+    }
+  }
+  
+  .stat-content {
+    flex: 1;
+  }
+  
+  .stat-title {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0 0 8px 0;
+    font-weight: 500;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      
+      i {
+        font-size: 18px;
+      }
+    }
+    
+    .stat-title {
+      font-size: 13px;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+    }
+  }
+}
+
+.content-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  line-height: 1.8;
+  color: #475569;
+  
+  p {
+    margin: 0 0 16px 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.video-container {
+  margin: 30px 0;
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+.description-text {
+  white-space: pre-wrap;
+  margin-top: 24px;
+}

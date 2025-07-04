@@ -1,0 +1,87 @@
+<div class="file-upload-container" [class.has-error]="errors.length > 0">
+    <!-- Current Image Display -->
+    <div class="file-preview-card" *ngIf="currentImageUrl && !selectedFile">
+      <div class="preview-header">
+        <span class="preview-title">Mevcut Dosya</span>
+        <button type="button" class="preview-action remove-btn" (click)="removeImage()" title="Dosyayı Kaldır">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      
+      <div class="preview-content">
+        <img [src]="currentImageUrl" [alt]="'Current image'" class="preview-image">
+      </div>
+      
+      <div class="preview-footer">
+        <button type="button" class="btn-change" (click)="fileInput.click()">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Değiştir</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Selected File Preview -->
+    <div class="file-preview-card" *ngIf="selectedFile && previewUrl">
+      <div class="preview-header">
+        <span class="preview-title">
+          <i class="fas fa-check-circle"></i> Yeni Seçilen Dosya
+        </span>
+        <button type="button" class="preview-action remove-btn" (click)="removeSelectedFile()" title="Seçimi İptal Et">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="preview-content">
+        <img [src]="previewUrl" alt="Preview" class="preview-image">
+      </div>
+      
+      <div class="preview-footer">
+        <div class="file-info">
+          <span class="file-name">{{ selectedFile.name }}</span>
+          <span class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Upload Area -->
+    <div class="upload-area" *ngIf="!selectedFile && !currentImageUrl"
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event)"
+         [class.drag-over]="isDragOver">
+      
+      <div class="upload-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      
+      <div class="upload-text">
+        <h4 class="upload-title">Dosya Yükle</h4>
+        <p class="upload-description">Dosya seçmek için tıklayın veya buraya sürükleyin</p>
+        
+        <button type="button" class="upload-button" (click)="fileInput.click()">
+          <i class="fas fa-folder-open"></i>
+          <span>Dosya Seç</span>
+        </button>
+        
+        <span class="helper-text" *ngIf="helperText">{{ helperText }}</span>
+      </div>
+      
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        [accept]="acceptedTypes"
+        style="display: none;"
+      >
+    </div>
+    
+    <!-- Error Messages -->
+    <div class="validation-errors" *ngIf="errors.length > 0">
+      <div class="error-header">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Dosya yüklenemedi</span>
+      </div>
+      <ul class="error-list">
+        <li *ngFor="let error of errors" class="error-item">{{ error }}</li>
+      </ul>
+    </div>
+  </div>

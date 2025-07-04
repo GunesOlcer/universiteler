@@ -1,0 +1,296 @@
+<p>program-list works!</p>
+<!-- src/app/admin/pages/universities/program-list/program-list.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-graduation-cap"></i>
+        Program Yönetimi
+      </h1>
+      <p class="page-subtitle">
+        {{ selectedFaculty ? selectedFaculty.name + ' programlarını yönetin' : 'Tüm programları görüntüle, düzenle veya yeni program ekle' }}
+      </p>
+    </div>
+    
+    <div class="page-actions">
+      <a [routerLink]="['/admin/programs/add']" [queryParams]="selectedFaculty ? {facultyId: selectedFaculty.id} : {}" class="btn-add">
+        <span class="btn-icon"><i class="fas fa-plus"></i></span>
+        <span class="btn-text">Yeni Program</span>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Faculty Filter Notification -->
+  <div class="filter-notification" *ngIf="selectedFaculty">
+    <div class="notification-content">
+      <i class="fas fa-filter"></i>
+      <span>Şu anda sadece <strong>{{ selectedFaculty.name }}</strong> programlarını görüntülüyorsunuz.</span>
+      <button type="button" class="btn-clear-filter" (click)="resetFilters()">
+        <i class="fas fa-times"></i> Filtreyi Temizle
+      </button>
+    </div>
+  </div>
+  
+  <!-- Stats Cards -->
+  <div class="stats-row row">
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ totalItems }}</h3>
+          <span class="stat-label">Toplam Program</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon active-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ activeCount }}</h3>
+          <span class="stat-label">Aktif Program</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon inactive-icon">
+          <i class="fas fa-pause-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ totalItems - activeCount }}</h3>
+          <span class="stat-label">İnaktif Program</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-header">
+      <h2 class="filter-title">
+        <i class="fas fa-filter"></i> Filtreler
+      </h2>
+      <button class="btn-filter-toggle" (click)="filterPanelOpen = !filterPanelOpen">
+        {{ filterPanelOpen ? 'Filtreleri Gizle' : 'Filtreleri Göster' }}
+        <i class="fas" [ngClass]="filterPanelOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+    </div>
+    
+    <div class="filter-body" [class.open]="filterPanelOpen">
+      <div class="filter-row row">
+        <div class="filter-group col-md-6 col-lg-3 mb-3">
+          <label for="name-filter">Program Adı</label>
+          <div class="input-icon-wrapper">
+            <input 
+              type="text"
+              id="name-filter"
+              [(ngModel)]="filters.name"
+              placeholder="Program adı ara..."
+              class="filter-input"
+            >
+            <i class="fas fa-search input-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-3 mb-3">
+          <label for="faculty-filter">Fakülte</label>
+          <div class="select-wrapper">
+            <select id="faculty-filter" [(ngModel)]="filters.facultyId" class="filter-select">
+              <option value="">Tümü</option>
+              <option *ngFor="let faculty of faculties" [value]="faculty.id">{{ faculty.name }}</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-3 mb-3">
+          <label for="language-filter">Dil</label>
+          <div class="select-wrapper">
+            <select id="language-filter" [(ngModel)]="filters.language" class="filter-select">
+              <option value="">Tümü</option>
+              <option value="Türkçe">Türkçe</option>
+              <option value="İngilizce">İngilizce</option>
+              <option value="Almanca">Almanca</option>
+              <option value="Fransızca">Fransızca</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-3 mb-3">
+          <label for="status-filter">Durum</label>
+          <div class="select-wrapper">
+            <select id="status-filter" [(ngModel)]="filters.status" class="filter-select">
+              <option value="">Tümü</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">İnaktif</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button type="button" class="btn-reset" (click)="resetFilters()">
+          <i class="fas fa-undo"></i> Filtreleri Sıfırla
+        </button>
+        <button type="button" class="btn-apply" (click)="applyFilters()">
+          <i class="fas fa-filter"></i> Filtrele
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Programs Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Program Listesi
+      </h2>
+      <div class="table-actions">
+        <button class="btn-refresh" (click)="loadPrograms()">
+          <i class="fas fa-sync-alt"></i> Yenile
+        </button>
+        <div class="dropdown">
+          <button class="btn-export">
+            <i class="fas fa-download"></i> Dışa Aktar
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item"><i class="fas fa-file-excel"></i> Excel</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-file-pdf"></i> PDF</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-file-csv"></i> CSV</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table program-table">
+        <thead>
+          <tr>
+            <th class="th-name">Program Adı</th>
+            <th class="th-language">Dil</th>
+            <th class="th-fee">Ücret</th>
+            <th class="th-type">Öğretim Türü</th>
+            <th class="th-score-type">Puan Türü</th>
+            <th class="th-duration">Öğrenim Süresi</th>
+            <th class="th-status">Durum</th>
+            <th class="th-actions">İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let program of programs">
+            <td class="td-name">
+              <div class="program-name-container">
+                <span class="program-name">{{ program.name }}</span>
+                <span class="faculty-name">{{ program.facultyName }}</span>
+              </div>
+            </td>
+            <td class="td-language">
+              <span class="language-badge">{{ program.language }}</span>
+            </td>
+            <td class="td-fee">
+              <span class="fee-amount">{{ formatCurrency(program.fee) }}</span>
+            </td>
+            <td class="td-type">
+              <span class="education-type">{{ program.educationType }}</span>
+            </td>
+            <td class="td-score-type">
+              <span class="score-type-badge">{{ program.scoreType }}</span>
+            </td>
+            <td class="td-duration">
+              <span class="duration-value">{{ program.duration }} Yıl</span>
+            </td>
+            <td class="td-status">
+              <span class="status-badge" [ngClass]="program.isActive ? 'status-active' : 'status-inactive'">
+                <i class="fas" [ngClass]="program.isActive ? 'fa-check-circle' : 'fa-times-circle'"></i>
+                {{ program.isActive ? 'Aktif' : 'İnaktif' }}
+              </span>
+            </td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button type="button" class="btn-action btn-menus" title="Menüler" (click)="navigateToMenus(program)">
+                  <i class="fas fa-bars"></i>
+                </button>
+                <button type="button" class="btn-action btn-quotas" title="Kontenjan Listeleri" (click)="navigateToQuotas(program)">
+                  <i class="fas fa-users"></i>
+                </button>
+                <button type="button" class="btn-action btn-rankings" title="Başarı Sıraları" (click)="navigateToRankings(program)">
+                  <i class="fas fa-trophy"></i>
+                </button>
+                <a [routerLink]="['/admin/programs/edit', program.id]" class="btn-action btn-edit" title="Düzenle">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <button type="button" class="btn-action btn-delete" title="Sil" (click)="confirmDelete(program)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="programs.length === 0">
+            <td colspan="8" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-search"></i>
+                <p>Aradığınız kriterlere uygun program bulunamadı.</p>
+                <button class="btn-reset-search" (click)="resetFilters()">Filtreleri Sıfırla</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="table-footer">
+      <div class="pagination-info">
+        Toplam {{ totalItems }} kayıttan {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalItems) }} arası gösteriliyor
+      </div>
+      
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Program Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ programToDelete?.name }}</strong> programını silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve programa ait tüm veriler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteProgram()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

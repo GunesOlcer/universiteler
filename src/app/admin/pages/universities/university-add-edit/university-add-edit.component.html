@@ -1,0 +1,585 @@
+<div class="content-container">
+    <div class="page-header-container">
+      <div class="page-header-content">
+        <h1 class="page-title">
+          <i class="fas fa-university"></i>
+          {{ isEditMode ? 'Üniversite Düzenle' : 'Yeni Üniversite Ekle' }}
+        </h1>
+        <p class="page-subtitle">
+          {{ isEditMode ? 'Üniversite bilgilerini güncelleyin' : 'Sisteme yeni bir üniversite kaydı ekleyin' }}
+        </p>
+      </div>
+      
+      <div class="page-actions">
+        <button type="button" class="btn-back" routerLink="/admin/universities">
+          <i class="fas fa-arrow-left"></i>
+          Listeye Dön
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <form [formGroup]="universityForm" (ngSubmit)="saveUniversity()">
+        <div class="form-navigation">
+          <div class="nav-item" [class.active]="currentSection === 'basic'" (click)="scrollToSection('basic')">
+            <span class="nav-number">1</span>
+            <span class="nav-text">Temel Bilgiler</span>
+          </div>
+          <div class="nav-item" [class.active]="currentSection === 'content'" (click)="scrollToSection('content')">
+            <span class="nav-number">2</span>
+            <span class="nav-text">İçerik Bilgileri</span>
+          </div>
+          <div class="nav-item" [class.active]="currentSection === 'stats'" (click)="scrollToSection('stats')">
+            <span class="nav-number">3</span>
+            <span class="nav-text">İstatistikler</span>
+          </div>
+          <div class="nav-item" [class.active]="currentSection === 'contact'" (click)="scrollToSection('contact')">
+            <span class="nav-number">4</span>
+            <span class="nav-text">İletişim Bilgileri</span>
+          </div>
+          <div class="nav-item" [class.active]="currentSection === 'other'" (click)="scrollToSection('other')">
+            <span class="nav-number">5</span>
+            <span class="nav-text">Diğer Bilgiler</span>
+          </div>
+        </div>
+        
+        <!-- Temel Bilgiler -->
+        <div class="form-card" id="section-basic">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-info-circle"></i>
+              Temel Bilgiler
+            </h2>
+            <p class="card-subtitle">Üniversitenin temel bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="name">Üniversite Adı <span class="required">*</span></label>
+                <input 
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  class="form-control"
+                  [ngClass]="{'is-invalid': submitted && f.name.errors}"
+                >
+                <div *ngIf="submitted && f.name.errors" class="form-error">
+                  <div *ngIf="f.name.errors.required">Üniversite adı gereklidir.</div>
+                </div>
+                <div class="form-hint">Üniversitenin tam resmi adını girin</div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="slug">Üniversite URL</label>
+                <div class="input-group">
+                  <div class="input-prefix">/universiteler/detay/</div>
+                  <input 
+                    type="text"
+                    id="slug"
+                    formControlName="slug"
+                    class="form-control"
+                  >
+                </div>
+                <div class="form-hint">URL boş bırakılırsa otomatik oluşturulur</div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="city">Şehir <span class="required">*</span></label>
+                <div class="select-wrapper">
+                  <select 
+                    id="city"
+                    formControlName="cityId"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': submitted && f.cityId.errors}"
+                  >
+                    <option value="">Seçiniz</option>
+                    <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+                  </select>
+                  <i class="fas fa-chevron-down select-icon"></i>
+                </div>
+                <div *ngIf="submitted && f.cityId.errors" class="form-error">
+                  <div *ngIf="f.cityId.errors.required">Şehir seçimi gereklidir.</div>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="type">Üniversite Tipi <span class="required">*</span></label>
+                <div class="select-wrapper">
+                  <select 
+                    id="type"
+                    formControlName="type"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': submitted && f.type.errors}"
+                  >
+                    <option value="">Seçiniz</option>
+                    <option value="state">Devlet</option>
+                    <option value="foundation">Vakıf</option>
+                    <option value="private">Özel</option>
+                    <option value="kktc">KKTC</option>
+                    <option value="foreign_public">Yurtdışı Kamu</option>
+                    <option value="foreign_foundation">Yurtdışı Vakıf</option>
+                    <option value="foundation_myo">Vakıf MYO</option>
+                  </select>
+                  <i class="fas fa-chevron-down select-icon"></i>
+                </div>
+                <div *ngIf="submitted && f.type.errors" class="form-error">
+                  <div *ngIf="f.type.errors.required">Üniversite tipi seçimi gereklidir.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- İçerik Bilgileri -->
+        <div class="form-card" id="section-content">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-file-alt"></i>
+              İçerik Bilgileri
+            </h2>
+            <p class="card-subtitle">Üniversitenin içerik ve görsel bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-group">
+              <label for="description">Üniversite Yazısı <span class="required">*</span></label>
+              <textarea 
+                id="description"
+                formControlName="description"
+                class="form-control"
+                rows="8"
+                [ngClass]="{'is-invalid': submitted && f.description.errors}"
+              ></textarea>
+              <div *ngIf="submitted && f.description.errors" class="form-error">
+                <div *ngIf="f.description.errors.required">Üniversite yazısı gereklidir.</div>
+              </div>
+            </div>
+            
+            <div class="form-row media-row">
+              <div class="form-group col-md-4">
+                <label>Üniversite Kapak Fotoğrafı</label>
+                <div class="media-upload-container">
+                  <div class="media-preview" *ngIf="coverImagePreview || universityForm.get('coverImageUrl')?.value">
+                    <img [src]="coverImagePreview || universityForm.get('coverImageUrl')?.value" alt="Kapak Fotoğrafı">
+                    <div class="media-actions">
+                      <button type="button" class="btn-remove-media" (click)="removeCoverImage()">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div class="media-upload" *ngIf="!coverImagePreview && !universityForm.get('coverImageUrl')?.value">
+                    <input 
+                      type="file" 
+                      id="coverImage"
+                      (change)="onCoverImageChange($event)"
+                      accept="image/*"
+                      hidden
+                      #coverImageInput
+                    >
+                    <button type="button" class="btn-upload" (click)="coverImageInput.click()">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Fotoğraf Ekle</span>
+                    </button>
+                    <p class="upload-info">Minimum 1280x720 ve en fazla 4 MB.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label>Üniversite Ufak Fotoğrafı</label>
+                <div class="media-upload-container">
+                  <div class="media-preview" *ngIf="thumbnailImagePreview || universityForm.get('thumbnailImageUrl')?.value">
+                    <img [src]="thumbnailImagePreview || universityForm.get('thumbnailImageUrl')?.value" alt="Ufak Fotoğraf">
+                    <div class="media-actions">
+                      <button type="button" class="btn-remove-media" (click)="removeThumbnailImage()">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div class="media-upload" *ngIf="!thumbnailImagePreview && !universityForm.get('thumbnailImageUrl')?.value">
+                    <input 
+                      type="file" 
+                      id="thumbnailImage"
+                      (change)="onThumbnailImageChange($event)"
+                      accept="image/*"
+                      hidden
+                      #thumbnailImageInput
+                    >
+                    <button type="button" class="btn-upload" (click)="thumbnailImageInput.click()">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Fotoğraf Ekle</span>
+                    </button>
+                    <p class="upload-info">Minimum 350x266 ve en fazla 4 MB.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label>Üniversite Logosu</label>
+                <div class="media-upload-container">
+                  <div class="media-preview logo-preview" *ngIf="logoPreview || universityForm.get('logoUrl')?.value">
+                    <img [src]="logoPreview || universityForm.get('logoUrl')?.value" alt="Üniversite Logosu">
+                    <div class="media-actions">
+                      <button type="button" class="btn-remove-media" (click)="removeLogo()">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div class="media-upload" *ngIf="!logoPreview && !universityForm.get('logoUrl')?.value">
+                    <input 
+                      type="file" 
+                      id="logo"
+                      (change)="onLogoChange($event)"
+                      accept="image/*"
+                      hidden
+                      #logoInput
+                    >
+                    <button type="button" class="btn-upload" (click)="logoInput.click()">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <span>Logo Ekle</span>
+                    </button>
+                    <p class="upload-info">Minimum 330x330 ve en fazla 4 MB.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- İstatistikler -->
+        <div class="form-card" id="section-stats">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-chart-bar"></i>
+              İstatistikler
+            </h2>
+            <p class="card-subtitle">Üniversitenin istatistiksel verilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="studentCount">Öğrenci Sayısı</label>
+                <input 
+                  type="number"
+                  id="studentCount"
+                  formControlName="studentCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label for="internationalStudentCount">Uluslararası Öğrenci Sayısı</label>
+                <input 
+                  type="number"
+                  id="internationalStudentCount"
+                  formControlName="internationalStudentCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label for="foundedYear">Kuruluş Yılı</label>
+                <input 
+                  type="number"
+                  id="foundedYear"
+                  formControlName="foundedYear"
+                  class="form-control"
+                  min="1000"
+                  max="2025"
+                >
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="professorCount">Profesör Sayısı</label>
+                <input 
+                  type="number"
+                  id="professorCount"
+                  formControlName="professorCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="associateProfessorCount">Doçent Sayısı</label>
+                <input 
+                  type="number"
+                  id="associateProfessorCount"
+                  formControlName="associateProfessorCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="assistantProfessorCount">Doktor Sayısı</label>
+                <input 
+                  type="number"
+                  id="assistantProfessorCount"
+                  formControlName="assistantProfessorCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="lecturerCount">Öğretim Görevlisi Sayısı</label>
+                <input 
+                  type="number"
+                  id="lecturerCount"
+                  formControlName="lecturerCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="researchAssistantCount">Araştırma Görevlisi Sayısı</label>
+                <input 
+                  type="number"
+                  id="researchAssistantCount"
+                  formControlName="researchAssistantCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="vocationalSchoolCount">MYO Sayısı</label>
+                <input 
+                  type="number"
+                  id="vocationalSchoolCount"
+                  formControlName="vocationalSchoolCount"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="turkeyRanking">Türkiye Sıralaması</label>
+                <input 
+                  type="number"
+                  id="turkeyRanking"
+                  formControlName="turkeyRanking"
+                  class="form-control"
+                  min="1"
+                >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label for="urapRanking">URAP Sıralaması</label>
+                <input 
+                  type="number"
+                  id="urapRanking"
+                  formControlName="urapRanking"
+                  class="form-control"
+                  min="1"
+                >
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="scholarshipPercentage">Burs Oranı (%)</label>
+                <div class="range-slider-container">
+                  <input 
+                    type="range"
+                    id="scholarshipPercentage"
+                    formControlName="scholarshipPercentage"
+                    class="range-slider"
+                    min="0"
+                    max="100"
+                    step="1"
+                  >
+                  <span class="range-value">{{ universityForm.get('scholarshipPercentage')?.value || 0 }}%</span>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="averageTuition">Ortalama Ücret (TL)</label>
+                <input 
+                  type="number"
+                  id="averageTuition"
+                  formControlName="averageTuition"
+                  class="form-control"
+                  min="0"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- İletişim Bilgileri -->
+        <div class="form-card" id="section-contact">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-phone-alt"></i>
+              İletişim Bilgileri
+            </h2>
+            <p class="card-subtitle">Üniversitenin iletişim bilgilerini girin</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="whatsapp1">Whatsapp Numarası 1</label>
+                <div class="input-phone">
+                  <i class="fab fa-whatsapp input-icon"></i>
+                  <input 
+                    type="text"
+                    id="whatsapp1"
+                    formControlName="whatsapp1"
+                    class="form-control"
+                    placeholder="05XX XXX XX XX"
+                  >
+                </div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="whatsapp2">Whatsapp Numarası 2</label>
+                <div class="input-phone">
+                  <i class="fab fa-whatsapp input-icon"></i>
+                  <input 
+                    type="text"
+                    id="whatsapp2"
+                    formControlName="whatsapp2"
+                    class="form-control"
+                    placeholder="05XX XXX XX XX"
+                  >
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="whatsapp3">Whatsapp Numarası 3</label>
+                <div class="input-phone">
+                  <i class="fab fa-whatsapp input-icon"></i>
+                  <input 
+                    type="text"
+                    id="whatsapp3"
+                    formControlName="whatsapp3"
+                    class="form-control"
+                    placeholder="05XX XXX XX XX"
+                  >
+                </div>
+              </div>
+              
+              <div class="form-group col-md-6">
+                <label for="whatsapp4">Whatsapp Numarası 4</label>
+                <div class="input-phone">
+                  <i class="fab fa-whatsapp input-icon"></i>
+                  <input 
+                    type="text"
+                    id="whatsapp4"
+                    formControlName="whatsapp4"
+                    class="form-control"
+                    placeholder="05XX XXX XX XX"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Diğer Bilgiler -->
+        <div class="form-card" id="section-other">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-sliders-h"></i>
+              Diğer Bilgiler
+            </h2>
+            <p class="card-subtitle">Üniversiteyle ilgili diğer ayarları yapın</p>
+          </div>
+          
+          <div class="card-body">
+            <div class="toggle-row">
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Erasmus</span>
+                  <span class="toggle-description">Üniversitede Erasmus programı var mı?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="hasErasmus">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Araştırma Üniversitesi</span>
+                  <span class="toggle-description">Üniversite bir araştırma üniversitesi mi?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isResearchUniversity">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="toggle-row">
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Aktif</span>
+                  <span class="toggle-description">Üniversite sitede görünür olsun mu?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isActive">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Önemli Üniversite</span>
+                  <span class="toggle-description">Üniversite önemli üniversiteler listesinde gösterilsin mi?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isImportant">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="toggle-row">
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <span class="toggle-title">Popüler Üniversite</span>
+                  <span class="toggle-description">Üniversite popüler üniversiteler listesinde gösterilsin mi?</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" formControlName="isPopular">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Actions (Bottom) -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" routerLink="/admin/universities">
+            <i class="fas fa-times"></i> İptal
+          </button>
+          <button type="submit" class="btn-save" [disabled]="submitting">
+            <i class="fas fa-save"></i>
+            <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+            <span *ngIf="submitting" class="spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

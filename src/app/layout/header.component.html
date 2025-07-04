@@ -1,0 +1,245 @@
+<!-- src/app/layout/header.component.html -->
+<header class="header" [class.scrolled]="isScrolled">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo -->
+      <a routerLink="/" class="logo" [class.active]="isActiveRoute('/')">
+        <img src="assets/images/Logo.png" alt="Üniversiteler.net">
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="nav-menu">
+        <ul class="nav-list">
+          <li *ngFor="let item of navItems; let i = index" 
+              (mouseenter)="onItemHover(i)" 
+              (mouseleave)="onItemLeave()"
+              [class.has-dropdown]="item.hasDropdown"
+              [class.active]="isActiveRoute(item.routerLink) || hoveredIndex === i">
+            
+            <a [routerLink]="item.routerLink" 
+              routerLinkActive="active" 
+              [routerLinkActiveOptions]="{exact: item.routerLink === '/'}"
+              [class.highlighted]="item.isHighlighted">
+              <span class="nav-text">{{ item.name }}</span>
+            </a>
+            
+            <!-- Mega Dropdown Menu -->
+            <div class="mega-dropdown" *ngIf="item.hasDropdown" [class.visible]="hoveredIndex === i">
+              <div class="dropdown-backdrop" (click)="onItemLeave()"></div>
+              <div class="dropdown-content">
+                <div class="dropdown-container">
+                  <!-- Üniversiteler Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/universiteler'">
+                    <div class="dropdown-column">
+                      <h3>Türlerine Göre</h3>
+                      <ul>
+                        <li><a [routerLink]="['/universiteler/devlet']">Devlet Üniversiteleri</a></li>
+                        <li><a [routerLink]="['/universiteler/vakif']">Vakıf Üniversiteleri</a></li>
+                        <li><a [routerLink]="['/universiteler/kktc']">KKTC Üniversiteleri</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Popüler Şehirler</h3>
+                      <ul>
+                        <li><a [routerLink]="['/sehirler/istanbul']">İstanbul (58)</a></li>
+                        <li><a [routerLink]="['/sehirler/ankara']">Ankara (21)</a></li>
+                        <li><a [routerLink]="['/sehirler/izmir']">İzmir (10)</a></li>
+                        <li><a [routerLink]="['/sehirler']">Tüm Şehirler »</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Öne Çıkan Üniversiteler</h3>
+                      <ul>
+                        <li><a [routerLink]="['/universiteler/uluslararasi-final']">Uluslararası Final Üniversitesi</a></li>
+                        <li><a [routerLink]="['/universiteler/bilecik-seyh-edebali']">Bilecik Şeyh Edebali Üniversitesi</a></li>
+                        <li><a [routerLink]="['/universiteler']">Tüm Üniversiteler »</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <!-- Bölümler Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/bolumler'">
+                    <div class="dropdown-column">
+                      <h3>Lisans Programları</h3>
+                      <ul>
+                        <li><a [routerLink]="['/bolumler/bilgisayar-muhendisligi']">Bilgisayar Mühendisliği (173)</a></li>
+                        <li><a [routerLink]="['/bolumler/tip']">Tıp (111)</a></li>
+                        <li><a [routerLink]="['/bolumler/muhendislik']">Tüm Mühendislik Bölümleri »</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Önlisans Programları</h3>
+                      <ul>
+                        <li><a [routerLink]="['/bolumler/anestezi']">Anestezi (96)</a></li>
+                        <li><a [routerLink]="['/bolumler/cocuk-gelisimi-onlisans']">Çocuk Gelişimi (116)</a></li>
+                        <li><a [routerLink]="['/bolumler/onlisans']">Tüm Önlisans Programları »</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Alanlara Göre</h3>
+                      <ul>
+                        <li><a [routerLink]="['/bolumler/muhendislik']">Mühendislik Bölümleri</a></li>
+                        <li><a [routerLink]="['/bolumler/saglik']">Sağlık Bilimleri</a></li>
+                        <li><a [routerLink]="['/bolumler/sosyal']">Sosyal Bilimler</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <!-- Şehirler Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/sehirler'">
+                    <div class="dropdown-column">
+                      <h3>En Çok Üniversite Bulunan</h3>
+                      <ul>
+                        <li><a [routerLink]="['/sehirler/istanbul']">İstanbul (58)</a></li>
+                        <li><a [routerLink]="['/sehirler/ankara']">Ankara (21)</a></li>
+                        <li><a [routerLink]="['/sehirler/izmir']">İzmir (10)</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Bölgelere Göre</h3>
+                      <ul>
+                        <li><a [routerLink]="['/sehirler/marmara']">Marmara Bölgesi</a></li>
+                        <li><a [routerLink]="['/sehirler/ic-anadolu']">İç Anadolu Bölgesi</a></li>
+                        <li><a [routerLink]="['/sehirler/ege']">Ege Bölgesi</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Öğrenci Şehirleri</h3>
+                      <div class="featured-image">
+                        <img src="assets/images/ıstanbull.jpg" alt="İstanbul Üniversiteleri">
+                        <a [routerLink]="['/sehirler']" class="btn-explore">Tüm Şehirleri Keşfet</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Yurtlar Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/yurtlar'">
+                    <div class="dropdown-column">
+                      <h3>Şehirlere Göre</h3>
+                      <ul>
+                        <li><a [routerLink]="['/yurtlar/istanbul']">İstanbul Yurtları</a></li>
+                        <li><a [routerLink]="['/yurtlar/ankara']">Ankara Yurtları</a></li>
+                        <li><a [routerLink]="['/yurtlar/izmir']">İzmir Yurtları</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Yurt Türleri</h3>
+                      <ul>
+                        <li><a [routerLink]="['/yurtlar/kiz']">Kız Öğrenci Yurtları</a></li>
+                        <li><a [routerLink]="['/yurtlar/erkek']">Erkek Öğrenci Yurtları</a></li>
+                        <li><a [routerLink]="['/yurtlar/karma']">Karma Öğrenci Yurtları</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Öne Çıkan Yurtlar</h3>
+                      <ul>
+                        <li><a [routerLink]="['/yurtlar/studio-santral']">Studio Santral Kız Öğrenci Yurdu</a></li>
+                        <li><a [routerLink]="['/yurtlar']">Tüm Yurtları İncele »</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <!-- Makaleler Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/makaleler'">
+                    <div class="dropdown-column">
+                      <h3>Tercih Rehberi</h3>
+                      <ul>
+                        <li><a [routerLink]="['/makaleler/universite-tercihi']">Üniversite Tercihlerinde YKS Kılavuzu</a></li>
+                        <li><a [routerLink]="['/makaleler/bolum-secimi']">Bölüm Seçiminde Aile Desteği</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Öğrenci Hayatı</h3>
+                      <ul>
+                        <li><a [routerLink]="['/makaleler/universite-tanitim']">Üniversite Tanıtım Günleri</a></li>
+                        <li><a [routerLink]="['/makaleler']">Tüm Makaleleri Oku »</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>En Yeni Makaleler</h3>
+                      <div class="article-card">
+                        <div class="article-date">15 Mart 2025</div>
+                        <h4>Üniversite Tercihlerinde Yapılan Hatalar</h4>
+                        <a [routerLink]="['/makaleler/tercih-hatalari']" class="read-more">Devamını Oku »</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- İletişim Dropdown -->
+                  <div class="dropdown-grid" *ngIf="item.routerLink === '/iletisim'">
+                    <div class="dropdown-column">
+                      <h3>İletişim Kanalları</h3>
+                      <ul>
+                        <li><a [routerLink]="['/iletisim']">İletişim Formu</a></li>
+                        <li><a href="mailto:info@universiterehberi.com">E-posta ile İletişim</a></li>
+                        <li><a href="tel:+902121234567">Telefon ile İletişim</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Kurumsal</h3>
+                      <ul>
+                        <li><a [routerLink]="['/hakkimizda']">Hakkımızda</a></li>
+                        <li><a [routerLink]="['/sss']">Sık Sorulan Sorular</a></li>
+                        <li><a [routerLink]="['/gizlilik-politikasi']">Gizlilik Politikası</a></li>
+                      </ul>
+                    </div>
+                    <div class="dropdown-column">
+                      <h3>Sosyal Medya</h3>
+                      <div class="social-links-grid">
+                        <a href="#" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i> Facebook</a>
+                        <a href="#" target="_blank" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="#" target="_blank" class="social-link"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="#" target="_blank" class="social-link"><i class="fab fa-youtube"></i> YouTube</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Action Button (for highlighted item) -->
+      <div class="action-button-container">
+        <a [routerLink]="getHighlightedItem()?.routerLink" class="action-button" *ngIf="getHighlightedItem()">
+          <span class="pulse-animation"></span>
+          {{ getHighlightedItem()?.name }}
+        </a>
+      </div>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+    <div class="mobile-menu-backdrop" (click)="closeMobileMenu()"></div>
+    <div class="mobile-menu-container">
+      <div class="mobile-menu-header">
+        <img src="assets/images/Logo.png" alt="Üniversiteler.net" class="mobile-logo">
+        <button class="mobile-close" (click)="closeMobileMenu()">
+          <span class="close-icon"></span>
+        </button>
+      </div>
+      <ul class="mobile-nav-list">
+        <li *ngFor="let item of navItems" [class.highlighted]="item.isHighlighted">
+          <a [routerLink]="item.routerLink" 
+            routerLinkActive="active" 
+            [routerLinkActiveOptions]="{exact: item.routerLink === '/'}"
+            (click)="closeMobileMenu()">
+            <span>{{ item.name }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

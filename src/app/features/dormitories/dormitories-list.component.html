@@ -1,0 +1,125 @@
+<section class="dormitories-page">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Öğrenci Yurtları</h1>
+      <p class="page-subtitle">Türkiye ve KKTC'deki öğrenci yurtları hakkında bilgi edinin</p>
+    </div>
+  </div>
+
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/']">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ pageTitle }}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="search-filter-container">
+        <div class="search-box">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            placeholder="Yurt adı, şehir..." 
+            class="search-input"
+            (keyup.enter)="onSearch()">
+          <button type="button" class="search-button" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="filters-group">
+          <div class="filter-group">
+            <label class="filter-label">Tür</label>
+            <div class="filter-tabs">
+              <button 
+                class="filter-tab" 
+                [class.active]="activeTypeFilter === null"
+                (click)="applyTypeFilter(null)">
+                Tümü
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeTypeFilter === dormitoryTypes.State"
+                (click)="applyTypeFilter(dormitoryTypes.State)">
+                Devlet
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeTypeFilter === dormitoryTypes.University"
+                (click)="applyTypeFilter(dormitoryTypes.University)">
+                Üniversite
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeTypeFilter === dormitoryTypes.Private"
+                (click)="applyTypeFilter(dormitoryTypes.Private)">
+                Özel
+              </button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Cinsiyet</label>
+            <div class="filter-tabs">
+              <button 
+                class="filter-tab" 
+                [class.active]="activeGenderFilter === null"
+                (click)="applyGenderFilter(null)">
+                Tümü
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeGenderFilter === genderTypes.Male"
+                (click)="applyGenderFilter(genderTypes.Male)">
+                Erkek
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeGenderFilter === genderTypes.Female"
+                (click)="applyGenderFilter(genderTypes.Female)">
+                Kız
+              </button>
+              <button 
+                class="filter-tab" 
+                [class.active]="activeGenderFilter === genderTypes.Mixed"
+                (click)="applyGenderFilter(genderTypes.Mixed)">
+                Karma
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dormitories-container">
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Yurtlar yükleniyor...</p>
+        </div>
+
+        <div *ngIf="!isLoading">
+          <div class="results-count" *ngIf="filteredDormitories.length > 0">
+            {{ filteredDormitories.length }} yurt bulundu
+          </div>
+          
+          <div class="dormitories-grid" *ngIf="filteredDormitories.length > 0">
+            <app-dormitory-card 
+              *ngFor="let dormitory of filteredDormitories" 
+              [dormitory]="dormitory">
+            </app-dormitory-card>
+          </div>
+
+          <div class="empty-state" *ngIf="filteredDormitories.length === 0">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Bu kriterlere uygun yurt bulunamadı.</p>
+            <button class="reset-button" (click)="resetFilters()">
+              Filtreleri Sıfırla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

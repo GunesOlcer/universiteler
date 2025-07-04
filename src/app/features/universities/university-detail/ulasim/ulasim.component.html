@@ -1,0 +1,242 @@
+<section class="content-section">
+  <h2 class="section-title">Ulaşım</h2>
+  <div class="content-card">
+    <div class="transportation-info" *ngIf="university">
+      <div class="location-info">
+        <div class="location-header">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <h3>Kampüs Konumu</h3>
+            <p>{{ university.cityName }}, {{ university.countryName }}</p>
+            <div class="address" *ngIf="university.address">
+              <span>{{ university.address }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="transport-options">
+        <h3 class="subsection-title">Ulaşım Seçenekleri</h3>
+        <div class="transport-grid">
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Otobüs</h4>
+              <p>Şehir içi otobüs hatları ile kampüse ulaşım</p>
+              <div class="transport-details">
+                <span>Ekonomik ulaşım</span>
+                <span>Düzenli sefer saatleri</span>
+                <span>Öğrenci indirimi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-subway"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Metro/Tramvay</h4>
+              <p>Rail sistem ile hızlı ulaşım</p>
+              <div class="transport-details">
+                <span>Hızlı ve güvenilir</span>
+                <span>Trafik sorunu yok</span>
+                <span>Öğrenci kartları geçerli</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Özel Araç</h4>
+              <p>Kendi aracınızla kampüse ulaşım</p>
+              <div class="transport-details">
+                <span>Esnek zaman</span>
+                <span>Park alanları mevcut</span>
+                <span>Grup ulaşımı ekonomik</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-walking"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Yürüyüş</h4>
+              <p>Kampüs çevresinden yürüyerek ulaşım</p>
+              <div class="transport-details">
+                <span>Sağlıklı alternatif</span>
+                <span>Maliyet yok</span>
+                <span>Çevre dostu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-bicycle"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Bisiklet</h4>
+              <p>Bisiklet ile kampüse ulaşım</p>
+              <div class="transport-details">
+                <span>Çevreci ulaşım</span>
+                <span>Sağlıklı yaşam</span>
+                <span>Bisiklet parkları</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="transport-item">
+            <div class="transport-icon">
+              <i class="fas fa-taxi"></i>
+            </div>
+            <div class="transport-content">
+              <h4>Taksi/Uber</h4>
+              <p>Konforlu özel ulaşım hizmeti</p>
+              <div class="transport-details">
+                <span>24 saat hizmet</span>
+                <span>Kapıdan kapıya</span>
+                <span>Güvenli ulaşım</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="parking-info">
+        <h3 class="subsection-title">Park Alanları</h3>
+        <div class="parking-features">
+          <div class="parking-item">
+            <div class="parking-icon">
+              <i class="fas fa-car-side"></i>
+            </div>
+            <div class="parking-content">
+              <h4>Öğrenci Parkı</h4>
+              <p>Öğrencilere özel indirimli park alanları</p>
+            </div>
+          </div>
+
+          <div class="parking-item">
+            <div class="parking-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="parking-content">
+              <h4>Güvenlik</h4>
+              <p>24 saat güvenlik kamerası ile korumalı</p>
+            </div>
+          </div>
+
+          <div class="parking-item">
+            <div class="parking-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="parking-content">
+              <h4>Saat Sınırı</h4>
+              <p>Uzun süreli park imkanları mevcut</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accessibility">
+        <h3 class="subsection-title">Erişilebilirlik</h3>
+        <div class="accessibility-features">
+          <div class="accessibility-item">
+            <i class="fas fa-wheelchair"></i>
+            <div>
+              <h4>Engelli Erişimi</h4>
+              <p>Kampüs genelinde engelliler için özel düzenlemeler</p>
+            </div>
+          </div>
+
+          <div class="accessibility-item">
+            <i class="fas fa-elevator"></i>
+            <div>
+              <h4>Asansör Sistemi</h4>
+              <p>Tüm binalarda asansör mevcuttur</p>
+            </div>
+          </div>
+
+          <div class="accessibility-item">
+            <i class="fas fa-route"></i>
+            <div>
+              <h4>Yönlendirme</h4>
+              <p>Kampüs içi yönlendirme tabelaları</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="transport-tips">
+        <h3 class="subsection-title">Ulaşım İpuçları</h3>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Zaman Planlama</h4>
+              <p>Rush saatlerinde ekstra süre ayırın</p>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Öğrenci Kartı</h4>
+              <p>Toplu taşımada indirim için öğrenci kartınızı unutmayın</p>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Mobil Uygulamalar</h4>
+              <p>Toplu taşıma uygulamalarını kullanın</p>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="tip-content">
+              <h4>Grup Ulaşımı</h4>
+              <p>Arkadaşlarınızla birlikte ulaşım maliyeti düşürün</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-transport">
+        <h3 class="subsection-title">Ulaşım Bilgileri</h3>
+        <div class="contact-card">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <h4>Detaylı Bilgi</h4>
+            <p>Kampüse ulaşım konusunda detaylı bilgi almak için üniversitenin öğrenci işleri birimiyle iletişime geçebilirsiniz.</p>
+            <div class="contact-links" *ngIf="university.website || university.phone">
+              <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+                <i class="fas fa-globe"></i> Web Sitesi
+              </a>
+              <span *ngIf="university.phone" class="contact-link">
+                <i class="fas fa-phone"></i> {{ university.phone }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

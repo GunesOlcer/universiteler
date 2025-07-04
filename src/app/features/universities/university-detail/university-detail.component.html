@@ -1,0 +1,120 @@
+<section class="university-detail-page">
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yükleniyor...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="university-not-found" *ngIf="!university">
+      <div class="container-full">
+        <div class="not-found-content">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Üniversite Bulunamadı</h2>
+          <p>Aradığınız üniversite sistemde bulunamadı veya kaldırılmış olabilir.</p>
+          <a routerLink="/universiteler" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Üniversiteler Sayfasına Dön
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="university">
+      <div class="breadcrumb-container">
+        <div class="container-full">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/">Ana Sayfa</a></li>
+            <li class="breadcrumb-item"><a routerLink="/universiteler">Üniversiteler</a></li>
+            <li class="breadcrumb-item active">{{ university.name }}</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="university-header-container">
+        <div class="container-full">
+          <div class="university-header">
+            <div class="university-logo">
+              <img [src]="getLogoUrl()" [alt]="university.name + ' Logo'">
+            </div>
+            <div class="university-info">
+              <div class="type-badge" [ngClass]="getTypeCssClass()">
+                {{ getTypeLabel() }}
+              </div>
+              <h1 class="university-name">{{ university.name }}</h1>
+              <div class="university-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ university.cityName }}, {{ university.countryName }}</span>
+              </div>
+              <div class="university-meta">
+                <div class="meta-item" *ngIf="university.foundationYear">
+                  <i class="fas fa-calendar-alt"></i>
+                  <span>{{ university.foundationYear }} yılında kuruldu</span>
+                </div>
+                <div class="meta-item" *ngIf="university.studentCount">
+                  <i class="fas fa-user-graduate"></i>
+                  <span>{{ university.studentCount | number }} öğrenci</span>
+                </div>
+                <div class="meta-item" *ngIf="university.ranking">
+                  <i class="fas fa-trophy"></i>
+                  <span>#{{ university.ranking }} sırada</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="university-content">
+        <div class="container-full">
+          <div class="content-wrapper">
+            <div class="sidebar-container">
+              <app-sidebar 
+                [university]="university" 
+                [universityMenus]="universityMenus"
+                [activeSection]="activeSection"
+                (sectionChange)="onSectionChange($event)">
+              </app-sidebar>
+            </div>
+
+            <div class="main-content-container">
+              <div class="main-content">
+                <div [ngSwitch]="activeSection">
+                  <app-genel-bilgi *ngSwitchCase="'genel-bilgi'" [university]="university"></app-genel-bilgi>
+                  <app-kilit-ozellikler *ngSwitchCase="'kilit-ozellikler'" [university]="university"></app-kilit-ozellikler>
+                  <app-kampusler *ngSwitchCase="'kampusler'" [university]="university"></app-kampusler>
+                  <app-burslar *ngSwitchCase="'burslar'" [university]="university"></app-burslar>
+                  <app-is-staj *ngSwitchCase="'is-staj'" [university]="university"></app-is-staj>
+                  <app-erasmus *ngSwitchCase="'erasmus'" [university]="university"></app-erasmus>
+                  <app-egitim-sistemi *ngSwitchCase="'egitim-sistemi'" [university]="university"></app-egitim-sistemi>
+                  <app-hazirlik-egitimi *ngSwitchCase="'hazirlik-egitimi'" [university]="university"></app-hazirlik-egitimi>
+                  <app-cift-ana-dal *ngSwitchCase="'cift-ana-dal'" [university]="university"></app-cift-ana-dal>
+                  <app-uzaktan-egitim *ngSwitchCase="'uzaktan-egitim'" [university]="university"></app-uzaktan-egitim>
+                  <app-akreditasyon *ngSwitchCase="'akreditasyon'" [university]="university"></app-akreditasyon>
+                  <app-taban-puanlar *ngSwitchCase="'taban-puanlar'" [university]="university"></app-taban-puanlar>
+                  <app-ulasim *ngSwitchCase="'ulasim'" [university]="university"></app-ulasim>
+                  <app-kampus-yasam *ngSwitchCase="'kampus-yasam'" [university]="university"></app-kampus-yasam>
+                  <app-topluluklar *ngSwitchCase="'topluluklar'" [university]="university"></app-topluluklar>
+                  <app-kutuphane *ngSwitchCase="'kutuphane'" [university]="university"></app-kutuphane>
+                  <app-saglik-olanaklari *ngSwitchCase="'saglik-olanaklari'" [university]="university"></app-saglik-olanaklari>
+                  <app-yeme-icme *ngSwitchCase="'yeme-icme'" [university]="university"></app-yeme-icme>
+                  <app-uluslararasi *ngSwitchCase="'uluslararasi'" [university]="university"></app-uluslararasi>
+                  <app-yurtlar *ngSwitchCase="'yurtlar'" [university]="university"></app-yurtlar>
+                  
+                  <app-custom-menu-content 
+                    *ngSwitchDefault
+                    [menuContent]="getMenuContent(activeSection)"
+                    [university]="university">
+                  </app-custom-menu-content>
+                </div>
+              </div>
+            </div>
+
+            <div class="nearby-container">
+              <app-nearby-universities [university]="university"></app-nearby-universities>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>

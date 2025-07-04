@@ -1,0 +1,130 @@
+<!-- city-menu.component.html -->
+<div class="content-container">
+  <!-- Error Message Display -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error }}
+  </div>
+
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-bars"></i>
+        Şehir Menü Yönetimi
+      </h1>
+      <p class="page-subtitle" *ngIf="city">{{ city.name }} - Menüleri yönetin</p>
+      <p class="page-subtitle" *ngIf="!city && !loading">Şehir bilgileri yükleniyor...</p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn-add" (click)="addMenuItem()" [disabled]="loading">
+        <i class="fas fa-plus"></i>
+        Yeni Menü Ekle
+      </button>
+      <button type="button" class="btn-refresh" (click)="refreshMenus()" [disabled]="loading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+        Yenile
+      </button>
+      <button type="button" class="btn-back" (click)="backToCities()">
+        <i class="fas fa-arrow-left"></i>
+        Şehir Listesine Dön
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-structure-container">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Menüler yükleniyor...</p>
+    </div>
+
+    <div class="menu-items-list" *ngIf="!loading">
+      <div *ngFor="let menuItem of menuItems; trackBy: trackByMenuId" class="menu-item">
+        <div class="menu-item-content">
+          <div class="menu-item-header">
+            <span class="menu-item-title">{{ menuItem.title }}</span>
+            <div class="menu-item-badges">
+              <span class="menu-item-order">Sıra: {{ menuItem.order }}</span>
+              <span class="status-badge" [ngClass]="'status-' + menuItem.status">
+                {{ getStatusName(menuItem.status) }}
+              </span>
+            </div>
+          </div>
+          <div class="menu-item-content-preview" *ngIf="menuItem.content">
+            {{ menuItem.content.length > 100 ? (menuItem.content.substring(0, 100) + '...') : menuItem.content }}
+          </div>
+          <div class="menu-item-meta">
+            <span class="menu-visible" [ngClass]="menuItem.isVisible ? 'visible' : 'hidden'">
+              <i class="fas" [ngClass]="menuItem.isVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+              {{ menuItem.isVisible ? 'Görünür' : 'Gizli' }}
+            </span>
+            <span class="menu-created-date">
+              <i class="fas fa-calendar"></i>
+              {{ menuItem.createdDate | date:'short' }}
+            </span>
+          </div>
+        </div>
+        <div class="menu-item-actions">
+          <button type="button" 
+                  class="btn-action btn-edit" 
+                  title="Düzenle" 
+                  (click)="editMenuItem(menuItem)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" 
+                  class="btn-action btn-delete" 
+                  title="Sil" 
+                  (click)="confirmDeleteMenuItem(menuItem)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="menuItems.length === 0" class="no-menu-items">
+        <div class="empty-state">
+          <i class="fas fa-bars"></i>
+          <h3>Menü bulunamadı</h3>
+          <p>Bu şehir için henüz menü öğesi bulunmamaktadır.</p>
+          <button type="button" class="btn-add-first" (click)="addMenuItem()">
+            <i class="fas fa-plus"></i>
+            İlk Menüyü Ekle
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Menü Öğesi Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ menuItemToDelete?.title }}</strong> menü öğesini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve menü öğesine ait tüm içerikler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteMenuItem()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

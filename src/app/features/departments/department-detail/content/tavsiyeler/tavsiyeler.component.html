@@ -1,0 +1,145 @@
+<!-- src/app/features/departments/department-detail/content/tavsiyeler/tavsiyeler.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-lightbulb"></i>
+      Tavsiyeler
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} bölümü için uzman tavsiyeleri ve öneriler</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Tavsiyeler yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Introduction -->
+    <div class="intro-card">
+      <div class="intro-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="intro-content">
+        <h3>Uzman Tavsiyeleri</h3>
+        <p>{{ department?.name }} bölümünü düşünenler, eğitim sürecinde olanlar ve mezunlar için hazırlanmış öneriler.</p>
+      </div>
+    </div>
+
+    <!-- Specific Advice Content -->
+    <div class="content-card" *ngIf="adviceContent">
+      <h3 class="content-title">
+        <i class="fas fa-quote-left"></i>
+        {{ adviceContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(adviceContent.content)"></div>
+    </div>
+
+    <!-- All Advice Menus -->
+    <div class="advice-grid" *ngIf="departmentMenus.length > 0">
+      <div class="advice-card" *ngFor="let menu of departmentMenus">
+        <div class="advice-header">
+          <div class="advice-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h4 class="advice-title">{{ menu.title }}</h4>
+          <span class="advice-order">{{ menu.order }}</span>
+        </div>
+        <div class="advice-content" [innerHTML]="formatContent(menu.content)"></div>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!adviceContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Genel Tavsiyeler
+        </h3>
+        <div class="general-advice">
+          <p>{{ department?.name }} bölümü için özel tavsiyeler henüz eklenmemiştir. Genel öneriler:</p>
+          
+          <div class="advice-sections">
+            <div class="advice-section">
+              <h4>
+                <i class="fas fa-graduation-cap"></i>
+                Üniversite Tercih Sürecinde
+              </h4>
+              <ul>
+                <li>Bölümün müfredatını detaylı inceleyin</li>
+                <li>Mezun olacağınız alan ile ilgili araştırma yapın</li>
+                <li>Üniversitenin imkanlarını değerlendirin</li>
+                <li>Akademisyen kadrosunu araştırın</li>
+              </ul>
+            </div>
+
+            <div class="advice-section">
+              <h4>
+                <i class="fas fa-book-open"></i>
+                Eğitim Süreci Boyunca
+              </h4>
+              <ul>
+                <li>Sadece derslere odaklanmakla kalmayın, ek projeler yapın</li>
+                <li>Öğrenci kulüplerine katılın</li>
+                <li>Staj imkanlarını değerlendirin</li>
+                <li>Networking fırsatlarını kaçırmayın</li>
+              </ul>
+            </div>
+
+            <div class="advice-section">
+              <h4>
+                <i class="fas fa-briefcase"></i>
+                Kariyer Hazırlığı
+              </h4>
+              <ul>
+                <li>Erken dönemde kariyer planlaması yapın</li>
+                <li>Sektör trendlerini takip edin</li>
+                <li>Portfolyo oluşturun</li>
+                <li>Mentorluk fırsatları arayın</li>
+              </ul>
+            </div>
+
+            <div class="advice-section">
+              <h4>
+                <i class="fas fa-chart-line"></i>
+                Kişisel Gelişim
+              </h4>
+              <ul>
+                <li>Sürekli öğrenme alışkanlığı edinin</li>
+                <li>Dil becerilerinizi geliştirin</li>
+                <li>Teknoloji takibi yapın</li>
+                <li>Soft skill'lerinizi güçlendirin</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="expert-quote">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <div class="quote-content">
+              <p>"Başarılı bir kariyer için en önemli faktör, sürekli öğrenmeye açık olmak ve kendinizi geliştirme konusunda kararlı olmaktır."</p>
+              <div class="quote-author">
+                <span class="author-name">Genel Akademik Danışman</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

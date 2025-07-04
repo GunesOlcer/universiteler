@@ -1,0 +1,179 @@
+<!-- src/app/features/departments/department-detail/content/calisma-hayati/calisma-hayati.component.html -->
+<section class="content-section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-briefcase"></i>
+      Çalışma Hayatı
+    </h2>
+    <p class="section-subtitle">{{ department?.name }} mezunları için kariyer imkanları ve çalışma koşulları</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Kariyer bilgileri yükleniyor...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>İçerik Yüklenemedi</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retry()">
+      <i class="fas fa-redo"></i>
+      Tekrar Dene
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Career Overview -->
+    <div class="overview-card" *ngIf="department">
+      <div class="overview-header">
+        <div class="overview-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="overview-content">
+          <h3>Kariyer Genel Bakış</h3>
+          <p>{{ department.name }} bölümünden mezun olduktan sonra karşılaşabileceğiniz iş imkanları ve beklentiler.</p>
+        </div>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div class="quick-stats" *ngIf="department.averageSalary || department.averageEducationYears">
+        <div class="stat-item" *ngIf="department.averageSalary">
+          <div class="stat-icon">
+            <i class="fas fa-money-bill-wave"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ formatSalary(department.averageSalary) }}</div>
+            <div class="stat-label">Ortalama Maaş</div>
+          </div>
+        </div>
+        
+        <div class="stat-item" *ngIf="department.averageEducationYears">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ department.averageEducationYears }} Yıl</div>
+            <div class="stat-label">Eğitim Süresi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specific Career Content -->
+    <div class="content-card" *ngIf="careerContent">
+      <h3 class="content-title">
+        <i class="fas fa-info-circle"></i>
+        {{ careerContent.title }}
+      </h3>
+      <div class="content-text" [innerHTML]="formatContent(careerContent.content)"></div>
+    </div>
+
+    <!-- All Career Menus -->
+    <div class="career-grid" *ngIf="departmentMenus.length > 0">
+      <div class="career-card" *ngFor="let menu of departmentMenus">
+        <div class="career-header">
+          <div class="career-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h4 class="career-title">{{ menu.title }}</h4>
+          <span class="career-order">{{ menu.order }}</span>
+        </div>
+        <div class="career-content" [innerHTML]="formatContent(menu.content)"></div>
+      </div>
+    </div>
+
+    <!-- Job Opportunities -->
+    <div class="content-card" *ngIf="department?.jobOpportunities">
+      <h3 class="content-title">
+        <i class="fas fa-rocket"></i>
+        İş Olanakları
+      </h3>
+      <div class="job-opportunities">
+        <p>{{ department.jobOpportunities }}</p>
+      </div>
+    </div>
+
+    <!-- Default Content when no menus available -->
+    <div class="default-content" *ngIf="!careerContent && departmentMenus.length === 0">
+      <div class="content-card">
+        <h3 class="content-title">
+          <i class="fas fa-info-circle"></i>
+          Genel Kariyer Bilgileri
+        </h3>
+        <div class="general-career">
+          <p>{{ department?.name }} bölümü için özel kariyer bilgileri henüz eklenmemiştir.</p>
+          
+          <div class="career-areas">
+            <div class="career-area">
+              <h4>
+                <i class="fas fa-building"></i>
+                Özel Sektör İmkanları
+              </h4>
+              <ul>
+                <li>Şirketlerde uzman pozisyonları</li>
+                <li>Proje yöneticiliği rolleri</li>
+                <li>Danışmanlık hizmetleri</li>
+                <li>Girişimcilik fırsatları</li>
+              </ul>
+            </div>
+
+            <div class="career-area">
+              <h4>
+                <i class="fas fa-landmark"></i>
+                Kamu Sektörü Fırsatları
+              </h4>
+              <ul>
+                <li>Devlet kurumlarında uzmanlık</li>
+                <li>Kamu projelerinde görevler</li>
+                <li>Akademik kariyer yolları</li>
+                <li>Araştırma enstitüleri</li>
+              </ul>
+            </div>
+
+            <div class="career-area">
+              <h4>
+                <i class="fas fa-globe"></i>
+                Uluslararası Fırsatlar
+              </h4>
+              <ul>
+                <li>Multinasional şirketler</li>
+                <li>Uluslararası organizasyonlar</li>
+                <li>Yurtdışı eğitim fırsatları</li>
+                <li>Global proje yönetimi</li>
+              </ul>
+            </div>
+
+            <div class="career-area">
+              <h4>
+                <i class="fas fa-laptop"></i>
+                Modern Çalışma Modelleri
+              </h4>
+              <ul>
+                <li>Uzaktan çalışma imkanları</li>
+                <li>Freelance danışmanlık</li>
+                <li>Dijital platform çalışması</li>
+                <li>Hibrit çalışma modelleri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="career-note">
+            <div class="note-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="note-content">
+              <h4>Kariyer Geliştirme Tavsiyeleri</h4>
+              <p>Mezuniyet sonrası başarılı bir kariyer için sürekli öğrenme, networking ve sektör trendlerini takip etme kritik faktörlerdir. Erken dönemde mentorship ve staj imkanlarını değerlendirin.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

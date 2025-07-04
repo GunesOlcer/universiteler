@@ -1,0 +1,163 @@
+<section class="content-section">
+  <h2 class="section-title">Hazırlık Eğitimi</h2>
+  <div class="content-card">
+    <div class="prep-education" *ngIf="university">
+      <div class="prep-info">
+        <div class="info-message">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <h4>Hazırlık Sınıfı Bilgileri</h4>
+            <p>Hazırlık sınıfı bilgileri için {{ university.name }} ile direkt iletişime geçmenizi öneririz.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="general-prep-info">
+        <h3 class="subsection-title">Genel Hazırlık Bilgileri</h3>
+        <div class="prep-details">
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-language"></i>
+            </div>
+            <div class="detail-content">
+              <h4>Dil Eğitimi</h4>
+              <p>İngilizce ve diğer yabancı dil seçenekleri</p>
+              <ul>
+                <li>Seviye belirleme sınavı</li>
+                <li>A1'den C1'e kadar seviyeler</li>
+                <li>Konuşma, dinleme, okuma, yazma becerileri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="detail-content">
+              <h4>Süre</h4>
+              <p>Genellikle 1 akademik yıl (2 dönem)</p>
+              <ul>
+                <li>Haftalık 20-25 saat ders</li>
+                <li>Yoğun dil eğitimi programı</li>
+                <li>Esnek program seçenekleri</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-certificate"></i>
+            </div>
+            <div class="detail-content">
+              <h4>Muafiyet</h4>
+              <p>Yeterlik sınavları ile muafiyet alınabilir</p>
+              <ul>
+                <li>YDS, KPDS, ÜDPS sınavları</li>
+                <li>TOEFL, IELTS sertifikaları</li>
+                <li>Üniversite kendi muafiyet sınavı</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="detail-content">
+              <h4>Başarı Kriterleri</h4>
+              <p>Belirlenen not ortalaması ve seviye testleri</p>
+              <ul>
+                <li>Devam zorunluluğu (%80)</li>
+                <li>Ara sınavlar ve final</li>
+                <li>Portfolyo çalışmaları</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prep-levels">
+        <h3 class="subsection-title">Dil Seviyeleri</h3>
+        <div class="levels-container">
+          <div class="level-card beginner">
+            <h4>Başlangıç (A1-A2)</h4>
+            <div class="level-features">
+              <span>Temel kelime bilgisi</span>
+              <span>Basit cümleler</span>
+              <span>Günlük konuşma</span>
+            </div>
+          </div>
+
+          <div class="level-card intermediate">
+            <h4>Orta (B1-B2)</h4>
+            <div class="level-features">
+              <span>Akademik kelime bilgisi</span>
+              <span>Kompleks yapılar</span>
+              <span>Akademik yazma</span>
+            </div>
+          </div>
+
+          <div class="level-card advanced">
+            <h4>İleri (C1)</h4>
+            <div class="level-features">
+              <span>İleri düzey gramer</span>
+              <span>Akademik tartışma</span>
+              <span>Araştırma yazma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exemption-info">
+        <h3 class="subsection-title">Muafiyet Koşulları</h3>
+        <div class="exemption-table">
+          <div class="table-header">
+            <span>Sınav/Sertifika</span>
+            <span>Minimum Puan</span>
+            <span>Geçerlilik</span>
+          </div>
+          
+          <div class="table-row">
+            <span>YDS</span>
+            <span>55-60</span>
+            <span>5 yıl</span>
+          </div>
+          
+          <div class="table-row">
+            <span>KPDS</span>
+            <span>55-60</span>
+            <span>5 yıl</span>
+          </div>
+          
+          <div class="table-row">
+            <span>TOEFL iBT</span>
+            <span>72-80</span>
+            <span>2 yıl</span>
+          </div>
+          
+          <div class="table-row">
+            <span>IELTS</span>
+            <span>6.0-6.5</span>
+            <span>2 yıl</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-card">
+          <h4>Detaylı Bilgi</h4>
+          <p>Hazırlık sınıfı koşulları, muafiyet sınavları ve diğer detaylar için üniversitenin öğrenci işleri birimiyle iletişime geçebilirsiniz.</p>
+          <div class="contact-links" *ngIf="university.website || university.phone">
+            <a *ngIf="university.website" [href]="university.website" target="_blank" class="contact-link">
+              <i class="fas fa-globe"></i> Web Sitesi
+            </a>
+            <span *ngIf="university.phone" class="contact-link">
+              <i class="fas fa-phone"></i> {{ university.phone }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,196 @@
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-globe"></i>
+        {{ isEditMode ? 'Ülke Düzenle' : 'Yeni Ülke Ekle' }}
+      </h1>
+      <p class="page-subtitle">
+        {{ isEditMode ? 'Ülke bilgilerini güncelleyin' : 'Sisteme yeni bir ülke kaydı ekleyin' }}
+      </p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn-back" (click)="cancel()">
+        <i class="fas fa-arrow-left"></i>
+        Listeye Dön
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p class="loading-text">{{ isEditMode ? 'Ülke bilgileri yükleniyor...' : 'Form hazırlanıyor...' }}</p>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div class="form-container" *ngIf="!loading">
+    <form [formGroup]="countryForm" (ngSubmit)="saveCountry()" novalidate>
+      <!-- Country Information Card -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Ülke Bilgileri
+          </h2>
+          <p class="card-subtitle">Ülkenin temel bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-row">
+            <!-- Country Name -->
+            <div class="form-group col-md-6">
+              <label for="name" class="form-label">
+                Ülke Adı 
+                <span class="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  class="form-control"
+                  [class.is-invalid]="submitted && f['name'].errors"
+                  placeholder="Ülke adını girin"
+                  maxlength="100"
+                >
+                <i class="fas fa-flag input-icon"></i>
+              </div>
+              <div *ngIf="submitted && f['name'].errors" class="form-error">
+                <div *ngIf="f['name'].errors?.['required']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke adı gereklidir.
+                </div>
+                <div *ngIf="f['name'].errors?.['minlength']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke adı en az 2 karakter olmalıdır.
+                </div>
+                <div *ngIf="f['name'].errors?.['maxlength']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke adı en fazla 100 karakter olabilir.
+                </div>
+              </div>
+              <div class="form-hint">
+                <i class="fas fa-info-circle"></i>
+                Örn: Türkiye, Amerika Birleşik Devletleri
+              </div>
+            </div>
+
+            <!-- Country Code -->
+            <div class="form-group col-md-6">
+              <label for="code" class="form-label">
+                Ülke Kodu 
+                <span class="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="text"
+                  id="code"
+                  formControlName="code"
+                  class="form-control"
+                  [class.is-invalid]="submitted && f['code'].errors"
+                  placeholder="Ülke kodunu girin"
+                  maxlength="10"
+                  (input)="onCodeInput($event)"
+                  style="text-transform: uppercase"
+                >
+                <i class="fas fa-code input-icon"></i>
+              </div>
+              <div *ngIf="submitted && f['code'].errors" class="form-error">
+                <div *ngIf="f['code'].errors?.['required']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke kodu gereklidir.
+                </div>
+                <div *ngIf="f['code'].errors?.['minlength']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke kodu en az 2 karakter olmalıdır.
+                </div>
+                <div *ngIf="f['code'].errors?.['maxlength']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Ülke kodu en fazla 10 karakter olabilir.
+                </div>
+              </div>
+              <div class="form-hint">
+                <i class="fas fa-info-circle"></i>
+                Örn: TR, US, DE (Genellikle 2-3 karakter)
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <!-- Status -->
+            <div class="form-group col-md-6">
+              <label for="status" class="form-label">
+                Durum 
+                <span class="required">*</span>
+              </label>
+              <div class="select-wrapper">
+                <select 
+                  id="status"
+                  formControlName="status"
+                  class="form-control"
+                  [class.is-invalid]="submitted && f['status'].errors"
+                >
+                  <option *ngFor="let option of getStatusOptions()" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+              </div>
+              <div *ngIf="submitted && f['status'].errors" class="form-error">
+                <div *ngIf="f['status'].errors?.['required']">
+                  <i class="fas fa-exclamation-circle"></i>
+                  Durum seçimi gereklidir.
+                </div>
+              </div>
+              <div class="form-hint">
+                <i class="fas fa-info-circle"></i>
+                Ülkenin sistemimdeki durumunu belirler
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Preview (for edit mode) -->
+          <div class="form-preview" *ngIf="isEditMode && countryForm.value.name">
+            <h4 class="preview-title">
+              <i class="fas fa-eye"></i>
+              Önizleme
+            </h4>
+            <div class="preview-content">
+              <div class="preview-item">
+                <span class="preview-label">Ülke Adı:</span>
+                <span class="preview-value">{{ countryForm.value.name }}</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Ülke Kodu:</span>
+                <span class="preview-value">{{ countryForm.value.code }}</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Durum:</span>
+                <span class="status-badge" [ngClass]="'status-' + countryForm.value.status">
+                  {{ getStatusName(countryForm.value.status) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel()" [disabled]="submitting">
+          <i class="fas fa-times"></i>
+          <span>İptal</span>
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting || countryForm.invalid">
+          <i class="fas fa-save" *ngIf="!submitting"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="submitting"></i>
+          <span *ngIf="!submitting">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
+          <span *ngIf="submitting">{{ isEditMode ? 'Güncelleniyor...' : 'Kaydediliyor...' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

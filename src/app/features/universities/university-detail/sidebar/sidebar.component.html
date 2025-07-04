@@ -1,0 +1,36 @@
+<div class="sidebar">
+  <nav class="sidebar-nav">
+    <ul class="nav-menu">
+      <li *ngFor="let menuItem of getMenuStructure()" 
+          class="nav-item" 
+          [class.active]="isMenuItemActive(menuItem.id)"
+          [class.expanded]="isMenuExpanded(menuItem.id)">
+        
+        <a *ngIf="!menuItem.isExpandable" 
+           class="nav-link" 
+           (click)="selectSection(menuItem.id)"
+           [class.active]="activeSection === menuItem.id">
+          {{ menuItem.title }}
+        </a>
+        
+        <ng-container *ngIf="menuItem.isExpandable">
+          <a class="nav-link expandable" 
+             (click)="toggleMenu(menuItem.id)"
+             [class.active]="isMenuItemActive(menuItem.id)">
+            {{ menuItem.title }} 
+            <i class="fas" [ngClass]="isMenuExpanded(menuItem.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+          </a>
+          
+          <ul class="sub-menu" *ngIf="isMenuExpanded(menuItem.id) && menuItem.children">
+            <li *ngFor="let child of menuItem.children">
+              <a (click)="selectSection(child.id)" 
+                 [class.active]="isChildActive(child.id)">
+                {{ child.title }}
+              </a>
+            </li>
+          </ul>
+        </ng-container>
+      </li>
+    </ul>
+  </nav>
+</div>

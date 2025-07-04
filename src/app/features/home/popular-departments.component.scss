@@ -1,0 +1,315 @@
+/* src/app/features/home/popular-departments/popular-departments.component.scss */
+.popular-departments-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e5e7eb" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  gap: 24px;
+
+  .header-content {
+    text-align: left;
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #111827;
+      margin: 0 0 12px 0;
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 2px;
+      }
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin: 0;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+  }
+
+  .view-all-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    white-space: nowrap;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+
+      i {
+        transform: translateX(4px);
+      }
+    }
+
+    i {
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+.departments-container {
+  min-height: 400px;
+  position: relative;
+}
+
+.loading-state,
+.error-state,
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.loading-content {
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #e5e7eb;
+    border-radius: 50%;
+    border-top-color: #3b82f6;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.error-content {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #fee2e2;
+  max-width: 400px;
+
+  .error-icon {
+    color: #ef4444;
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    color: #111827;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: #6b7280;
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+  }
+
+  .retry-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+  }
+}
+
+.empty-content {
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  max-width: 500px;
+
+  .empty-icon {
+    color: #d1d5db;
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    color: #111827;
+    font-size: 24px;
+    margin: 0 0 12px 0;
+  }
+
+  p {
+    color: #6b7280;
+    margin: 0 0 32px 0;
+    line-height: 1.6;
+  }
+
+  .browse-all-btn {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+  }
+}
+
+.departments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  
+  .department-wrapper {
+    height: 100%;
+    
+    ::ng-deep app-department-card {
+      height: 100%;
+      display: block;
+      
+      .department-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .departments-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .popular-departments-section {
+    padding: 60px 0;
+
+    .container {
+      padding: 0 16px;
+    }
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 32px;
+
+    .header-content {
+      .section-title {
+        font-size: 28px;
+      }
+
+      .section-subtitle {
+        font-size: 16px;
+      }
+    }
+
+    .view-all-button {
+      align-self: stretch;
+      justify-content: center;
+    }
+  }
+
+  .departments-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .loading-content,
+  .error-content,
+  .empty-content {
+    padding: 32px 20px;
+    margin: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popular-departments-section {
+    padding: 40px 0;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
+
+    .header-content {
+      .section-title {
+        font-size: 24px;
+      }
+
+      .section-subtitle {
+        font-size: 15px;
+      }
+    }
+  }
+}

@@ -1,0 +1,191 @@
+<section class="articles-page">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">{{ pageTitle }}</h1>
+      <p class="page-subtitle">Üniversite adayları ve öğrencilere yönelik rehberler ve deneyimler</p>
+    </div>
+  </div>
+
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" *ngFor="let item of breadcrumbItems; let last = last">
+            <a *ngIf="item.path && !last" [routerLink]="item.path">{{ item.label }}</a>
+            <span *ngIf="!item.path || last" [class.active]="last">{{ item.label }}</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="search-filter-container">
+        <div class="search-box">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            placeholder="Makale başlığı, içerik veya etiket ara..." 
+            class="search-input"
+            (keyup.enter)="onSearch()"
+            (input)="onSearchInput()">
+          <button type="button" class="search-button" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+          <button 
+            type="button" 
+            class="clear-search" 
+            *ngIf="searchTerm"
+            (click)="clearSearch()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="filter-tabs">
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'all'"
+            (click)="applyFilter('all')">
+            <span>Tümü</span>
+            <span class="count" *ngIf="categoryCounts">{{ getTotalCount() }}</span>
+          </button>
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'preference-guide'"
+            (click)="applyFilter('preference-guide')">
+            <span>Tercih Rehberi</span>
+            <span class="count" *ngIf="categoryCounts">{{ categoryCounts[2] || 0 }}</span>
+          </button>
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'university-life'"
+            (click)="applyFilter('university-life')">
+            <span>Üniversite Yaşamı</span>
+            <span class="count" *ngIf="categoryCounts">{{ categoryCounts[1] || 0 }}</span>
+          </button>
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'scholarships'"
+            (click)="applyFilter('scholarships')">
+            <span>Burslar</span>
+            <span class="count" *ngIf="categoryCounts">{{ categoryCounts[3] || 0 }}</span>
+          </button>
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'career'"
+            (click)="applyFilter('career')">
+            <span>Kariyer</span>
+            <span class="count" *ngIf="categoryCounts">{{ categoryCounts[4] || 0 }}</span>
+          </button>
+          <button 
+            class="filter-tab" 
+            [class.active]="activeFilter === 'student-experience'"
+            (click)="applyFilter('student-experience')">
+            <span>Öğrenci Deneyimi</span>
+            <span class="count" *ngIf="categoryCounts">{{ categoryCounts[5] || 0 }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="articles-container">
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Makaleler yükleniyor...</p>
+        </div>
+
+        <div class="error-state" *ngIf="errorMessage && !isLoading">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Bir Hata Oluştu</h3>
+          <p>{{ errorMessage }}</p>
+          <button class="retry-button" (click)="loadArticles()">
+            <i class="fas fa-redo"></i>
+            Tekrar Dene
+          </button>
+        </div>
+
+        <div *ngIf="!isLoading && !errorMessage">
+          <div class="results-header" *ngIf="articles.length > 0">
+            <div class="results-count">
+              <span *ngIf="!isPaginated">{{ articles.length }} makale bulundu</span>
+              <span *ngIf="isPaginated">
+                {{ totalItems }} makaleden {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalItems) }} arası gösteriliyor
+              </span>
+            </div>
+            <div class="view-toggle">
+              <button 
+                class="view-btn" 
+                [class.active]="viewMode === 'grid'"
+                (click)="viewMode = 'grid'">
+                <i class="fas fa-th"></i>
+              </button>
+              <button 
+                class="view-btn" 
+                [class.active]="viewMode === 'list'"
+                (click)="viewMode = 'list'">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="articles-grid" [class.list-view]="viewMode === 'list'">
+            <app-article-card 
+              *ngFor="let article of articles; trackBy: trackByArticleId" 
+              [article]="article">
+            </app-article-card>
+          </div>
+
+          <div class="empty-state" *ngIf="articles.length === 0">
+            <i class="fas fa-search"></i>
+            <h3>Sonuç Bulunamadı</h3>
+            <p *ngIf="searchTerm || activeFilter !== 'all'">
+              <span *ngIf="searchTerm">"{{ searchTerm }}" araması</span>
+              <span *ngIf="searchTerm && activeFilter !== 'all'"> ve </span>
+              <span *ngIf="activeFilter !== 'all'">"{{ getCategoryDisplayName(activeFilter) }}" kategorisi</span>
+              için makale bulunamadı.
+            </p>
+            <p *ngIf="!searchTerm && activeFilter === 'all'">
+              Henüz hiç makale yayınlanmamış.
+            </p>
+            <button class="reset-button" (click)="resetFilters()" *ngIf="searchTerm || activeFilter !== 'all'">
+              <i class="fas fa-filter"></i>
+              Filtreleri Temizle
+            </button>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-container" *ngIf="isPaginated && totalPages > 1">
+            <nav aria-label="Article pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+                    <i class="fas fa-chevron-left"></i>
+                    Önceki
+                  </button>
+                </li>
+                
+                <li class="page-item" *ngFor="let page of getVisiblePages()" [class.active]="page === currentPage">
+                  <button class="page-link" (click)="goToPage(page)" *ngIf="page !== '...'">
+                    {{ page }}
+                  </button>
+                  <span class="page-link dots" *ngIf="page === '...'">...</span>
+                </li>
+                
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+                    Sonraki
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+            
+            <div class="pagination-info">
+              Sayfa {{ currentPage }} / {{ totalPages }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

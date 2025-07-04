@@ -1,0 +1,115 @@
+<!-- src/app/admin/pages/universities/department-menu-edit/department-menu-edit.component.html -->
+<div class="content-container">
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-edit"></i>
+        Menü İçeriği Düzenle
+      </h1>
+      <p class="page-subtitle">{{ department.name }} - {{ menuItem.title }}</p>
+    </div>
+    
+    <div class="page-actions">
+      <button type="button" class="btn-back" [routerLink]="['/admin/departments/menus', departmentId]">
+        <i class="fas fa-arrow-left"></i>
+        Menü Listesine Dön
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-container">
+    <form [formGroup]="contentForm" (ngSubmit)="saveContent()">
+      <!-- İçerik Bilgileri -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-file-alt"></i>
+            İçerik Bilgileri
+          </h2>
+          <p class="card-subtitle">Menü içerik bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-group">
+            <label for="title">İçerik Başlığı <span class="required">*</span></label>
+            <input 
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-control"
+              [ngClass]="{'is-invalid': submitted && f.title.errors}"
+              placeholder="İçerik başlığını girin"
+            >
+            <div *ngIf="submitted && f.title.errors" class="form-error">
+              <div *ngIf="f.title.errors.required">İçerik başlığı gereklidir.</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="content">İçerik Yazısı <span class="required">*</span></label>
+            <textarea 
+              id="content"
+              formControlName="content"
+              class="form-control"
+              rows="10"
+              [ngClass]="{'is-invalid': submitted && f.content.errors}"
+              placeholder="İçerik yazısını girin"
+            ></textarea>
+            <div *ngIf="submitted && f.content.errors" class="form-error">
+              <div *ngIf="f.content.errors.required">İçerik yazısı gereklidir.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SEO Bilgileri -->
+      <div class="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-search"></i>
+            SEO Bilgileri
+          </h2>
+          <p class="card-subtitle">Arama motoru optimizasyonu için SEO bilgilerini girin</p>
+        </div>
+        
+        <div class="card-body">
+          <div class="form-group">
+            <label for="seoKeywords">SEO Anahtar Kelimeler</label>
+            <input 
+              type="text"
+              id="seoKeywords"
+              formControlName="seoKeywords"
+              class="form-control"
+              placeholder="Anahtar kelimeleri virgülle ayırarak girin"
+            >
+            <div class="form-hint">Örn: üniversite, eğitim, bölüm</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="seoDescription">SEO Açıklaması</label>
+            <textarea 
+              id="seoDescription"
+              formControlName="seoDescription"
+              class="form-control"
+              rows="3"
+              placeholder="İçeriğin kısa açıklamasını girin"
+            ></textarea>
+            <div class="form-hint">İdeal olarak 150-160 karakter arası</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" [routerLink]="['/admin/departments/menus', departmentId]">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="submit" class="btn-save" [disabled]="submitting">
+          <i class="fas fa-save"></i>
+          <span *ngIf="!submitting">Kaydet</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

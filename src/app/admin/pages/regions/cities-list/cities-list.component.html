@@ -1,0 +1,274 @@
+<div class="content-container">
+  <!-- Error Message Display -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error }}
+  </div>
+
+  <div class="page-header-container">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fas fa-city"></i>
+        Şehir Yönetimi
+      </h1>
+      <p class="page-subtitle">Sistemdeki tüm şehirleri görüntüle, düzenle veya yeni şehir ekle</p>
+    </div>
+    <div class="page-actions">
+      <a routerLink="/admin/cities/add" class="btn-add">
+        <span class="btn-icon"><i class="fas fa-plus"></i></span>
+        <span class="btn-text">Yeni Şehir</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row row">
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-city"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ totalItems }}</h3>
+          <span class="stat-label">Toplam Şehir</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ getActiveCount() }}</h3>
+          <span class="stat-label">Aktif Şehir</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-globe-europe"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ countries.length }}</h3>
+          <span class="stat-label">Toplam Ülke</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-header">
+      <h2 class="filter-title">
+        <i class="fas fa-filter"></i> Filtreler
+      </h2>
+      <button class="btn-filter-toggle" (click)="filterPanelOpen = !filterPanelOpen">
+        {{ filterPanelOpen ? 'Filtreleri Gizle' : 'Filtreleri Göster' }}
+        <i class="fas" [ngClass]="filterPanelOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+    </div>
+    
+    <div class="filter-body" [class.open]="filterPanelOpen">
+      <div class="filter-row row">
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="name-filter">Şehir Adı</label>
+          <div class="input-icon-wrapper">
+            <input 
+              type="text"
+              id="name-filter"
+              [(ngModel)]="filters.searchTerm"
+              placeholder="Şehir adı ara..."
+              class="filter-input"
+              (keyup.enter)="applyFilters()"
+            >
+            <i class="fas fa-search input-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="country-filter">Ülke</label>
+          <div class="select-wrapper">
+            <select id="country-filter" [(ngModel)]="filters.countryId" class="filter-select">
+              <option [value]="undefined">Tümü</option>
+              <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group col-md-6 col-lg-4 mb-3">
+          <label for="status-filter">Durum</label>
+          <div class="select-wrapper">
+            <select id="status-filter" [(ngModel)]="filters.status" class="filter-select">
+              <option [value]="undefined">Tümü</option>
+              <option [value]="Status.Active">Aktif</option>
+              <option [value]="Status.Passive">Pasif</option>
+              <option [value]="Status.Pending">Beklemede</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button type="button" class="btn-reset" (click)="resetFilters()">
+          <i class="fas fa-undo"></i> Filtreleri Sıfırla
+        </button>
+        <button type="button" class="btn-apply" (click)="applyFilters()">
+          <i class="fas fa-filter"></i> Filtrele
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cities Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-list"></i> Şehir Listesi
+      </h2>
+      <div class="table-actions">
+        <button class="btn-refresh" (click)="loadCities()" [disabled]="loading">
+          <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i> Yenile
+        </button>
+      </div>
+    </div>
+    
+    <div class="table-wrapper">
+      <div *ngIf="loading" class="loading-overlay">
+        <div class="spinner"></div>
+      </div>
+      
+      <table class="data-table city-table">
+        <thead>
+          <tr>
+            <th class="th-image">Görsel</th>
+            <th class="th-name">Şehir Adı</th>
+            <th class="th-country">Ülke</th>
+            <th class="th-region">Bölge</th>
+            <th class="th-uni-count">Üniversite Sayısı</th>
+            <th class="th-population">Nüfus</th>
+            <th class="th-status">Durum</th>
+            <th class="th-actions">İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let city of cities; trackBy: trackByCityId">
+            <td class="td-image">
+              <div class="city-image">
+                <img *ngIf="city.imageUrl" [src]="city.imageUrl" [alt]="city.name" class="city-thumbnail">
+                <div *ngIf="!city.imageUrl" class="image-placeholder">
+                  <i class="fas fa-city"></i>
+                </div>
+              </div>
+            </td>
+            <td class="td-name">
+              <div class="city-info">
+                <span class="city-name">{{ city.name }}</span>
+                <small class="city-slug">{{ city.slug }}</small>
+              </div>
+            </td>
+            <td class="td-country">
+              <span class="country-name">{{ city.countryName }}</span>
+            </td>
+            <td class="td-region">
+              <span class="region-name" *ngIf="city.region">{{ getRegionName(city.region) }}</span>
+              <span class="region-empty" *ngIf="!city.region">-</span>
+            </td>
+            <td class="td-uni-count">
+              <span class="count-badge">{{ city.universityCount || 0 }}</span>
+            </td>
+            <td class="td-population">
+              <span class="population" *ngIf="city.population">{{ city.population | number }}</span>
+              <span class="population-empty" *ngIf="!city.population">-</span>
+            </td>
+            <td class="td-status">
+              <span class="status-badge" [ngClass]="getStatusClass(city.status)">
+                {{ getStatusName(city.status) }}
+              </span>
+            </td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button type="button" 
+                        class="btn-action btn-menus" 
+                        title="Menüler" 
+                        (click)="navigateToMenus(city)">
+                  <i class="fas fa-bars"></i>
+                </button>
+                <a [routerLink]="['/admin/cities/edit', city.id]" 
+                   class="btn-action btn-edit" 
+                   title="Düzenle">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <button type="button" 
+                        class="btn-action btn-delete" 
+                        title="Sil" 
+                        (click)="confirmDelete(city)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr *ngIf="cities.length === 0 && !loading">
+            <td colspan="8" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-search"></i>
+                <p>Aradığınız kriterlere uygun şehir bulunamadı.</p>
+                <button class="btn-reset-search" (click)="resetFilters()">Filtreleri Sıfırla</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="table-footer" *ngIf="totalItems > 0">
+      <div class="pagination-info">
+        Toplam {{ totalItems }} kayıttan {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalItems) }} arası gösteriliyor
+      </div>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" *ngIf="showConfirmDialog">
+  <div class="modal-backdrop" (click)="cancelDelete()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-danger"></i>
+          Şehir Sil
+        </h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="delete-message">
+          <strong>{{ cityToDelete?.name }}</strong> şehrini silmek istediğinizden emin misiniz?
+        </p>
+        <p class="delete-warning">
+          <i class="fas fa-info-circle"></i>
+          Bu işlem geri alınamaz ve şehre ait tüm veriler silinecektir.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelDelete()">
+          <i class="fas fa-times"></i> İptal
+        </button>
+        <button type="button" class="btn-confirm" (click)="deleteCity()">
+          <i class="fas fa-trash-alt"></i> Evet, Sil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<!-- src/app/features/departments/department-detail/sidebar/sidebar.component.html -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">İçindekiler</h3>
+    <p class="sidebar-subtitle">Bölüm detayları</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-menu">
+      <li class="nav-item" 
+          *ngFor="let item of menuItems" 
+          [class.active]="isActive(item.id)">
+        <a class="nav-link" 
+           (click)="selectSection(item.id)"
+           [attr.aria-current]="isActive(item.id) ? 'page' : null">
+          <div class="nav-icon">
+            <i [class]="item.icon"></i>
+          </div>
+          <div class="nav-content">
+            <span class="nav-title">{{ item.title }}</span>
+            <span class="nav-description">{{ item.description }}</span>
+          </div>
+          <div class="nav-arrow" *ngIf="isActive(item.id)">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Department Custom Menus -->
+  <div class="custom-menus" *ngIf="departmentMenus.length > 0">
+    <div class="section-divider"></div>
+    <h4 class="custom-menus-title">Ek Bilgiler</h4>
+    <ul class="custom-menu-list">
+      <li class="custom-menu-item" *ngFor="let menu of departmentMenus">
+        <a class="custom-menu-link" [href]="'#menu-' + menu.id">
+          <i class="fas fa-file-alt"></i>
+          <span>{{ menu.title }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Department Quick Info -->
+  <div class="quick-info" *ngIf="department">
+    <div class="section-divider"></div>
+    <h4 class="quick-info-title">Hızlı Bilgi</h4>
+    <div class="quick-info-content">
+      <div class="info-item" *ngIf="department.facultyName">
+        <span class="info-label">Fakülte</span>
+        <span class="info-value">{{ department.facultyName }}</span>
+      </div>
+      <div class="info-item" *ngIf="department.universityName">
+        <span class="info-label">Üniversite</span>
+        <span class="info-value">{{ department.universityName }}</span>
+      </div>
+      <div class="info-item" *ngIf="department.averageEducationYears">
+        <span class="info-label">Eğitim Süresi</span>
+        <span class="info-value">{{ department.averageEducationYears }} Yıl</span>
+      </div>
+      <div class="info-item" *ngIf="department.hasEnglishProgram">
+        <span class="info-label">İngilizce Program</span>
+        <span class="info-value">Mevcut</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="sidebar-actions">
+    <div class="section-divider"></div>
+    <button class="action-btn primary">
+      <i class="fas fa-heart"></i>
+      Favorilere Ekle
+    </button>
+    <button class="action-btn secondary">
+      <i class="fas fa-share-alt"></i>
+      Paylaş
+    </button>
+  </div>
+</div>
